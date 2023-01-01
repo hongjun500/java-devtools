@@ -1,0 +1,4 @@
+devtools:
+  log:
+    record:
+      open: false

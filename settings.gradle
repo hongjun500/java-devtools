@@ -1,0 +1,6 @@
+rootProject.name = 'java-devtools-hongjun500'
+include 'common'
+include 'common-starter'
+include 'common-web'
+include 'quick-starter'
+
