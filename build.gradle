@@ -116,12 +116,19 @@ project(':common-web') {
         implementation project(':common-starter')
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation ('org.springframework.boot:spring-boot-starter-web:3.0.0') {
-            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-
+//            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
+        implementation ('org.springframework.boot:spring-boot-starter-aop:3.0.0')
+        implementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
 
         testImplementation('org.springframework.boot:spring-boot-starter-test:3.0.0') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        }
+    }
+    configurations {
+        // 排除依赖项中整个spring-boot下面的logging
+        implementation {
             exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
     }
