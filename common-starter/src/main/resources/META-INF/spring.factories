@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\com.hongjun.conf.CommonAutoConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.hongjun.conf.CommonAutoConfig

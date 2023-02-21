@@ -100,6 +100,7 @@ subprojects {
         // lombok的使用需要加上这个注解，否则编译失败
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
         implementation 'com.google.guava:guava:31.1-jre'
+        implementation 'javax.inject:javax.inject:1'
         implementation 'cn.hutool:hutool-all:5.8.8'
         implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
         // 测试时的使用
@@ -207,11 +208,8 @@ project(':common-web') {
         // 引用common-starter
         implementation project(':common-starter')
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        implementation ('org.springframework.boot:spring-boot-starter-web:3.0.0') {
-//            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        }
+        implementation ('org.springframework.boot:spring-boot-starter-web:3.0.0')
         implementation ('org.springframework.boot:spring-boot-starter-aop:3.0.0')
-
         testImplementation('org.springframework.boot:spring-boot-starter-test:3.0.0') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
             exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
@@ -231,15 +229,14 @@ project(':quick-starter'){
 
 
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
         implementation project(':common-starter')
         annotationProcessor project(':common-starter')
         implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
         implementation project(':common-web')
 
-        implementation ('org.springframework.boot:spring-boot-starter:3.0.0') {
-//            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        }
+        implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
     }
 
 
