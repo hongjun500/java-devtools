@@ -1,19 +1,50 @@
 plugins {
-    id 'java'
+    id 'org.springframework.boot' version '3.0.0'
 }
 
 group 'com.hongjun'
 version '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
+targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaLanguageVersion.of(17)
+/*    sourceCompatibility = 17
+    targetCompatibility = 17*/
 
+/*
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
+*/
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
+jar {
+    enabled = true
+    manifest {
+        attributes(
+                'Implementation-Title': 'quick-starter',
+                'Implementation-Version': version
+        )
+    }
+}
+
+// 配置Spring Boot插件
+/*springBoot {
+    // mainClassName = 'com.example.MyApplication'
+    withJarManifest()
+    withProjectMetadata()
+}*/
 
 test {
+    // 使用 JUnit5 测试框架
     useJUnitPlatform()
 }

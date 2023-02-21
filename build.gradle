@@ -1,15 +1,37 @@
+buildscript {
+    // 定义springboot版本
+    ext {
+        springBootVersion = '3.0.0'
+    }
+
+    // 设置仓库
+    repositories {
+        mavenLocal()
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/google" }
+        maven { url "https://maven.aliyun.com/repository/spring" }
+        mavenCentral()
+    }
+
+   /* dependencies {
+        // 添加 spring boot gradle 插件
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }*/
+}
+
 plugins {
-//    id 'java'
+    id 'java'
+    id 'java-library'
 }
 
 //全局配置
 allprojects {
+    // 设置项目的 group 和 version
     group 'com.hongjun'
     version '1.0-SNAPSHOT'
     apply plugin: 'java-library'
-    // jdk版本
-//    sourceCompatibility = JavaVersion.VERSION_17
-//    targetCompatibility = JavaVersion.VERSION_17
+
 
     // 在idea中使用gradle进行编译，编码gbk错误
     tasks.withType(JavaCompile) {
@@ -25,14 +47,36 @@ allprojects {
         }
     }
 
+
+    // 排除依赖项中整个spring-boot下面的logging
+    configurations {
+        implementation {
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        }
+        compileOnly {
+            // annotationProcessor 声明的依赖会被添加到compileOnly中
+            extendsFrom annotationProcessor
+        }
+    }
+
+   /* test {
+        // 使用 JUnit5 测试框架
+        useJUnitPlatform()
+    }*/
 }
 
 
 // 子模块的通用设置
 subprojects {
-    // 添加插件
 
-//    apply plugin: 'java-library'
+    // 应用 java 插件
+    apply plugin: 'java'
+    // 应用 spring boot 插件
+    // apply plugin: 'org.springframework.boot'
+    // 应用 spring dependency management 插件
+    // apply plugin: 'io.spring.dependency-management'
+
+
 
     // 设置仓库
     repositories {
@@ -43,15 +87,21 @@ subprojects {
         maven { url "https://maven.aliyun.com/repository/spring" }
         mavenCentral()
     }
+
+    // 设置编码信息
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+    javadoc.options.encoding = "UTF-8"
+
     // 设置通用的依赖
     dependencies {
 
         compileOnly 'org.projectlombok:lombok:1.18.22'
         // lombok的使用需要加上这个注解，否则编译失败
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
-        api 'com.google.guava:guava:31.1-jre'
-        implementation 'com.github.ben-manes.caffeine:caffeine:3.1.1'
+        implementation 'com.google.guava:guava:31.1-jre'
         implementation 'cn.hutool:hutool-all:5.8.8'
+        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
         // 测试时的使用
         testCompileOnly 'org.projectlombok:lombok:1.18.22'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -66,50 +116,92 @@ subprojects {
 
 
 project(':common-starter') {
-    // 定义Java版本
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
+
+    apply plugin: 'maven-publish'
+    apply plugin: 'java-library'
+    // apply plugin: 'org.springframework.boot'
+
+
+
+    // 发布到本地仓库
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+        repositories {
+            mavenLocal()
         }
     }
+
+    task sourceJar(type: Jar) {
+        from sourceSets.main.allSource
+        archiveClassifier = 'sources'
+    }
+
+
+
+
+    artifacts {
+        archives sourceJar
+    }
+
     // 解决springboot自定义元数据无法生成spring-autoconfiguration-metadata.json文件无法生成
-    tasks.withType(JavaCompile){
+    tasks.withType(JavaCompile) {
         inputs.files(tasks.withType(ProcessResources))
     }
-     sourceSets {
-         // 定义源码所在位置
-         main {
-             java {
-                 srcDirs = ['src/main/java']
-             }
-             resources {
-                 srcDirs = ['src/main/resources']
-             }
-         }
-     }
+
+    jar.enabled(true)
+    sourceSets {
+        // 定义源码所在位置
+        main {
+            java {
+                srcDirs = ['src/main/java']
+            }
+            resources {
+                srcDirs = ['src/main/resources']
+            }
+        }
+    }
 
     dependencies {
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
-        implementation ('org.springframework.boot:spring-boot-starter:3.0.0') {
-            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        }
-        implementation ('org.springframework.boot:spring-boot-starter-aop:3.0.0') {
-            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator:3.0.0'
 
+        // 引入akka
+        implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
+        implementation('org.springframework.boot:spring-boot-starter:3.0.0') {
+//            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        }
+        implementation('org.springframework.boot:spring-boot-starter-aop:3.0.0') {
+//            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-
     }
 }
 
 
 project(':common-web') {
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
+
+
+    // 解决springboot自定义元数据无法生成spring-autoconfiguration-metadata.json文件无法生成
+    tasks.withType(JavaCompile){
+        inputs.files(tasks.withType(ProcessResources))
+    }
+    sourceSets {
+        // 定义源码所在位置
+        main {
+            java {
+                srcDirs = ['src/main/java']
+            }
+            resources {
+                srcDirs = ['src/main/resources']
+            }
         }
     }
-
 
     dependencies {
         // 引用common-starter
@@ -119,19 +211,39 @@ project(':common-web') {
 //            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
         implementation ('org.springframework.boot:spring-boot-starter-aop:3.0.0')
-        implementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
 
         testImplementation('org.springframework.boot:spring-boot-starter-test:3.0.0') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
             exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
+
     }
-    configurations {
-        // 排除依赖项中整个spring-boot下面的logging
-        implementation {
-            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+
+
+}
+
+project(':quick-starter'){
+
+    apply plugin:  'application'
+    // apply plugin:  'org.springframework.boot'
+
+    jar.enabled(true)
+
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
+        implementation project(':common-starter')
+        annotationProcessor project(':common-starter')
+        implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
+        implementation project(':common-web')
+
+        implementation ('org.springframework.boot:spring-boot-starter:3.0.0') {
+//            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
     }
+
+
+
 }
 
 
