@@ -24,7 +24,7 @@ public class SpringActorProducer implements IndirectActorProducer {
 		this.actorBeanName = actorBeanName;
 	}
 
-	/*@Override
+	@Override
 	public Actor produce() {
 		return applicationContext.getBean(actorBeanName, Actor.class);
 	}
@@ -36,9 +36,9 @@ public class SpringActorProducer implements IndirectActorProducer {
 			throw new IllegalArgumentException("Invalid actor bean: " + actorBeanName);
 		}
 		return actorClass.asSubclass(Actor.class);
-	}*/
+	}
 
-	@Override
+	/*@Override
 	public Actor produce() {
 		return (Actor) applicationContext.getBean(actorBeanName);
 	}
@@ -46,5 +46,5 @@ public class SpringActorProducer implements IndirectActorProducer {
 	@Override
 	public Class<? extends Actor> actorClass() {
 		return (Class<? extends Actor>) applicationContext.getType(actorBeanName);
-	}
+	}*/
 }

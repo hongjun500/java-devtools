@@ -28,6 +28,7 @@ public abstract class BaseActor<T> extends AbstractActor {
 
 	@Override
 	public void preStart() {
+		log.info("Message type: {}", getMessageType().getName());
 		log.info("Actor started: {}", self().path());
 	}
 

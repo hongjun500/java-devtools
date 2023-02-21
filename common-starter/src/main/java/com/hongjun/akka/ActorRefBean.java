@@ -8,8 +8,10 @@ import akka.japi.pf.DeciderBuilder;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
+import com.google.common.base.CaseFormat;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import scala.concurrent.duration.Duration;
 
 import java.util.Map;
@@ -26,21 +28,18 @@ import static com.hongjun.akka.SpringExtension.SpringExtProvider;
  * Description:
  */
 @Log4j2
-public class ActorRefBean {
+public class ActorRefBean<T> {
 	private static ActorSystem actorSystem;
-	private static Map<String, ActorRef> actorRefMap = new ConcurrentHashMap<>();
+	private static final Map<String, ActorRef> actorRefMap = new ConcurrentHashMap<>();
 
 	public ActorRefBean(ActorSystem actorSystem) {
 		ActorRefBean.actorSystem = actorSystem;
 	}
 
-	public void tell(Class tclass, Object msg){
-		/*BaseActorMsg baseActorMsg = new BaseActorMsg();
-		baseActorMsg.setObject(msg);*/
-
-		// spring的bean会转小写的驼峰那种,这里需要转一下
-		String beanName = StrUtil.toCamelCase(StrUtil.toUnderlineCase(tclass.getSimpleName()));
-		Component component = AnnotationUtil.getAnnotation(tclass, Component.class);
+	public void tell(Class<T> t_class, T msg){
+		// 这里的BeanName通过spring注册Bean时默认的命名方式获取
+		String beanName = StringUtils.uncapitalize(t_class.getSimpleName());
+		Component component = AnnotationUtil.getAnnotation(t_class, Component.class);
 		if (component != null && StrUtil.isNotEmpty(component.value())) {
 			beanName = component.value();
 		}
@@ -51,12 +50,12 @@ public class ActorRefBean {
 		if (actorRef == null) {
 			return;
 		}
-		actorRef.tell(tclass, ActorRef.noSender());
+		actorRef.tell(msg, ActorRef.noSender());
 	}
 
 	private synchronized ActorRef initActorRef(String beanName){
 		// double check，确保actor不会被重复初始化
-		ActorRef actorRef = actorRefMap.get("demoActor");
+		ActorRef actorRef = actorRefMap.get(beanName);
 		if(Objects.isNull(actorRef)){
 			try {
 				actorRef = actorSystem.actorOf(SpringExtProvider.get(actorSystem).props(beanName), beanName);

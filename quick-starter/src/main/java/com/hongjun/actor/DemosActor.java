@@ -1,11 +1,15 @@
 package com.hongjun.actor;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.hongjun.User;
 import com.hongjun.akka.BaseActor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * @author hongjun500
@@ -15,21 +19,23 @@ import org.springframework.stereotype.Component;
  * Description:
  */
 @Log4j2
-@Component(value = "demo")
+@Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class DemoActor extends BaseActor<User> {
+public class DemosActor extends BaseActor<List<User>> {
 
 
 
 	@Override
-	protected Class<User> getMessageType() {
-		return User.class;
+	protected Class<List<User>> getMessageType() {
+		return (Class<List<User>>) (Class) List.class;
 	}
 
 	@Override
-	protected void onReceiveMsg(User demoActor) {
-		log.info("user.id={}", demoActor.getId());
-		log.info("-----------------DemoActor---user李在赣神魔");
+	protected void onReceiveMsg(List<User> userList) {
+		userList.forEach(obj ->{
+			log.info("user.id={}", obj.getId());
+		});
+		log.info("-----------------DemosActor---user李在赣神魔");
 	}
 
 }
