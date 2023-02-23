@@ -22,8 +22,8 @@ import static com.hongjun.akka.SpringExtension.SpringExtProvider;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description: 自定义配置
  */
-@Configuration
 @Log4j2
+@Configuration
 public class CommonAutoConfig {
 	@Autowired
 	private ApplicationContext applicationContext;

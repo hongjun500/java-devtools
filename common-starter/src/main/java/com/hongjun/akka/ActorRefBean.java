@@ -28,7 +28,7 @@ import static com.hongjun.akka.SpringExtension.SpringExtProvider;
  * Description:
  */
 @Log4j2
-public class ActorRefBean<T> {
+public class ActorRefBean {
 	private static ActorSystem actorSystem;
 	private static final Map<String, ActorRef> actorRefMap = new ConcurrentHashMap<>();
 
@@ -36,7 +36,7 @@ public class ActorRefBean<T> {
 		ActorRefBean.actorSystem = actorSystem;
 	}
 
-	public void tell(Class<T> t_class, T msg){
+	public <T> void tell(Class t_class, T msg){
 		// 这里的BeanName通过spring注册Bean时默认的命名方式获取
 		String beanName = StringUtils.uncapitalize(t_class.getSimpleName());
 		Component component = AnnotationUtil.getAnnotation(t_class, Component.class);

@@ -39,10 +39,9 @@ public class DemoController {
 	public CommonReturnType<String> actor() {
 		// String demoActor = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, "DemoActor");
 		String demoActor = StringUtils.uncapitalize("DemoActor");
-		String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
 		User user = new User();
 		user.setId(RandomUtil.randomInt());
-		actorRefBean.tell(DemoActor.class, user);
+		actorRefBean.tell(DemosActor.class, user);
 		List<User> users = Lists.newArrayList(user);
 		actorRefBean.tell(DemosActor.class, users);
 		return CommonReturnType.create();
