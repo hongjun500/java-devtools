@@ -36,33 +36,39 @@ allprojects {
     // 在idea中使用gradle进行编译，编码gbk错误
     tasks.withType(JavaCompile) {
         compileJava {
-            options.encoding("UTF-8")
+            options.encoding = "UTF-8"
         }
     }
+    // tasks.withType()
     tasks.withType(Javadoc) {
         javadoc {
-            options {
-                options.encoding = "UTF-8"
-            }
+            options.encoding = "UTF-8"
         }
     }
+    // 设置Test编码信息
+    compileTestJava {
+        options.encoding = "UTF-8"
+    }
 
-
-    // 排除依赖项中整个spring-boot下面的logging
     configurations {
-        implementation {
+        // 排除依赖项中整个spring-boot下面的logging
+        all {
             exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
+        // 排除所有指定依赖项下的某个依赖
+        // implementation (**) {
+        //     exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        // }
         compileOnly {
             // annotationProcessor 声明的依赖会被添加到compileOnly中
             extendsFrom annotationProcessor
         }
     }
 
-   /* test {
+    test {
         // 使用 JUnit5 测试框架
         useJUnitPlatform()
-    }*/
+    }
 }
 
 
@@ -77,7 +83,6 @@ subprojects {
     // apply plugin: 'io.spring.dependency-management'
 
 
-
     // 设置仓库
     repositories {
         mavenLocal()
@@ -88,14 +93,10 @@ subprojects {
         mavenCentral()
     }
 
-    // 设置编码信息
-    compileJava.options.encoding = "UTF-8"
-    compileTestJava.options.encoding = "UTF-8"
-    javadoc.options.encoding = "UTF-8"
+
 
     // 设置通用的依赖
     dependencies {
-
         compileOnly 'org.projectlombok:lombok:1.18.22'
         // lombok的使用需要加上这个注解，否则编译失败
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -123,11 +124,11 @@ project(':common-starter') {
     apply plugin: 'java-library'
     // apply plugin: 'org.springframework.boot'
 
-
+    // 打包成jar
+    jar.enabled(true)
 
     // 发布到本地仓库
-
-    publishing {
+    /*publishing {
         publications {
             mavenJava(MavenPublication) {
                 from components.java
@@ -143,12 +144,9 @@ project(':common-starter') {
         archiveClassifier = 'sources'
     }
 
-
-
-
     artifacts {
         archives sourceJar
-    }
+    }*/
 
     // 解决springboot自定义元数据无法生成spring-autoconfiguration-metadata.json文件无法生成
     tasks.withType(JavaCompile) {
@@ -175,12 +173,8 @@ project(':common-starter') {
 
         // 引入akka
         implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
-        implementation('org.springframework.boot:spring-boot-starter:3.0.0') {
-//            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        }
-        implementation('org.springframework.boot:spring-boot-starter-aop:3.0.0') {
-//            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        }
+        implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
     }
 }
@@ -209,13 +203,9 @@ project(':common-web') {
         // 引用common-starter
         implementation project(':common-starter')
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        implementation ('org.springframework.boot:spring-boot-starter-web:3.0.0')
-        implementation ('org.springframework.boot:spring-boot-starter-aop:3.0.0')
-        testImplementation('org.springframework.boot:spring-boot-starter-test:3.0.0') {
-            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        }
-
+        implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.0'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
 
 
@@ -226,37 +216,24 @@ project(':quick-starter'){
     apply plugin:  'application'
     // apply plugin:  'org.springframework.boot'
 
-    jar.enabled(true)
-
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
         implementation project(':common-starter')
         annotationProcessor project(':common-starter')
-        implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
         implementation project(':common-web')
 
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
+        implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
         implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
     }
-
-
 
 }
 
 project(':elasticsearch-starter'){
     dependencies {
-        implementation ('org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'){
-            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        }
-        testImplementation('org.springframework.boot:spring-boot-starter-test:3.0.0') {
-            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-        }
-
-       /* testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'*/
+        implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
 }
 
