@@ -103,6 +103,8 @@ subprojects {
         implementation 'javax.inject:javax.inject:1'
         implementation 'cn.hutool:hutool-all:5.8.8'
         implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+
         // 测试时的使用
         testCompileOnly 'org.projectlombok:lombok:1.18.22'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -240,8 +242,20 @@ project(':quick-starter'){
     }
 
 
+project(':elasticsearch-starter'){
+    apply plugin: 'java'
 
+    dependencies {
+        // csv文件
+        implementation 'org.apache.commons:commons-csv:1.9.0'
+        implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
+    }
+    test {
+        useJUnitPlatform()
+//        // 在执行build操作时不去自动执行测试的方法
+//        enabled = false
+    }
 }
-
 
 
