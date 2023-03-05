@@ -3,20 +3,18 @@ package com.hongjun.service.impl;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson2.JSONArray;
 import com.google.common.collect.Lists;
+import com.hongjun.index.base.BaseIndexService;
 import com.hongjun.index.document.*;
 import com.hongjun.service.MovieIndexService;
-import com.hongjun.util.ObjectPoolUtil;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +24,9 @@ import java.util.Map;
 @Log4j2
 @Service
 public class MovieIndexServiceImpl implements MovieIndexService {
+
+    @Autowired
+    private BaseIndexService baseIndexService;
     @Override
     public List<Movie> convertCSVtoList(String csvPath) throws IOException {
         StopWatch stopWatch = new StopWatch("convertCSVtoList");
@@ -34,111 +35,73 @@ public class MovieIndexServiceImpl implements MovieIndexService {
         }
         File file = new ClassPathResource(csvPath).getFile();
         Reader reader = new InputStreamReader(FileUtil.getInputStream(file), StandardCharsets.UTF_8);
-        List<Map<String, String>> maps = CsvUtil.getReader(reader).readMapList(reader);
-        stopWatch.start();
+        List<Map<String, String>> maps = CsvUtil.getReader().readMapList(reader);
         List<Movie> list = Lists.newArrayListWithExpectedSize(maps.size());
+        stopWatch.start();
         for (Map<String, String> map : maps) {
             Movie movie = new Movie();
-            movie.setId(Integer.parseInt(map.get("id")));
-            movie.setTitle(map.get("title"));
-            movie.setBudget(map.get("budget"));
-            movie.setOverview(map.get("overview"));
-            movie.setPopularity(Double.parseDouble(map.get("popularity")));
-            movie.setRevenue(Double.parseDouble(map.get("revenue")));
-            movie.setRuntime(map.get("runtime"));
-            movie.setStatus(map.get("status"));
-            movie.setOriginalLanguage(map.get("original_language"));
-            movie.setOriginalTitle(map.get("original_title"));
-            movie.setReleaseAddress(null);
-            movie.setTagline(map.get("tagline"));
-            movie.setVoteAverage(Double.parseDouble(map.get("vote_average")));
-            movie.setVoteCount(Integer.parseInt(map.get("vote_count")));
-            String releaseDate = map.get("release_date");
-            if (StrUtil.isBlank(releaseDate)) {
-                releaseDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
-            }
-            movie.setReleaseDate(LocalDate.parse(releaseDate));
-
-            // 聚合的数据
-            List<Genres> genresList = JSONUtil.toList(map.get("genres"), Genres.class);
-            movie.setGenres(genresList);
-
-            List<Keyword> keywordList = JSONUtil.toList(map.get("keywords"), Keyword.class);
-            movie.setKeywords(keywordList);
-
-            List<ProductionCompany> productionCompanyList = JSONUtil.toList(map.get("production_companies"), ProductionCompany.class);
-            movie.setProductionCompanies(productionCompanyList);
-
-            List<SpokenLanguage> spokenLanguageList = JSONUtil.toList(map.get("spoken_languages"), SpokenLanguage.class);
-            movie.setSpokenLanguages(spokenLanguageList);
-
+            setMovieProperties(movie, map);
             list.add(movie);
         }
-        for (Movie movie : list) {
-            log.info("movie-ID = 【{}】,【{}】=",movie.getId(), JSONUtil.toJsonStr(movie));
-        }
+        /*list.addAll(maps.stream().map(map ->{
+            Movie movie = new Movie();
+            setMovieProperties(movie, map);
+            return movie;
+        }).toList());*/
+
         stopWatch.stop();
-        log.info("convertCSVtoList方法耗时{}", stopWatch.getTotalTimeMillis() + "毫秒");
+        log.info("convertCSVtoList方法耗时{}", stopWatch.getLastTaskTimeMillis() + "毫秒");
         return list;
     }
 
+    private int parseInt(Map<String, String> map, String key) {
+        String value = map.get(key);
+        return StrUtil.isNotBlank(value) ? Integer.parseInt(value) : 0;
+    }
+
+    private double parseDouble(Map<String, String> map, String key) {
+        String value = map.get(key);
+        return StrUtil.isNotBlank(value) ? Double.parseDouble(value) : 0;
+    }
+
+    private LocalDate parseLocalDate(Map<String, String> map, String key) {
+        String value = map.get(key);
+        return StrUtil.isBlank(value) ? LocalDate.now() : LocalDate.parse(value, DateTimeFormatter.ISO_DATE);
+    }
+
+    private <T> List<T> parseList(Map<String, String> map, String key, Class<T> clazz) {
+        String value = map.get(key);
+        return JSONArray.parseArray(value).toList(clazz);
+    }
+
+    // 将读取的变量和Movie对象的设置封装到一个方法中
+    private void setMovieProperties(Movie movie, Map<String, String> map) {
+        movie.setId(parseInt(map, "id"));
+        movie.setTitle(map.get("title"));
+        movie.setBudget(map.get("budget"));
+        movie.setOverview(map.get("overview"));
+        movie.setPopularity(parseDouble(map, "popularity"));
+        movie.setRevenue(parseDouble(map, "revenue"));
+        movie.setRuntime(map.get("runtime"));
+        movie.setStatus(map.get("status"));
+        movie.setOriginalLanguage(map.get("original_language"));
+        movie.setOriginalTitle(map.get("original_title"));
+        movie.setTagline(map.get("tagline"));
+        movie.setVoteAverage(parseDouble(map, "vote_average"));
+        movie.setVoteCount(parseInt(map, "vote_count"));
+        movie.setReleaseDate(parseLocalDate(map, "release_date"));
+        movie.setGenres(parseList(map, "genres", Genres.class));
+        movie.setKeywords(parseList(map, "keywords", Keyword.class));
+        movie.setProductionCompanies(parseList(map, "production_companies", ProductionCompany.class));
+        movie.setSpokenLanguages(parseList(map, "spoken_languages", SpokenLanguage.class));
+    }
+
     @Override
-    public List<Movie> convertCSVtoList2(String csvPath) throws IOException {
-        StopWatch stopWatch = new StopWatch("convertCSVtoList2");
-        if (StrUtil.isBlank(csvPath)) {
-            return Lists.newArrayList();
+    public <T> void setListToEs(List<T> list) {
+        // 初始化索引和mapping
+        boolean indexAndMapping = baseIndexService.initIndexAndMapping(list.getClass());
+        if (indexAndMapping) {
+
         }
-        File file = new ClassPathResource(csvPath).getFile();
-        Reader reader = new InputStreamReader(FileUtil.getInputStream(file), StandardCharsets.UTF_8);
-        List<Map<String, String>> maps = CsvUtil.getReader(reader).readMapList(reader);
-        stopWatch.start();
-        ObjectPoolUtil<Movie> objectPoolUtil = new ObjectPoolUtil<>(maps.size(), Movie::new, (args) -> new Movie());
-
-        List<Movie> list = Lists.newArrayListWithExpectedSize(maps.size());
-        for (int i = 0; i < maps.size(); i++) {
-            Map<String, String> map = maps.get(i);
-            Movie movie = objectPoolUtil.borrowObject();
-            movie.setId(Integer.parseInt(map.get("id")));
-            movie.setTitle(map.get("title"));
-            movie.setBudget(map.get("budget"));
-            movie.setOverview(map.get("overview"));
-            movie.setPopularity(Double.parseDouble(map.get("popularity")));
-            movie.setRevenue(Double.parseDouble(map.get("revenue")));
-            movie.setRuntime(map.get("runtime"));
-            movie.setStatus(map.get("status"));
-            movie.setOriginalLanguage(map.get("original_language"));
-            movie.setOriginalTitle(map.get("original_title"));
-            movie.setReleaseAddress(null);
-            movie.setTagline(map.get("tagline"));
-            movie.setVoteAverage(Double.parseDouble(map.get("vote_average")));
-            movie.setVoteCount(Integer.parseInt(map.get("vote_count")));
-            String releaseDate = map.get("release_date");
-            if (StrUtil.isBlank(releaseDate)) {
-                releaseDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
-            }
-            movie.setReleaseDate(LocalDate.parse(releaseDate));
-
-            // 聚合的数据
-            List<Genres> genresList = JSONUtil.toList(map.get("genres"), Genres.class);
-            movie.setGenres(genresList);
-
-            List<Keyword> keywordList = JSONUtil.toList(map.get("keywords"), Keyword.class);
-            movie.setKeywords(keywordList);
-
-            List<ProductionCompany> productionCompanyList = JSONUtil.toList(map.get("production_companies"), ProductionCompany.class);
-            movie.setProductionCompanies(productionCompanyList);
-
-            List<SpokenLanguage> spokenLanguageList = JSONUtil.toList(map.get("spoken_languages"), SpokenLanguage.class);
-            movie.setSpokenLanguages(spokenLanguageList);
-
-            list.add(movie);
-            objectPoolUtil.returnObject(movie);
-        }
-         for (Movie movie : list) {
-            log.info("movie-ID = 【{}】,【{}】=",movie.getId(), JSONUtil.toJsonStr(movie));
-        }
-        stopWatch.stop();
-        log.info("convertCSVtoList2方法耗时{}", stopWatch.getTotalTimeMillis() + "毫秒");
-        return list;
     }
 }

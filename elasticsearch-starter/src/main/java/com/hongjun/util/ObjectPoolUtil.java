@@ -43,10 +43,17 @@ public class ObjectPoolUtil<T> {
      * @return 从对象池中获取的对象
      */
     public synchronized T borrowObject(Object... args) {
-        // 直接先从对象池中获取对象
+       /* // 直接先从对象池中获取对象
         T obj = objPool.poll();
         if (obj == null) {
             obj = createObject(args);
+        }
+        return obj;*/
+
+        T obj = objPool.poll();
+        if (obj == null) {
+            // 如果对象池中没有对象，则创建一个新对象
+            obj = objFactory.apply(args);
         }
         return obj;
     }
@@ -57,23 +64,15 @@ public class ObjectPoolUtil<T> {
      * @param obj 归还的对象
      */
     public synchronized void returnObject(T obj) {
-        if (obj == null) {
+       /* if (obj == null) {
             return;
         }
         // 若对象池未满并且对象池并未包含此归还对象，则将对象归还到对象池中
         if (objPool.size() < maxPoolSize && !objPool.contains(obj)) {
             objPool.add(obj);
+        }*/
+        if (objPool.size() < maxPoolSize) {
+            objPool.offer(obj);
         }
     }
-
-    private T createObject(Object... args) {
-        T obj;
-        if (objFactory != null && args.length > 0) {
-            obj = objFactory.apply(args);
-        } else {
-            obj = defaultObjectSupplier.get();
-        }
-        return obj;
-    }
-
 }

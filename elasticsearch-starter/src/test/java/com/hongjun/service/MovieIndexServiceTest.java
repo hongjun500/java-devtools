@@ -22,20 +22,12 @@ class MovieIndexServiceTest {
 
     @Test
     void testInit() throws IOException {
-        log.info("inti");
+        log.info("你好");
     }
 
     @Test
     void testImportIndexDocForCSV() throws IOException {
         List<Movie> movieList = movieIndexService.convertCSVtoList(csvPath);
-
+        log.info("movieList.getClass={}",movieList.getClass());
     }
-
-    @Test
-    void testImportIndexDocForCSV2() throws IOException {
-        List<Movie> movieList2 = movieIndexService.convertCSVtoList2(csvPath);
-
-    }
-
-
 }

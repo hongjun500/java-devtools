@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.IndexOperations;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Log4j2
@@ -37,10 +41,24 @@ public class BaseIndexServiceImpl implements BaseIndexService {
         }
         boolean indexCreated = indexOps.create();
         if (indexCreated) {
-            log.info("索引【{}】及其mapping初始化", indexOps.getIndexCoordinates().getIndexName());
             indexOps.createMapping(tClass);
+            log.info("索引【{}】及其mapping初始化", indexOps.getIndexCoordinates().getIndexName());
             return true;
         }
         return false;
+    }
+
+    @Override
+    public <T> void refreshDataToEs(List<T> list, Class<?> clazz) {
+        if (CollUtil.isEmpty(list)) {
+            return;
+        }
+        List<IndexQuery> queries = new ArrayList<>();
+        list.forEach(obj ->{
+            queries.add(new IndexQueryBuilder()
+                    .withObject(obj)
+                    .build());
+        });
+        elasticsearchOperations.bulkIndex(queries, clazz);
     }
 }

@@ -13,5 +13,6 @@ public interface MovieIndexService {
      * @return
      */
     List<Movie> convertCSVtoList(String csvPath) throws IOException;
-    List<Movie> convertCSVtoList2(String csvPath) throws IOException;
+
+    <T> void setListToEs(List<T> list);
 }

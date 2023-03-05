@@ -100,6 +100,8 @@ subprojects {
         // lombok的使用需要加上这个注解，否则编译失败
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
         implementation 'com.google.guava:guava:31.1-jre'
+        implementation 'com.google.code.gson:gson:2.10'
+        implementation 'com.alibaba.fastjson2:fastjson2:2.0.23'
         implementation 'javax.inject:javax.inject:1'
         implementation 'cn.hutool:hutool-all:5.8.8'
         implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
@@ -222,9 +224,9 @@ project(':common-web') {
 
 }
 
-project(':quick-starter'){
+project(':quick-starter') {
 
-    apply plugin:  'application'
+    apply plugin: 'application'
     // apply plugin:  'org.springframework.boot'
 
     jar.enabled(true)
@@ -240,7 +242,7 @@ project(':quick-starter'){
 
         implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
     }
-
+}
 
 project(':elasticsearch-starter'){
     apply plugin: 'java'
