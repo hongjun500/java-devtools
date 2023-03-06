@@ -36,10 +36,9 @@ allprojects {
     // 在idea中使用gradle进行编译，编码gbk错误
     tasks.withType(JavaCompile) {
         compileJava {
-            options.encoding = "UTF-8"
+            options.encoding("UTF-8")
         }
     }
-    // tasks.withType()
     tasks.withType(Javadoc) {
         javadoc {
             options.encoding = "UTF-8"
@@ -65,10 +64,10 @@ allprojects {
         }
     }
 
-    test {
+   /* test {
         // 使用 JUnit5 测试框架
         useJUnitPlatform()
-    }
+    }*/
 }
 
 
@@ -93,7 +92,10 @@ subprojects {
         mavenCentral()
     }
 
-
+    // 设置编码信息
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+    javadoc.options.encoding = "UTF-8"
 
     // 设置通用的依赖
     dependencies {
@@ -101,10 +103,13 @@ subprojects {
         // lombok的使用需要加上这个注解，否则编译失败
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
         implementation 'com.google.guava:guava:31.1-jre'
+        implementation 'com.google.code.gson:gson:2.10'
+        implementation 'com.alibaba.fastjson2:fastjson2:2.0.23'
         implementation 'javax.inject:javax.inject:1'
         implementation 'cn.hutool:hutool-all:5.8.8'
         implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+
         // 测试时的使用
         testCompileOnly 'org.projectlombok:lombok:1.18.22'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -211,9 +216,9 @@ project(':common-web') {
 
 }
 
-project(':quick-starter'){
+project(':quick-starter') {
 
-    apply plugin:  'application'
+    apply plugin: 'application'
     // apply plugin:  'org.springframework.boot'
 
 
@@ -227,13 +232,23 @@ project(':quick-starter'){
         implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
         implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
     }
-
 }
 
 project(':elasticsearch-starter'){
+    apply plugin: 'java'
+
     dependencies {
+        // csv文件
+        implementation 'org.apache.commons:commons-csv:1.9.0'
         implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
+    test {
+        useJUnitPlatform()
+//        // 在执行build操作时不去自动执行测试的方法
+//        enabled = false
+    }
 }
+
+
 
