@@ -38,6 +38,9 @@ allprojects {
         compileJava {
             options.encoding("UTF-8")
         }
+        // 解决springboot自定义元数据无法生成spring-autoconfiguration-metadata.json文件无法生成
+        inputs.files(tasks.withType(ProcessResources))
+
     }
     tasks.withType(Javadoc) {
         javadoc {
@@ -153,10 +156,7 @@ project(':common-starter') {
         archives sourceJar
     }*/
 
-    // 解决springboot自定义元数据无法生成spring-autoconfiguration-metadata.json文件无法生成
-    tasks.withType(JavaCompile) {
-        inputs.files(tasks.withType(ProcessResources))
-    }
+
 
     jar.enabled(true)
     sourceSets {
@@ -174,7 +174,6 @@ project(':common-starter') {
     dependencies {
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
         implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-actuator:3.0.0'
 
         // 引入akka
         implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
@@ -226,6 +225,8 @@ project(':quick-starter') {
         implementation project(':common-starter')
         annotationProcessor project(':common-starter')
         implementation project(':common-web')
+        implementation project(':elasticsearch-starter')
+        annotationProcessor project(':elasticsearch-starter')
 
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
@@ -239,8 +240,12 @@ project(':elasticsearch-starter'){
     apply plugin: 'java'
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'
+        // 使其向下传递依赖
+        api 'org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
+        // 自定义配置
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
     }
 
     test {

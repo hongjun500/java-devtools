@@ -1,0 +1,6 @@
+common:
+  elasticsearch:
+    enabled: true
+    auth-username: elastic
+    auth-password: hongjun500
+
