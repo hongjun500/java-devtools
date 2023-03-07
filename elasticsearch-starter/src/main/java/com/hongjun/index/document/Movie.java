@@ -18,7 +18,8 @@ import java.util.List;
 public class Movie {
 
     @Id
-    private Integer id;
+    @Field(type = FieldType.Keyword)
+    private String id;
 
     /**
      * 预算

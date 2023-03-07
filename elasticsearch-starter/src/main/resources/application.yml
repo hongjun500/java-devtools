@@ -4,4 +4,3 @@ spring:
       - https://localhost:9200
     password: hongjun500
     username: elastic
-

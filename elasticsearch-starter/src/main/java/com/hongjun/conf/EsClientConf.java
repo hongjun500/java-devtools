@@ -1,13 +1,16 @@
 package com.hongjun.conf;
 
 import cn.hutool.core.util.ArrayUtil;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.transport.TransportUtils;
 import com.google.common.collect.Lists;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.support.HttpHeaders;
 import org.springframework.lang.NonNull;
 
@@ -28,7 +31,7 @@ public class EsClientConf extends ElasticsearchConfiguration {
         compatibilityHeaders.add("Accept", "application/vnd.elasticsearch+json;compatible-with=7");
         compatibilityHeaders.add("Content-Type", "application/vnd.elasticsearch+json;"
                 + "compatible-with=7");
-        SSLContext sslContext = null;
+        SSLContext sslContext;
         try {
             // ca证书
             File file = new ClassPathResource("es/http_ca.crt").getFile();
@@ -41,11 +44,9 @@ public class EsClientConf extends ElasticsearchConfiguration {
         return ClientConfiguration.builder()
                 .connectedTo(ArrayUtil.toArray(Lists.newArrayList("localhost:9200"), String.class))
                 // 开启https
-//                .usingSsl(sslContext)
+               .usingSsl(sslContext)
                 .withBasicAuth("elastic","hongjun500")
-                .withDefaultHeaders(compatibilityHeaders)
+                // .withDefaultHeaders(compatibilityHeaders)
                 .build();
     }
-
-
 }

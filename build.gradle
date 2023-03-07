@@ -231,6 +231,7 @@ project(':quick-starter') {
         implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
         implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
         implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
 }
 
@@ -238,15 +239,12 @@ project(':elasticsearch-starter'){
     apply plugin: 'java'
 
     dependencies {
-        // csv文件
-        implementation 'org.apache.commons:commons-csv:1.9.0'
         implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
+
     test {
         useJUnitPlatform()
-//        // 在执行build操作时不去自动执行测试的方法
-//        enabled = false
     }
 }
 

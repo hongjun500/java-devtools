@@ -18,47 +18,53 @@ import java.util.Map;
 @Service
 public class BaseIndexServiceImpl implements BaseIndexService {
 
+
     @Autowired
     private ElasticsearchOperations elasticsearchOperations;
-
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @Override
-    public synchronized boolean initIndexAndMapping(Class<?> tClass) {
-        IndexOperations indexOps = elasticsearchOperations.indexOps(tClass);
+    public synchronized boolean initIndexAndMapping(Class<?> clazz) {
+        IndexOperations indexOps = elasticsearchOperations.indexOps(clazz);
         if (indexOps.exists()) {
             Map<String, Object> indexOpsMapping = indexOps.getMapping();
-            if (CollUtil.isEmpty(indexOpsMapping)) {
-                log.info("索引【{}】的mapping为空，进行初始化操作", indexOps.getIndexCoordinates().getIndexName());
-                indexOps.createMapping(tClass);
-            } else {
-                // indexOps.getIndexCoordinates()一定不为null, indexOps.exists()的判断
-                log.info("索引【{}】的mapping更新", indexOps.getIndexCoordinates().getIndexName());
-                return indexOps.putMapping(tClass);
-            }
-            return true;
+            log.info("索引【{}】的mapping{}，更新索引", indexOps.getIndexCoordinates().getIndexName(), CollUtil.isEmpty(indexOpsMapping)?"为空":"不为空");
+            return indexOps.putMapping();
         }
         boolean indexCreated = indexOps.create();
         if (indexCreated) {
-            indexOps.createMapping(tClass);
-            log.info("索引【{}】及其mapping初始化", indexOps.getIndexCoordinates().getIndexName());
-            return true;
+            log.info("索引【{}】创建成功, 更新索引", indexOps.getIndexCoordinates().getIndexName());
+            return indexOps.putMapping();
         }
         return false;
     }
 
+
+
     @Override
     public <T> void refreshDataToEs(List<T> list, Class<?> clazz) {
+       /* boolean indexAndMapping = initIndexAndMapping(clazz);
+        if (!indexAndMapping) {
+            return;
+        }*/
         if (CollUtil.isEmpty(list)) {
             return;
         }
         List<IndexQuery> queries = new ArrayList<>();
-        list.forEach(obj ->{
-            queries.add(new IndexQueryBuilder()
-                    .withObject(obj)
-                    .build());
-        });
-        elasticsearchOperations.bulkIndex(queries, clazz);
+        list.forEach(obj -> queries.add(new IndexQueryBuilder()
+                .withObject(obj)
+                .build()));
+        elasticsearchTemplate.bulkIndex(queries, clazz);
+    }
+
+    @Override
+    public boolean delIndex(Class<?> clazz) {
+        IndexOperations indexOperations = elasticsearchTemplate.indexOps(clazz);
+        if (!indexOperations.exists()) {
+            log.warn("删除失败，索引不存在");
+            return false;
+        }
+        return indexOperations.delete();
     }
 }

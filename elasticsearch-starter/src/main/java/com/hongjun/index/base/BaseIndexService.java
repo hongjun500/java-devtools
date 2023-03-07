@@ -18,4 +18,6 @@ public interface BaseIndexService {
      * @param <T> 泛型数据集
      */
      <T> void refreshDataToEs(List<T> list, Class<?> clazz);
+
+    boolean delIndex(Class<?> clazz);
 }

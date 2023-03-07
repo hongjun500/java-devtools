@@ -17,18 +17,25 @@ import java.util.List;
  * Description: 书籍
  */
 @Data
-@Document(indexName = "library", createIndex = false)
+@Document(indexName = "library",createIndex = false)
 public class Book {
 	@Id
-	@Field(type = FieldType.Long)
+	// @Field(type = FieldType.Long)
 	private Long id;
 
+	@Field(type = FieldType.Keyword)
 	private String title;
 
-	@Field(type = FieldType.Object)
+	@Field(type = FieldType.Text)
+	private String originalTitle;
+
+	@Field(type = FieldType.Keyword)
+	private String kew;
+
+	/*@Field(type = FieldType.Object)
 	private Publisher publisher;
 
 
 	@Field(type = FieldType.Nested)
-	private List<Chapter> chapters;
+	private List<Chapter> chapters;*/
 }

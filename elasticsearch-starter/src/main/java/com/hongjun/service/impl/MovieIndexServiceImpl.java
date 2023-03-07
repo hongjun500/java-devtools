@@ -76,7 +76,7 @@ public class MovieIndexServiceImpl implements MovieIndexService {
 
     // 将读取的变量和Movie对象的设置封装到一个方法中
     private void setMovieProperties(Movie movie, Map<String, String> map) {
-        movie.setId(parseInt(map, "id"));
+        movie.setId(map.get("id"));
         movie.setTitle(map.get("title"));
         movie.setBudget(map.get("budget"));
         movie.setOverview(map.get("overview"));
