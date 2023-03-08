@@ -5,7 +5,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
@@ -56,10 +55,5 @@ public class AutoConfigEsClient extends ElasticsearchConfiguration {
             maybeSecureClientConfigurationBuilder.withDefaultHeaders(compatibilityHeaders);
         }
         return maybeSecureClientConfigurationBuilder.build();
-    }
-
-    @Bean
-    public String indexNamePrefix() {
-        return autoConfigEsClientProperties.getIndexNamePrefix();
     }
 }

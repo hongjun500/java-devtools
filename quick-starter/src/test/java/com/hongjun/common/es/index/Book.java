@@ -7,7 +7,8 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Data
-@Document(indexName = "library-#{@indexNamePrefix}",createIndex = false)
+// @Document(indexName = "library#{@environment.getProperty('common.elasticsearch.index-name-suffix')}",createIndex = false)
+@Document(indexName = "book#{(@environment.getProperty('common.elasticsearch.index-name-suffix') == '') ? '' : '-' + @environment.getProperty('common.elasticsearch.index-name-suffix')}")
 public class Book {
     @Id
     // @Field(type = FieldType.Long)
