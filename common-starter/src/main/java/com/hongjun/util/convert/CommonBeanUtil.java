@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:
  */
-@Data
 public class CommonBeanUtil extends BeanUtils {
 	public static final Map<String, BeanCopier> COPIER_MAP = Maps.newConcurrentMap();
 
