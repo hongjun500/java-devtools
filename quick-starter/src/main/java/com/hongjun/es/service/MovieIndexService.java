@@ -1,6 +1,6 @@
-package com.hongjun.service;
+package com.hongjun.es.service;
 
-import com.hongjun.index.document.Movie;
+import com.hongjun.es.document.Movie;
 
 import java.io.IOException;
 import java.util.List;

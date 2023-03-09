@@ -1,6 +1,5 @@
 package com.hongjun;
 
-import lombok.Data;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,8 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Description:
  */
 @SpringBootApplication
-public class AppMain {
+public class EsAppMain {
 	public static void main(String[] args) {
-		SpringApplication.run(AppMain.class, args);
+		SpringApplication.run(EsAppMain.class, args);
 	}
 }

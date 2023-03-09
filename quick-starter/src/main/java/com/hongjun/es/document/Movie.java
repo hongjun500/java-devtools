@@ -1,4 +1,4 @@
-package com.hongjun.index.document;
+package com.hongjun.es.document;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

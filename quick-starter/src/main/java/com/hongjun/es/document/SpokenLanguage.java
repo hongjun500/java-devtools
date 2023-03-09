@@ -1,16 +1,20 @@
-package com.hongjun.index.document;
+package com.hongjun.es.document;
 
 import lombok.Data;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
- * 首映地区
+ * 口语
  */
-
 @Data
-public class ReleaseAddress {
-
+public class SpokenLanguage {
     @Field(type = FieldType.Keyword)
-    private String address;
+    private String iso_639_1;
+
+    /**
+     * 名称
+     */
+    @Field(type = FieldType.Keyword)
+    private String name;
 }

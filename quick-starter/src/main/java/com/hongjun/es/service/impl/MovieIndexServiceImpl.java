@@ -1,13 +1,13 @@
-package com.hongjun.service.impl;
+package com.hongjun.es.service.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.google.common.collect.Lists;
+import com.hongjun.es.document.*;
+import com.hongjun.es.service.MovieIndexService;
 import com.hongjun.index.base.BaseIndexService;
-import com.hongjun.index.document.*;
-import com.hongjun.service.MovieIndexService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;

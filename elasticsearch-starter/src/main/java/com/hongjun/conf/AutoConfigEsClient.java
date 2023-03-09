@@ -35,7 +35,7 @@ public class AutoConfigEsClient extends ElasticsearchConfiguration {
             SSLContext sslContext;
             try {
                 // ca证书验证https
-//                File file = new ClassPathResource(autoConfigEsClientProperties.getHttpCaFilePath()).getFile();
+                // File file = new ClassPathResource(autoConfigEsClientProperties.getHttpCaFilePath()).getFile();
                 File file = new File(autoConfigEsClientProperties.getHttpCaFilePath());
                 sslContext = TransportUtils
                         .sslContextFromHttpCaCrt(file);

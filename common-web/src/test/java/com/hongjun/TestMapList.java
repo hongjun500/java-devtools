@@ -1,7 +1,5 @@
 package com.hongjun;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheStats;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
@@ -11,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author hongjun500
@@ -20,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:发生的VS但是
  */
-@SpringBootTest(classes = AppMain.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(classes = WebAppMain.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Log4j2
 public class TestMapList {
 	@Test

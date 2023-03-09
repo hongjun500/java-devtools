@@ -1,20 +1,21 @@
-package com.hongjun.index.document;
+package com.hongjun.es.document;
 
 import lombok.Data;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
- * 制片方
+ * 类型
  */
 
 @Data
-public class ProductionCompany {
+public class Genres {
+
     @Field(type = FieldType.Integer)
     private Integer id;
 
     /**
-     * 名称
+     * 类型名称
      */
     @Field(type = FieldType.Keyword)
     private String name;

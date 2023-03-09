@@ -1,4 +1,4 @@
-package com.hongjun.convert.json;
+package com.hongjun.util.convert.json;
 
 import com.google.gson.*;
 

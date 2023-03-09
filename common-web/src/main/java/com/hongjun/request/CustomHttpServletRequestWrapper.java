@@ -1,23 +1,19 @@
-package com.hongjun.req;
+package com.hongjun.request;
 
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
-import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author hongjun500
  * @date 2022/12/29 17:25
  * @tool ThinkPadX1隐士
  * Created with 2022.2.2.IntelliJ IDEA
- * Description:
+ * Description: 自定义处理请求信息
  */
 @Log4j2
 public class CustomHttpServletRequestWrapper extends HttpServletRequestWrapper {

@@ -1,6 +1,6 @@
-package com.hongjun.service;
+package com.hongjun.common.es;
 
-import com.hongjun.AppMain;
+import com.hongjun.EsAppMain;
 import com.hongjun.index.document.Movie;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Log4j2
-@SpringBootTest(classes = AppMain.class)
+@SpringBootTest(classes = EsAppMain.class)
 class MovieIndexServiceTest {
 
     final String csvPath = "tmdb_5000_movies.csv";

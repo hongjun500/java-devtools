@@ -1,16 +1,17 @@
-package com.hongjun.index.document;
+package com.hongjun.es.document;
 
 import lombok.Data;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 /**
- * 口语
+ * 制片方
  */
+
 @Data
-public class SpokenLanguage {
-    @Field(type = FieldType.Keyword)
-    private String iso_639_1;
+public class ProductionCompany {
+    @Field(type = FieldType.Integer)
+    private Integer id;
 
     /**
      * 名称

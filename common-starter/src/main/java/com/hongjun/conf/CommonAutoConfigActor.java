@@ -20,11 +20,11 @@ import static com.hongjun.akka.SpringExtension.SpringExtProvider;
  * @date 2023/2/13 15:56
  * @tool ThinkPadX1隐士
  * Created with 2022.2.2.IntelliJ IDEA
- * Description: 自定义配置
+ * Description: 自定义akka-actor配置
  */
 @Log4j2
 @Configuration
-public class CommonAutoConfig {
+public class CommonAutoConfigActor {
 	@Autowired
 	private ApplicationContext applicationContext;
 

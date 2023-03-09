@@ -44,10 +44,6 @@ public class BaseIndexServiceImpl implements BaseIndexService {
 
     @Override
     public <T> void refreshDataToEs(List<T> list, Class<?> clazz) {
-       /* boolean indexAndMapping = initIndexAndMapping(clazz);
-        if (!indexAndMapping) {
-            return;
-        }*/
         if (CollUtil.isEmpty(list)) {
             return;
         }
