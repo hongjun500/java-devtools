@@ -1,4 +1,4 @@
-package com.hongjun;
+package com.hongjun.actor;
 
 import lombok.Data;
 

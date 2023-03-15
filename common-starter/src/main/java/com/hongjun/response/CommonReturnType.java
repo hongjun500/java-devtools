@@ -48,7 +48,7 @@ public class CommonReturnType<T> {
 		return CommonReturnType.create(object,"success");
 	}
 	/**
-	 * 定义一个返回成功但没有有数据的通用创建方法
+	 * 定义一个返回成功但没有数据的通用创建方法
 	 * @return CommonReturnType
 	 */
 	public static<T> CommonReturnType<T> create(){

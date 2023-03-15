@@ -1,8 +1,8 @@
 package com.hongjun.aop;
 
-import cn.hutool.json.JSONUtil;
 import com.hongjun.enums.EnumBusinessError;
 import com.hongjun.error.BusinessException;
+import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -29,6 +30,10 @@ import java.util.Arrays;
 @Order(value = 2)
 @Log4j2
 public class RestRequestExceptionAspect {
+
+	@Autowired
+	private CommonPointcuts commonPointcuts;
+
 	/**
 	 * 切入点：RestController
 	 */
@@ -39,18 +44,18 @@ public class RestRequestExceptionAspect {
 	/**
 	 * 环绕通知
 	 */
-	@Around(value = "annotationPointCut()")
+	@Around(value = "com.hongjun.aop.CommonPointcuts.postMapping() || com.hongjun.aop.CommonPointcuts.getMapping()")
 	public Object around(ProceedingJoinPoint pjp) throws Throwable {
 		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpServletRequest request = servletRequestAttributes.getRequest();
 		Object[] reqArgs = pjp.getArgs();
-		log.debug("请求的地址：{},\n请求的参数{}", request.getRequestURI(), Arrays.toString(reqArgs));
+		log.info("请求的地址：{},\n请求的参数{}", request.getRequestURI(), Arrays.toString(reqArgs));
 		try {
 			Object proceed = pjp.proceed(reqArgs);
-			log.debug("响应结果：{}", JSONUtil.toJsonStr(proceed));
+			log.info("响应结果：{}", CommonFastJsonUtil.toJson(proceed));
 		} catch (BusinessException businessException) {
 			String errMsg = businessException.getErrMsg();
-			log.debug("业务异常{}\t exception:{}", parseMethodInfo(pjp), errMsg);
+			log.error("业务异常{}\t exception:{}", parseMethodInfo(pjp), errMsg);
 			BusinessException.assertBusinessException(EnumBusinessError.UNKNOWN_ERROR, "业务异常");
 		}
 		return null;
@@ -63,7 +68,7 @@ public class RestRequestExceptionAspect {
 		StringBuilder builder = new StringBuilder(joinPoint.getSignature().toString() + "参数: ");
 		try {
 			for (int i = 0; i < args.length; i++) {
-				builder.append(",").append(params[i]).append(":").append(JSONUtil.toJsonStr(args[i]));
+				builder.append(",").append(params[i]).append(":").append(CommonFastJsonUtil.toJson(args[i]));
 			}
 		} catch (Throwable ex) {
 			//ignore

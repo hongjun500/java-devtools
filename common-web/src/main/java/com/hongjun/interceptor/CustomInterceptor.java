@@ -3,12 +3,12 @@ package com.hongjun.interceptor;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import com.hongjun.enums.EnumBusinessError;
 import com.hongjun.error.BusinessException;
 import com.hongjun.request.CustomHttpServletRequestWrapper;
+import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
@@ -70,7 +70,8 @@ public class CustomInterceptor implements HandlerInterceptor {
 				// 这里断言是post请求并且body里面必须要有参数
 				BusinessException.assertBusinessException(StrUtil.isBlank(body), EnumBusinessError.PARAMETER_REQUEST_ERROR);
 				// 这里断言请求体中的对象必须是多个属性，不能出现整个请求体都是一个属性值
-				if (JSONUtil.isTypeJSON(body)) {
+				// if (JSONUtil.isTypeJSON(body)) {
+				if (JSON.isValid(body)) {
 					log.info("fill userInfo to request body successful");
 					// 忽略空的值
 
@@ -81,7 +82,7 @@ public class CustomInterceptor implements HandlerInterceptor {
 						log.info("拦截器处理放到请求体中的参数:{},对应的值:{}", headParam, headerParamValue);
 						jsonObject.putIfAbsent(headParam, headerParamValue);
 					}
-					customHttpServletRequestWrapper.setBody(JSONUtil.toJsonStr(jsonObject));
+					customHttpServletRequestWrapper.setBody(CommonFastJsonUtil.toJson(jsonObject));
 				}
 			}
 		}

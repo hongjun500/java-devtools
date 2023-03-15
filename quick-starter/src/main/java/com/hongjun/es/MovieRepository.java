@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:
  */
-@Repository
+// @Repository
 public interface MovieRepository extends ListCrudRepository<Movie, String> {
 }

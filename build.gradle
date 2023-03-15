@@ -227,7 +227,7 @@ project(':quick-starter') {
         implementation project(':common-web')
         implementation project(':elasticsearch-starter')
         annotationProcessor project(':elasticsearch-starter')
-
+        implementation 'org.springframework.boot:spring-boot-devtools:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
         implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'

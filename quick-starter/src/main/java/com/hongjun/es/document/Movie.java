@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @Data
-@Document(indexName = "movie")
+@Document(indexName = "movie",createIndex = false)
 @Setting(settingPath = "index-setting.json")
 public class Movie {
 
