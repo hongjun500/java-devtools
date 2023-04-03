@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Log4j2
-@SpringBootTest(classes = QuickStarterApplication.class)
+@SpringBootTest(classes = QuickStarterApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class CommonEsTest {
 
     @Autowired

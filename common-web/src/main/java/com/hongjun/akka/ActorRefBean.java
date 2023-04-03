@@ -6,9 +6,7 @@ import akka.actor.OneForOneStrategy;
 import akka.actor.Props;
 import akka.japi.pf.DeciderBuilder;
 import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.base.CaseFormat;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -36,7 +34,7 @@ public class ActorRefBean {
 		ActorRefBean.actorSystem = actorSystem;
 	}
 
-	public <T> void tell(Class t_class, T msg){
+	public <T> void tell(Class<?> t_class, T msg){
 		// 这里的BeanName通过spring注册Bean时默认的命名方式获取
 		String beanName = StringUtils.uncapitalize(t_class.getSimpleName());
 		Component component = AnnotationUtil.getAnnotation(t_class, Component.class);

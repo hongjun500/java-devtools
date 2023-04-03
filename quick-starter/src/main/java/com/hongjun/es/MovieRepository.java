@@ -1,8 +1,10 @@
 package com.hongjun.es;
 
 import com.hongjun.es.document.Movie;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.ListCrudRepository;
-import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author hongjun500
@@ -12,5 +14,6 @@ import org.springframework.stereotype.Repository;
  * Description:
  */
 // @Repository
-public interface MovieRepository extends ListCrudRepository<Movie, String> {
+public interface MovieRepository extends ListCrudRepository<Movie, String>{
+	List<Movie> findAll();
 }

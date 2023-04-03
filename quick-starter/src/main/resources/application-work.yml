@@ -7,3 +7,7 @@ common:
     has-using-ssl: true
 #    index-name-suffix:
 
+akka:
+  actor:
+    enabled: true
+    actor-system-name: dd

@@ -1,4 +1,4 @@
-package com.hongjun.util.convert;
+package com.hongjun.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @date 2023/3/9 15:24
  * @tool ThinkPadX1隐士
  * Created with 2022.2.2.IntelliJ IDEA
- * Description:
+ * Description: spring 对象拷贝工具
  */
 public class CommonBeanUtil extends BeanUtils {
 	public static final Map<String, BeanCopier> COPIER_MAP = Maps.newConcurrentMap();
