@@ -10,4 +10,7 @@ common:
 akka:
   actor:
     enabled: true
-    actor-system-name: dd
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+

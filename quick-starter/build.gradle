@@ -23,12 +23,10 @@ jar {
     enabled = true
 }
 
-// 配置Spring Boot插件
-/*springBoot {
-    // mainClassName = 'com.example.MyApplication'
-    withJarManifest()
-    withProjectMetadata()
-}*/
+dependencies {
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
+}
+
 
 test {
     // 使用 JUnit5 测试框架

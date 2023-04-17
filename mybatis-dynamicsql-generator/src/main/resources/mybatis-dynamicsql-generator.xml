@@ -1,0 +1,130 @@
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <!--参考链接
+    https://mybatis.org/generator/configreference/xmlconfig.html
+    -->
+
+    <!--导入数据库连接配置文件-->
+    <properties resource="mybatis-generator.properties"/>
+
+    <context id="dynsql" targetRuntime="MyBatis3DynamicSql">
+        <!-- 为模型生成序列化方法-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <!-- 为生成的Java模型创建一个toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+
+        <!--注释生成器-->
+        <commentGenerator>
+            <!-- 是否 如果为false当或未指定时，所有生成的元素都将包含注释，表明该元素是生成的元素 -->
+            <property name="suppressAllComments" value="false"/>
+            <!-- 是否 抑制生成注释中的时间戳 true/false -->
+            <property name="suppressDate" value="false"/>
+
+            <!--是否 生成数据库表、列备注-->
+            <property name="addRemarkComments" value="true"/>
+            
+            <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+            <!--是否使用新版javax命名空间中的注释(在 JDK 9+ 中，建议使用 改用“Jakarta”命名空间)
+            true->javax.annotation.Generated;
+            false->jakarta.annotation.Generated-->
+            <property name="useLegacyGeneratedAnnotation" value="false"/>
+        </commentGenerator>
+
+        <!-- 以下两个二选一 -->
+        <!--连接工厂-->
+        <connectionFactory>
+            <property name="driverClass" value="${jdbc.driverClass}"/>
+            <property name="connectionURL" value="${jdbc.connectionURL}"/>
+            <property name="userId" value="${jdbc.userId}"/>
+            <property name="password" value="${jdbc.password}"/>
+        </connectionFactory>
+        <!--jdbc连接-->
+        <!-- <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.connectionURL}"
+                        password="${jdbc.password}"
+                        userId="${jdbc.userId}">
+        </jdbcConnection>-->
+
+
+        <!--Java类型解析-->
+        <javaTypeResolver >
+            <!--当属性为 false 或未指定时，默认 Java 类型解析器将尝试使 JDBC 十进制和数字类型 如果可能，通过替换积分类型更易于使用。这 替换规则如下：
+            如果刻度大于零，或者长度更大 大于 18，则将使用 java.math.BigDecimal 类型。
+            如果刻度为零，长度为 10 到 18，则 Java 类型解析器将替换 java.lang.Long。
+            如果刻度为零，长度为 5 到 9，则 Java 类型解析器将替换 java.lang.Integer。
+            如果刻度为零，并且长度小于 5，则 Java 类型解析器将替换 java.lang.Short。
+            当属性为 true 时，Java 类型解析程序将始终使用 java.math.BigDecimal 如果数据库列的类型为 DECIMAL 或 NUMERIC。-->
+            <property name="forceBigDecimals" value="false" />
+
+            <!--DATE  ->  java.time.LocalDate
+            TIME  ->  java.time.LocalTime
+            TIMESTAMP  ->  java.time.LocalDateTime-->
+            <property name="useJSR310Types" value="true" />
+        </javaTypeResolver>
+
+        <!--生成 dataObject 类存放位置-->
+        <javaModelGenerator targetPackage="com.hongjun.model" targetProject="src/main/java">
+            <!--去除空格-->
+            <property name="trimStrings" value="true" />
+            <!--指定继承基类-->
+            <!--<property name="rootClass" value="com.hongjun.dataobject.base.BaseDO" />-->
+        </javaModelGenerator>
+
+        <!--生成 dao 存放位置，即*Mapper-->
+        <javaClientGenerator targetPackage="com.hongjun.mapper" targetProject="src/main/java">
+            <!--动态Sql支持类存放的包-->
+            <property name="dynamicSqlSupportPackage" value="com.hongjun.mapper.support" />
+            <!--指定继承某个 根接口-->
+            <property name="rootInterface" value="" />
+        </javaClientGenerator>
+
+
+        <!--生成对应表及类名-->
+        <table tableName="blog_tag" domainObjectName="BlogTagDO">
+            <!--去除前缀-->
+            <!--例如：BlogTag -> Tag-->
+            <!--<domainObjectRenamingRule searchString="^Blog" replaceString="" />-->
+
+            <!--忽略某个列-->
+            <!--<ignoreColumn column="state"/>-->
+
+            <!--按照正则表达式忽略某些列-->
+            <!--<ignoreColumnsByRegex pattern="(?i)col.*">
+                &lt;!&ndash;忽略 Foo 表中以 开头的每一列 字符“Col”（不区分大小写），“Col01”和“Col13”除外。&ndash;&gt;
+                <except column="col01"/>
+                <except column="col13"/>
+            </ignoreColumnsByRegex>-->
+
+            <!--更换列的名称-->
+            <!--<columnOverride column="BEG_DATE" property="startDate"/>-->
+
+            <!--指定动态sql类的名称,可以加上包名, 默认是 DynamicSqlSupport 结尾 -->
+            <!--<property name="dynamicSqlSupportClassName" value="foo.DynamicSql"/>-->
+        </table>
+
+        <table tableName="blog_article" domainObjectName="BlogArticleDO">
+            <!--去除前缀-->
+            <!--例如：BlogTag -> Tag-->
+            <!--<domainObjectRenamingRule searchString="^Blog" replaceString="" />-->
+
+            <!--忽略某个列-->
+            <!--<ignoreColumn column="state"/>-->
+
+            <!--按照正则表达式忽略某些列-->
+            <!--<ignoreColumnsByRegex pattern="(?i)col.*">
+                &lt;!&ndash;忽略 Foo 表中以 开头的每一列 字符“Col”（不区分大小写），“Col01”和“Col13”除外。&ndash;&gt;
+                <except column="col01"/>
+                <except column="col13"/>
+            </ignoreColumnsByRegex>-->
+
+            <!--更换列的名称-->
+            <!--<columnOverride column="BEG_DATE" property="startDate"/>-->
+
+            <!--指定动态sql类的名称,可以加上包名, 默认是 DynamicSqlSupport 结尾 -->
+            <!--<property name="dynamicSqlSupportClassName" value="foo.DynamicSql"/>-->
+        </table>
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group 'com.hongjun'
+version '1.0-SNAPSHOT'
+
+
+dependencies {
+    implementation 'mysql:mysql-connector-java:8.0.28'
+    implementation 'org.mybatis.generator:mybatis-generator-core:1.4.2'
+    implementation 'org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.4.1'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
