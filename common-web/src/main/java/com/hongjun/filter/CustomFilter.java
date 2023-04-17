@@ -1,7 +1,7 @@
 package com.hongjun.filter;
 
 import cn.hutool.http.ContentType;
-import com.hongjun.req.CustomHttpServletRequestWrapper;
+import com.hongjun.request.CustomHttpServletRequestWrapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;

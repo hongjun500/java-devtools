@@ -1,9 +1,11 @@
 package com.hongjun.index.base;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.DocumentOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
@@ -24,6 +26,9 @@ public class BaseIndexServiceImpl implements BaseIndexService {
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    @Autowired
+    private DocumentOperations documentOperations;
+
     @Override
     public synchronized boolean initIndexAndMapping(Class<?> clazz) {
         IndexOperations indexOps = elasticsearchOperations.indexOps(clazz);
@@ -40,14 +45,8 @@ public class BaseIndexServiceImpl implements BaseIndexService {
         return false;
     }
 
-
-
     @Override
     public <T> void refreshDataToEs(List<T> list, Class<?> clazz) {
-       /* boolean indexAndMapping = initIndexAndMapping(clazz);
-        if (!indexAndMapping) {
-            return;
-        }*/
         if (CollUtil.isEmpty(list)) {
             return;
         }
@@ -66,5 +65,10 @@ public class BaseIndexServiceImpl implements BaseIndexService {
             return false;
         }
         return indexOperations.delete();
+    }
+
+    @Override
+    public boolean delDoc() {
+        return false;
     }
 }

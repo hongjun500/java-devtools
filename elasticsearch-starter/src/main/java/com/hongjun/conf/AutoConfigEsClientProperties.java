@@ -46,8 +46,8 @@ public class AutoConfigEsClientProperties {
     private boolean compatibilityV7;
 
     /**
-     * 索引名前缀，配置SpEL 表达式使用
-     * #{common.elasticsearch.indexNamePrefix}
+     * 索引名后缀，配合SpEL 表达式使用
+     * "{@environment.getProperty('spring.prefiles.active')}}"
      */
-    private String indexNamePrefix = "";
+    private String indexNameSuffix = "";
 }

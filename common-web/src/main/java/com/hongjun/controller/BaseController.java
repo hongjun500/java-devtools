@@ -1,9 +1,9 @@
 package com.hongjun.controller;
 
-import cn.hutool.json.JSONUtil;
 import com.hongjun.enums.EnumBusinessError;
 import com.hongjun.error.BusinessException;
 import com.hongjun.response.CommonReturnType;
+import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -58,7 +58,7 @@ public class BaseController implements ResponseBodyAdvice<Object> {
 
 		if (!(body instanceof CommonReturnType<?>)) {
 			if (body instanceof String) {
-				return JSONUtil.toJsonStr(CommonReturnType.create(body));
+				return CommonFastJsonUtil.toJson(CommonReturnType.create(body));
 			}
 			return CommonReturnType.create(body);
 		}

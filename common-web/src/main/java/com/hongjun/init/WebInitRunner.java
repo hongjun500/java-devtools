@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class WebInitRunner implements ApplicationRunner {
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        log.info("fdfdfdfd");
+    public void run(ApplicationArguments args) {
+        log.info("一个启动应用时的初始化操作");
     }
 }

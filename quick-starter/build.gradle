@@ -7,15 +7,7 @@ version '1.0-SNAPSHOT'
 
 targetCompatibility = JavaVersion.VERSION_17
 sourceCompatibility = JavaLanguageVersion.of(17)
-/*    sourceCompatibility = 17
-    targetCompatibility = 17*/
 
-/*
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-}
-*/
 sourceSets {
     main {
         java {
@@ -29,22 +21,19 @@ sourceSets {
 
 jar {
     enabled = true
-    manifest {
-        attributes(
-                'Implementation-Title': 'quick-starter',
-                'Implementation-Version': version
-        )
-    }
 }
 
-// 配置Spring Boot插件
-/*springBoot {
-    // mainClassName = 'com.example.MyApplication'
-    withJarManifest()
-    withProjectMetadata()
-}*/
+dependencies {
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
+}
+
 
 test {
     // 使用 JUnit5 测试框架
     useJUnitPlatform()
 }
+
+/*task runUnitTest(type: Test) {
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+}*/

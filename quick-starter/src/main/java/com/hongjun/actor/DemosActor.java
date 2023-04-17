@@ -1,13 +1,10 @@
 package com.hongjun.actor;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.hongjun.User;
 import com.hongjun.akka.BaseActor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 

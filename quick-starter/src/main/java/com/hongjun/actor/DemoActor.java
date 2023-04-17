@@ -1,6 +1,5 @@
 package com.hongjun.actor;
 
-import com.hongjun.User;
 import com.hongjun.akka.BaseActor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
