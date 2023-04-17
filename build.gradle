@@ -209,6 +209,10 @@ project(':common-web') {
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.0'
+        api 'org.springframework.boot:spring-boot-starter-websocket:3.0.0'
+        // 自定义配置
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
 
@@ -225,6 +229,7 @@ project(':quick-starter') {
         implementation project(':common-starter')
         annotationProcessor project(':common-starter')
         implementation project(':common-web')
+        annotationProcessor project(':common-web')
         implementation project(':elasticsearch-starter')
         annotationProcessor project(':elasticsearch-starter')
         implementation 'org.springframework.boot:spring-boot-devtools:3.0.0'
@@ -232,6 +237,7 @@ project(':quick-starter') {
         implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
         implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
         implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
+        implementation 'io.netty:netty-all:4.1.89.Final'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
 }
