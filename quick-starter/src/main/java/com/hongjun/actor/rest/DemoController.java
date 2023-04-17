@@ -1,4 +1,4 @@
-package com.hongjun;
+package com.hongjun.actor.rest;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.http.HttpRequest;

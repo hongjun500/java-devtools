@@ -1,5 +1,14 @@
 package com.hongjun.index.base;
 
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
+import co.elastic.clients.elasticsearch._types.query_dsl.NestedQuery;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
+import org.springframework.data.elasticsearch.core.query.Query;
+
 import java.util.List;
 
 public interface BaseIndexService {
@@ -23,4 +32,20 @@ public interface BaseIndexService {
 
 
     boolean delDoc();
+
+    default Query Query(String fieldName, String param) {
+        Criteria criteria = new Criteria(fieldName).is(param);
+        return new CriteriaQuery(criteria);
+    }
+
+    default Query query() {
+        Query query = NativeQuery.builder()
+                .withAggregation("id", Aggregation.of(a -> a.terms(ta -> ta.field("last").size(10))))
+                .withQuery(q -> q
+                        .match(m -> m.field("first").query("sdf1"))
+                )
+                .withPageable(Pageable.ofSize(10))
+                .build();
+        return query;
+    }
 }

@@ -9,3 +9,11 @@ common:
   websocket:
     enabled: true
     path: /my-websocket
+
+akka:
+  actor:
+    enabled: true
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+

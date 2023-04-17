@@ -13,11 +13,6 @@ buildscript {
         maven { url "https://maven.aliyun.com/repository/spring" }
         mavenCentral()
     }
-
-   /* dependencies {
-        // 添加 spring boot gradle 插件
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }*/
 }
 
 plugins {
@@ -63,14 +58,18 @@ allprojects {
         // }
         compileOnly {
             // annotationProcessor 声明的依赖会被添加到compileOnly中
+            // compileOnly 'org.projectlombok:lombok:1.18.22'
+            extendsFrom annotationProcessor
+        }
+        testImplementation {
+            // 效果同上
             extendsFrom annotationProcessor
         }
     }
-
-   /* test {
+    test {
         // 使用 JUnit5 测试框架
         useJUnitPlatform()
-    }*/
+    }
 }
 
 
@@ -114,14 +113,10 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
 
         // 测试时的使用
-        testCompileOnly 'org.projectlombok:lombok:1.18.22'
+        // testCompileOnly 'org.projectlombok:lombok:1.18.22'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
-    }
-
-    test {
-        useJUnitPlatform()
     }
 }
 
@@ -133,8 +128,9 @@ project(':common-starter') {
     // apply plugin: 'org.springframework.boot'
 
     // 打包成jar
-    jar.enabled(true)
-
+    jar {
+        enabled = true
+    }
     // 发布到本地仓库
     /*publishing {
         publications {
@@ -157,8 +153,6 @@ project(':common-starter') {
     }*/
 
 
-
-    jar.enabled(true)
     sourceSets {
         // 定义源码所在位置
         main {
@@ -172,25 +166,14 @@ project(':common-starter') {
     }
 
     dependencies {
-        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
 
-        // 引入akka
-        implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
-        implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+        api 'org.mapstruct:mapstruct:1.5.3.Final'
+
     }
 }
 
 
 project(':common-web') {
-
-
-    // 解决springboot自定义元数据无法生成spring-autoconfiguration-metadata.json文件无法生成
-    tasks.withType(JavaCompile){
-        inputs.files(tasks.withType(ProcessResources))
-    }
     sourceSets {
         // 定义源码所在位置
         main {
@@ -206,38 +189,14 @@ project(':common-web') {
     dependencies {
         // 引用common-starter
         implementation project(':common-starter')
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.0'
-        api 'org.springframework.boot:spring-boot-starter-websocket:3.0.0'
-        // 自定义配置
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
         implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
-    }
-
-
-}
-
-project(':quick-starter') {
-
-    apply plugin: 'application'
-    // apply plugin:  'org.springframework.boot'
-
-
-    dependencies {
-        implementation project(':common-starter')
-        annotationProcessor project(':common-starter')
-        implementation project(':common-web')
-        annotationProcessor project(':common-web')
-        implementation project(':elasticsearch-starter')
-        annotationProcessor project(':elasticsearch-starter')
-        implementation 'org.springframework.boot:spring-boot-devtools:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
-        implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
+        // akka依赖做异步消息处理
+        api 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
         implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
-        implementation 'io.netty:netty-all:4.1.89.Final'
+        implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-websocket:3.0.0'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
 }
@@ -249,13 +208,30 @@ project(':elasticsearch-starter'){
         // 使其向下传递依赖
         api 'org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
-        // 自定义配置
+        // 自定义配置元数据
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
         implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
     }
+}
 
-    test {
-        useJUnitPlatform()
+
+project(':quick-starter') {
+
+    apply plugin: 'application'
+    // apply plugin:  'org.springframework.boot'
+
+
+    dependencies {
+        implementation project(':common-starter')
+        implementation project(':common-web')
+        implementation project(':elasticsearch-starter')
+        runtimeOnly 'org.springframework.boot:spring-boot-devtools:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
+        // testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
+        testImplementation ('org.springframework.boot:spring-boot-starter-test:3.0.0')
+
     }
 }
 
