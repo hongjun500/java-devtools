@@ -10,7 +10,24 @@ common:
 akka:
   actor:
     enabled: true
+    actor-system-name: sa
+
+
+
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 100
+
+# mybatis 配置
+mybatis:
+  type-aliases-package: com.example.domain.model
+  # 自定义类型处理器存放的位置
+  type-handlers-package: com.example.typehandler
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 
