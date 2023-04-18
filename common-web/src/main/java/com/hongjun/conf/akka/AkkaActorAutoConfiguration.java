@@ -6,18 +6,14 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 import javax.inject.Singleton;
-
 import java.util.Optional;
 
 import static com.hongjun.akka.SpringExtension.SpringExtProvider;
@@ -32,7 +28,7 @@ import static com.hongjun.akka.SpringExtension.SpringExtProvider;
 @Log4j2
 @Configuration
 @EnableConfigurationProperties({AkkaActorProperties.class})
-@ConditionalOnProperty(prefix = "akka.actor",value = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "akka.actor",name = "enabled", havingValue = "true")
 public class AkkaActorAutoConfiguration {
 
 	@Autowired

@@ -66,7 +66,7 @@
         </javaTypeResolver>
 
         <!--生成 dataObject 类存放位置-->
-        <javaModelGenerator targetPackage="com.hongjun.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.hongjun.dynamicsql.model" targetProject="src/main/java">
             <!--去除空格-->
             <property name="trimStrings" value="true" />
             <!--指定继承基类-->
@@ -74,9 +74,9 @@
         </javaModelGenerator>
 
         <!--生成 dao 存放位置，即*Mapper-->
-        <javaClientGenerator targetPackage="com.hongjun.mapper" targetProject="src/main/java">
+        <javaClientGenerator targetPackage="com.hongjun.dynamicsql.mapper" targetProject="src/main/java">
             <!--动态Sql支持类存放的包-->
-            <property name="dynamicSqlSupportPackage" value="com.hongjun.mapper.support" />
+            <property name="dynamicSqlSupportPackage" value="com.hongjun.dynamicsql.mapper.support" />
             <!--指定继承某个 根接口-->
             <property name="rootInterface" value="" />
         </javaClientGenerator>
@@ -84,28 +84,6 @@
 
         <!--生成对应表及类名-->
         <table tableName="blog_tag" domainObjectName="BlogTagDO">
-            <!--去除前缀-->
-            <!--例如：BlogTag -> Tag-->
-            <!--<domainObjectRenamingRule searchString="^Blog" replaceString="" />-->
-
-            <!--忽略某个列-->
-            <!--<ignoreColumn column="state"/>-->
-
-            <!--按照正则表达式忽略某些列-->
-            <!--<ignoreColumnsByRegex pattern="(?i)col.*">
-                &lt;!&ndash;忽略 Foo 表中以 开头的每一列 字符“Col”（不区分大小写），“Col01”和“Col13”除外。&ndash;&gt;
-                <except column="col01"/>
-                <except column="col13"/>
-            </ignoreColumnsByRegex>-->
-
-            <!--更换列的名称-->
-            <!--<columnOverride column="BEG_DATE" property="startDate"/>-->
-
-            <!--指定动态sql类的名称,可以加上包名, 默认是 DynamicSqlSupport 结尾 -->
-            <!--<property name="dynamicSqlSupportClassName" value="foo.DynamicSql"/>-->
-        </table>
-
-        <table tableName="blog_article" domainObjectName="BlogArticleDO">
             <!--去除前缀-->
             <!--例如：BlogTag -> Tag-->
             <!--<domainObjectRenamingRule searchString="^Blog" replaceString="" />-->
