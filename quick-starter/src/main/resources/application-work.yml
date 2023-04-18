@@ -1,11 +1,14 @@
 common:
   elasticsearch:
-    enabled: true
+    enabled: false
     auth-username: elastic
     auth-password: hongjun500
     http-ca-file-path: D:\elasticsearch-8.5.3\config\certs\http_ca.crt
     has-using-ssl: true
 #    index-name-suffix:
+  websocket:
+    enabled: true
+    path: /my-websocket
 
 akka:
   actor:

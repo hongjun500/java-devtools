@@ -41,7 +41,6 @@ allprojects {
         javadoc {
             options.encoding = "UTF-8"
         }
-
     }
     // 设置Test编码信息
     compileTestJava {
@@ -102,7 +101,8 @@ subprojects {
 
     // 设置通用的依赖
     dependencies {
-        // lombok的使用需要这个注解，否则编译失败
+        compileOnly 'org.projectlombok:lombok:1.18.22'
+        // lombok的使用需要加上这个注解，否则编译失败
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
         implementation 'com.google.guava:guava:31.1-jre'
         implementation 'com.google.code.gson:gson:2.10'
@@ -152,9 +152,7 @@ project(':common-starter') {
         archives sourceJar
     }*/
 
-    jar {
-        enabled = true
-    }
+
     sourceSets {
         // 定义源码所在位置
         main {
