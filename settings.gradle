@@ -4,4 +4,5 @@ include 'common-web'
 include 'quick-starter'
 include 'elasticsearch-starter'
 include 'mybatis-dynamicsql-generator'
+include 'jpa-generator'
 

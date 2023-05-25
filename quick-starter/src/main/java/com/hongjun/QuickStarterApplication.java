@@ -2,6 +2,7 @@ package com.hongjun;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 /**
  * @author hongjun500
@@ -11,7 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Description:
  */
 @SpringBootApplication
+@EnableCaching
 public class QuickStarterApplication {
+
 	public static void main(String[] args) {
 		SpringApplication.run(QuickStarterApplication.class, args);
 	}
