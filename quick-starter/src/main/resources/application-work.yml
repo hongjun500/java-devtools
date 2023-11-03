@@ -27,8 +27,8 @@ spring:
 
   data:
     redis:
-      host: 192.168.150.130
-      password: Ewell123!#
+      host: 127.0.0.1
+      password: #123
       port: 6379
       database: 15
 
@@ -36,8 +36,8 @@ spring:
     redisson:
       config:
         singleServerConfig:
-          address: "redis://192.168.150.130:6379"
-          password: Ewell123!#
+          address: "redis://127.0.0.1:6379"
+          password: 123
           database: 14
 
 
@@ -51,18 +51,19 @@ mybatis:
 
 
 # springdoc-openapi项目配置
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-  api-docs:
-    path: /v3/api-docs
-  group-configs:
-    group: 'default'
-    paths-to-match: '/**'
-    packages-to-scan: com.xiaominfo.knife4j.demo.web
-# knife4j的增强配置，不需要增强可以不配
+#springdoc:
+#  swagger-ui:
+##    path: /swagger-ui.html
+#    path: /doc.html
+#    tags-sorter: alpha
+#    operations-sorter: alpha
+#  api-docs:
+#    path: /v3/api-docs
+#  group-configs:
+#    group: 'default'
+#    paths-to-match: '/**'
+#    packages-to-scan: com.hongjun
+## knife4j的增强配置，不需要增强可以不配
 knife4j:
   enable: true
   setting:
