@@ -1,0 +1,14 @@
+
+dependencies {
+
+    implementation project(':common-starter')
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:3.0.0'
+    testImplementation('org.springframework.boot:spring-boot-starter-test:3.0.0')
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
