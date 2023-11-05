@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author hongjun500
@@ -17,7 +17,7 @@ import java.util.List;
  * Description:
  */
 @Log4j2
-@SpringBootTest(classes = QuickStarterApplication.class)
+@SpringBootTest(classes = QuickStarterApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class QuickAppTest {
 
     @Test
@@ -48,4 +48,54 @@ public class QuickAppTest {
         }
     }
 
+    @Test
+    void testArr(){
+        int[] array = new int[]{1, 2, 3, 4, 5};
+        int target = 6;
+       /* int[] array = new int[]{3, 2, 4};
+        int target = 6;*/
+
+        int[] ints = twoSum(array, target);
+
+        boolean unique = isUnique("s");
+        log.info(ints);
+    }
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] result = new int[2];
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {
+                result[0] = i;
+                result[1] = map.get(nums[i]);
+                break;
+            }
+            map.put(target - nums[i], i);
+        }
+        return result;
+        /*// 建立k-v ，一一对应的哈希表
+        int[] indexs = new int[2];
+        Map<Integer, Integer> hash = new HashMap<Integer,Integer>();
+        for(int i = 0; i < nums.length; i++) {
+            if (hash.containsKey(nums[i])) {
+                indexs[0] = i;
+                indexs[1] = hash.get(nums[i]);
+                break;
+            }
+            // 将数据存入 key为补数 ，value为下标
+            hash.put(target-nums[i],i);
+        }
+        return indexs;*/
+    }
+
+    public boolean isUnique(String astr) {
+        Set<Character> set = new HashSet<>();
+        for (int i = 0; i < astr.toCharArray().length; i++) {
+            set.add(astr.charAt(i));
+        }
+        CopyOnWriteArrayList<Object> objects = new CopyOnWriteArrayList<>();
+
+        return set.size() == astr.toCharArray().length;
+
+
+    }
 }

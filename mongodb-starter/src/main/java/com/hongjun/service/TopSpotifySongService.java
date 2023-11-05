@@ -9,4 +9,6 @@ public interface TopSpotifySongService {
 	void importData(List<Map<String, String>> maps);
 
 	List<TopSpotifySongs> listParam(String name);
+
+	long removeColl(String collName);
 }
