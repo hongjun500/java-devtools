@@ -2,7 +2,7 @@ package com.hongjun.mongodbstarter;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.csv.CsvUtil;
-import com.hongjun.data.TopSpotifySongs;
+import com.hongjun.document.TopSpotifySongs;
 import com.hongjun.service.TopSpotifySongService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

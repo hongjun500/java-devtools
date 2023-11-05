@@ -1,6 +1,6 @@
 package com.hongjun.service;
 
-import com.hongjun.data.TopSpotifySongs;
+import com.hongjun.document.TopSpotifySongs;
 
 import java.util.List;
 import java.util.Map;

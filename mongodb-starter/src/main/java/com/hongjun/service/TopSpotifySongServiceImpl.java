@@ -2,7 +2,7 @@ package com.hongjun.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
-import com.hongjun.data.TopSpotifySongs;
+import com.hongjun.document.TopSpotifySongs;
 import com.mongodb.client.result.DeleteResult;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
