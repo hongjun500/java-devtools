@@ -25,12 +25,12 @@ import java.util.Map;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description: restController类的增强处理
  */
-@RestControllerAdvice(annotations = RestController.class)
 @Log4j2
+@RestControllerAdvice(annotations = RestController.class)
 public class BaseController implements ResponseBodyAdvice<Object> {
 
 	/**
-	 *
+	 * 方法返回 true 后，会对所有的响应进行处理
 	 * @param returnType the return type
 	 * @param converterType the selected converter type
 	 */
@@ -46,9 +46,7 @@ public class BaseController implements ResponseBodyAdvice<Object> {
 			return null;
 		}
 
-		/*if (returnType.hasMethodAnnotation(NoResultHolder.class)) {
-			return body;
-		}*/
+
 
 		//if true, need to translate
 		/*if (returnType.hasMethodAnnotation(I18n.class)) {
@@ -60,7 +58,7 @@ public class BaseController implements ResponseBodyAdvice<Object> {
 			if (body instanceof String) {
 				return CommonFastJsonUtil.toJson(CommonReturnType.create(body));
 			}
-			return CommonReturnType.create(body);
+			// return CommonReturnType.create(body);
 		}
 		return body;
 	}
@@ -82,7 +80,7 @@ public class BaseController implements ResponseBodyAdvice<Object> {
 			responseData.put("errCode", EnumBusinessError.UNKNOWN_ERROR.getErrCode());
 			responseData.put("errMsg", EnumBusinessError.UNKNOWN_ERROR.getErrMsg());
 		}
-		log.error(e);
+		log.debug(e);
 		log.warn("------错误信息----------{}----------",responseData.get("errMsg"));
 		return CommonReturnType.create(responseData,"fail");
 	}

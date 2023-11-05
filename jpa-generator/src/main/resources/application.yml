@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/movie?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: hongjun500
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  jpa:
+#    generate-ddl: true
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+logging:
+  level:
+    root: info

@@ -48,6 +48,7 @@ public class DemoController {
 		actorRefBean.tell(DemosActor.class, user);
 		List<User> users = Lists.newArrayList(user);
 		actorRefBean.tell(DemosActor.class, users);
+
 		return CommonReturnType.create();
 	}
 
@@ -55,30 +56,6 @@ public class DemoController {
 	public CommonReturnType<Object> err(@PathVariable String fasfd, @RequestParam String id) {
 		int i = 1/1;
 		return CommonReturnType.create(fasfd + id + i);
-	}
-
-	@Resource
-	private ThreadPoolTaskExecutor threadPoolTaskExecutor;
-
-	@GetMapping(value = "/a/{a}")
-	public CommonReturnType<String> s(@PathVariable String a) throws IOException, ExecutionException, InterruptedException {
-		threadPoolTaskExecutor.execute(() -> System.out.println(Thread.currentThread().getName() + "：你好啊"));
-
-		threadPoolTaskExecutor.execute(() -> System.out.println(Thread.currentThread().getName() + "：我很好"));
-
-		threadPoolTaskExecutor.execute(() -> System.out.println(Thread.currentThread().getName() + "：哦"));
-
-		threadPoolTaskExecutor.execute(() -> System.out.println(Thread.currentThread().getName() + "：再见"));
-
-		Future<List<Integer>> submit = threadPoolTaskExecutor.submit(() ->{
-			System.out.println(Thread.currentThread().getName() + "：再见");
-			// List<Integer> integers =
-			return Lists.newArrayList(1);
-		});
-
-		threadPoolTaskExecutor.shutdown();
-		Object o = submit.get();
-		return CommonReturnType.create(a);
 	}
 
 	@GetMapping(value = "/openai")
