@@ -1,4 +1,4 @@
-package com.hongjun.data;
+package com.hongjun.document;
 
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;

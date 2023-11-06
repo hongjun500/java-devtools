@@ -38,7 +38,7 @@ class MongodbStarterApplicationTests {
 		assert !maps.isEmpty();
 		assert maps.get(0).get("name").equals("greedy");
 		mongoTemplate.insert(maps, TopSpotifySongs.class);
-//		mongoTemplate.insert(maps, "top_spotify_songs");
+		mongoTemplate.insert(maps, "top_spotify_songs");
 	}
 
 	@Test

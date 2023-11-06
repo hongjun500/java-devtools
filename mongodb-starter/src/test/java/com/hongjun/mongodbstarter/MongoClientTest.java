@@ -11,13 +11,13 @@ import org.junit.jupiter.api.Test;
 
 public class MongoClientTest {
 
-//    private
+   private MongoDatabase database;
 
 
     @Test
     void testClientConn(){
         MongoConn mongoConn = new MongoConn();
-        MongoDatabase database = mongoConn.connect();
+        database = mongoConn.connect();
 
         MongoCollection<Document> topSpotifySongs = database.getCollection("top_spotify_songs");
         Bson fields = Projections.fields(Projections.excludeId());
