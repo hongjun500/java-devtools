@@ -56,7 +56,7 @@ public class CommonFastJsonUtil {
      * @return 对象实例
      */
     public static <T> T fromJsonObject(JSONObject jsonObject, Class<T> clazz) {
-        return JSON.toJavaObject(jsonObject, clazz);
+        return JSON.to(clazz, jsonObject);
     }
 
     /**
