@@ -6,16 +6,18 @@ plugins {
 dependencies {
 
     api 'org.mapstruct:mapstruct:1.5.3.Final'
-    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+
 
 }
+*/
+
 
 test {
     // 使用 junit5
     useJUnitPlatform()
 
     testLogging {
-        // events "passed", "skipped", "failed"
+        events "passed", "skipped", "failed"
     }
 
-}*/
+}

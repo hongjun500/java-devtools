@@ -9,25 +9,46 @@ buildscript {
         mavenCentral()
     }
 }
-
+// 插件
 plugins {
-    id 'java'
-    id 'java-library'
+    // id 'java'
+    // id 'java-library'
 }
 
 //全局配置
 allprojects {
+
+    // 设置插件
+    plugins.apply('java')
+    plugins.apply('java-library')
     // 设置项目的 group 和 version
     group 'com.hongjun'
     version '1.0-SNAPSHOT'
+    tasks {
+        // 设置编译版本
+        compileJava {
+            options.encoding = "UTF-8"
+            // 解决 springboot 自定义元数据无法生成 spring-autoconfiguration-metadata.json 文件
+            inputs.files(tasks.withType(ProcessResources))
+            // sourceCompatibility = JavaVersion.VERSION_17
+            // targetCompatibility = JavaVersion.VERSION_17
+        }
+        compileTestJava {
+            options.encoding = "UTF-8"
+            // sourceCompatibility = JavaVersion.VERSION_17
+            // targetCompatibility = JavaVersion.VERSION_17
+        }
+        javadoc {
+            options.encoding = "UTF-8"
+        }
+    }
 
 
-    // 在idea中使用gradle进行编译，编码gbk错误
+    /*// 在idea中使用gradle进行编译，编码gbk错误
     tasks.withType(JavaCompile).configureEach {
         compileJava {
             options.encoding("UTF-8")
         }
-        // 解决springboot自定义元数据无法生成spring-autoconfiguration-metadata.json文件无法生成
         inputs.files(tasks.withType(ProcessResources))
 
     }
@@ -36,10 +57,10 @@ allprojects {
             options.encoding = "UTF-8"
         }
     }
-    // 设置Test编码信息
+    // 设置 Test 编码信息
     compileTestJava {
         options.encoding = "UTF-8"
-    }
+    }*/
 
     configurations {
         // 排除依赖项中整个spring-boot下面的logging
@@ -63,11 +84,6 @@ allprojects {
 
 // 子模块的通用设置
 subprojects {
-    // 应用 spring boot 插件
-    // apply plugin: 'org.springframework.boot'
-    // 应用 spring dependency management 插件
-    // apply plugin: 'io.spring.dependency-management'
-
 
     // 设置仓库
     repositories {
@@ -79,24 +95,19 @@ subprojects {
         mavenCentral()
     }
 
-    // 设置编码信息
-    compileJava.options.encoding = "UTF-8"
-    compileTestJava.options.encoding = "UTF-8"
-    javadoc.options.encoding = "UTF-8"
+
 
     // 设置通用的依赖
     dependencies {
-        compileOnly 'org.projectlombok:lombok:1.18.22'
         // lombok的使用需要加上这个注解，否则编译失败
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
-        compileOnly 'org.projectlombok:lombok:1.18.22'
+        implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
         implementation 'com.google.guava:guava:31.1-jre'
         implementation 'com.google.code.gson:gson:2.10'
         implementation 'com.alibaba.fastjson2:fastjson2:2.0.23'
         implementation 'javax.inject:javax.inject:1'
         implementation 'cn.hutool:hutool-all:5.8.8'
-        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+
 
         // 测试时的使用
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -108,10 +119,9 @@ subprojects {
         }
         // 仅支持 JUnit 5
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine")
         // 支持 JUnit 3或JUnit 4测试代码
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
-        // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-        // testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     }
 
     configurations {
@@ -149,10 +159,14 @@ project(':common-starter') {
             }
         }
     }
+
 }
 
 
 project(':common-web') {
+
+    apply plugin: 'java'
+    apply plugin: 'java-library'
 
     sourceSets {
         // 定义源码所在位置
@@ -169,6 +183,8 @@ project(':common-web') {
     dependencies {
         // 引用common-starter
         implementation project(':common-starter')
+        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
         implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
         // akka依赖做异步消息处理
@@ -177,13 +193,18 @@ project(':common-web') {
         implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-websocket:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
 }
 
 project(':elasticsearch-starter'){
-
+    apply plugin: 'java'
+    apply plugin: 'java-library'
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         // 使其向下传递依赖
         api 'org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
@@ -199,7 +220,7 @@ project(':quick-starter') {
        springBootVersion = '3.0.0'
    }
 
-    apply plugin: 'application'
+    plugins.apply('application')
     // apply plugin:  'org.springframework.boot'
 
     dependencies {
@@ -207,12 +228,12 @@ project(':quick-starter') {
         implementation project(':common-web')
         implementation project(':elasticsearch-starter')
         runtimeOnly 'org.springframework.boot:spring-boot-devtools:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
-        // testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
         testImplementation ('org.springframework.boot:spring-boot-starter-test:3.0.0')
-
     }
 }
 
