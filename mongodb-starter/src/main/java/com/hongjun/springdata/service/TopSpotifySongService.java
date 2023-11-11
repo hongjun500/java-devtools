@@ -1,6 +1,6 @@
-package com.hongjun.service;
+package com.hongjun.springdata.service;
 
-import com.hongjun.document.TopSpotifySongs;
+import com.hongjun.springdata.document.TopSpotifySongs;
 
 import java.util.List;
 import java.util.Map;

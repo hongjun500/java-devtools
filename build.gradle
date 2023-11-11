@@ -1,9 +1,4 @@
 buildscript {
-    // 定义springboot版本
-    ext {
-        springBootVersion = '3.0.0'
-    }
-
     // 设置仓库
     repositories {
         mavenLocal()
@@ -14,58 +9,72 @@ buildscript {
         mavenCentral()
     }
 }
-
+// 插件
 plugins {
-    id 'java'
-    id 'java-library'
+    // id 'java'
+    // id 'java-library'
 }
 
 //全局配置
 allprojects {
+
+    // 设置插件
+    plugins.apply('java')
+    plugins.apply('java-library')
     // 设置项目的 group 和 version
     group 'com.hongjun'
     version '1.0-SNAPSHOT'
-    apply plugin: 'java-library'
-
-
-    // 在idea中使用gradle进行编译，编码gbk错误
-    tasks.withType(JavaCompile) {
+    tasks {
+        // 设置编译版本
         compileJava {
-            options.encoding("UTF-8")
+            options.encoding = "UTF-8"
+            // 解决 springboot 自定义元数据无法生成 spring-autoconfiguration-metadata.json 文件
+            inputs.files(tasks.withType(ProcessResources))
+            // sourceCompatibility = JavaVersion.VERSION_17
+            // targetCompatibility = JavaVersion.VERSION_17
         }
-        // 解决springboot自定义元数据无法生成spring-autoconfiguration-metadata.json文件无法生成
-        inputs.files(tasks.withType(ProcessResources))
-
-    }
-    tasks.withType(Javadoc) {
+        compileTestJava {
+            options.encoding = "UTF-8"
+            // sourceCompatibility = JavaVersion.VERSION_17
+            // targetCompatibility = JavaVersion.VERSION_17
+        }
         javadoc {
             options.encoding = "UTF-8"
         }
     }
-    // 设置Test编码信息
+
+
+    /*// 在idea中使用gradle进行编译，编码gbk错误
+    tasks.withType(JavaCompile).configureEach {
+        compileJava {
+            options.encoding("UTF-8")
+        }
+        inputs.files(tasks.withType(ProcessResources))
+
+    }
+    tasks.withType(Javadoc).configureEach {
+        javadoc {
+            options.encoding = "UTF-8"
+        }
+    }
+    // 设置 Test 编码信息
     compileTestJava {
         options.encoding = "UTF-8"
-    }
+    }*/
 
     configurations {
         // 排除依赖项中整个spring-boot下面的logging
-        all {
+        configureEach {
             exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
+
         // 排除所有指定依赖项下的某个依赖
         // implementation (**) {
         //     exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         // }
-        compileOnly {
-            // annotationProcessor 声明的依赖会被添加到compileOnly中
-            // compileOnly 'org.projectlombok:lombok:1.18.22'
-            extendsFrom annotationProcessor
-        }
-        testImplementation {
-            // 效果同上
-            extendsFrom annotationProcessor
-        }
+
     }
+
     test {
         // 使用 JUnit5 测试框架
         useJUnitPlatform()
@@ -76,14 +85,6 @@ allprojects {
 // 子模块的通用设置
 subprojects {
 
-    // 应用 java 插件
-    apply plugin: 'java'
-    // 应用 spring boot 插件
-    // apply plugin: 'org.springframework.boot'
-    // 应用 spring dependency management 插件
-    // apply plugin: 'io.spring.dependency-management'
-
-
     // 设置仓库
     repositories {
         mavenLocal()
@@ -94,29 +95,45 @@ subprojects {
         mavenCentral()
     }
 
-    // 设置编码信息
-    compileJava.options.encoding = "UTF-8"
-    compileTestJava.options.encoding = "UTF-8"
-    javadoc.options.encoding = "UTF-8"
+
 
     // 设置通用的依赖
     dependencies {
-        compileOnly 'org.projectlombok:lombok:1.18.22'
         // lombok的使用需要加上这个注解，否则编译失败
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
+        implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
         implementation 'com.google.guava:guava:31.1-jre'
         implementation 'com.google.code.gson:gson:2.10'
         implementation 'com.alibaba.fastjson2:fastjson2:2.0.23'
         implementation 'javax.inject:javax.inject:1'
         implementation 'cn.hutool:hutool-all:5.8.8'
-        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+
 
         // 测试时的使用
-        // testCompileOnly 'org.projectlombok:lombok:1.18.22'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+
+        testImplementation(platform('org.junit:junit-bom:5.10.0'))
+        // 支持旧版本的 IDEA 允许测试
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
+            because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
+        }
+        // 仅支持 JUnit 5
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine")
+        // 支持 JUnit 3或JUnit 4测试代码
+        testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+    }
+
+    configurations {
+        // annotationProcessor 声明的依赖会被添加到 compileOnly 中效果如下
+        // compileOnly 'org.projectlombok:lombok:1.18.22'
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+        // 同上 annotationProcessor -> testImplementation
+        testImplementation {
+            extendsFrom annotationProcessor
+        }
     }
 }
 
@@ -124,34 +141,12 @@ subprojects {
 project(':common-starter') {
 
     apply plugin: 'maven-publish'
-    apply plugin: 'java-library'
     // apply plugin: 'org.springframework.boot'
 
     // 打包成jar
     jar {
         enabled = true
     }
-    // 发布到本地仓库
-    /*publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-            }
-        }
-        repositories {
-            mavenLocal()
-        }
-    }
-
-    task sourceJar(type: Jar) {
-        from sourceSets.main.allSource
-        archiveClassifier = 'sources'
-    }
-
-    artifacts {
-        archives sourceJar
-    }*/
-
 
     sourceSets {
         // 定义源码所在位置
@@ -165,15 +160,14 @@ project(':common-starter') {
         }
     }
 
-    dependencies {
-
-        api 'org.mapstruct:mapstruct:1.5.3.Final'
-
-    }
 }
 
 
 project(':common-web') {
+
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+
     sourceSets {
         // 定义源码所在位置
         main {
@@ -189,6 +183,8 @@ project(':common-web') {
     dependencies {
         // 引用common-starter
         implementation project(':common-starter')
+        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
         implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
         // akka依赖做异步消息处理
@@ -197,14 +193,18 @@ project(':common-web') {
         implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-websocket:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
 }
 
 project(':elasticsearch-starter'){
     apply plugin: 'java'
-
+    apply plugin: 'java-library'
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         // 使其向下传递依赖
         api 'org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
@@ -214,24 +214,26 @@ project(':elasticsearch-starter'){
     }
 }
 
-
 project(':quick-starter') {
+    // 定义springboot版本
+   ext {
+       springBootVersion = '3.0.0'
+   }
 
-    apply plugin: 'application'
+    plugins.apply('application')
     // apply plugin:  'org.springframework.boot'
-
 
     dependencies {
         implementation project(':common-starter')
         implementation project(':common-web')
         implementation project(':elasticsearch-starter')
         runtimeOnly 'org.springframework.boot:spring-boot-devtools:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
         implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
-        // testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
         testImplementation ('org.springframework.boot:spring-boot-starter-test:3.0.0')
-
     }
 }
 
