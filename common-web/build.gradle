@@ -1,6 +1,18 @@
-dependencies {
+version '1.0-SNAPSHOT'
 
-    api 'org.redisson:redisson-spring-boot-starter:3.19.0'
+dependencies {
+    // akka依赖做异步消息处理
+    api 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
+    // redisson 做分布式锁
+    api 'org.redisson:redisson-spring-boot-starter:3.21.0'
     api 'org.springframework.boot:spring-boot-starter-data-redis:3.0.0'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure:3.1.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:3.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.0'
 
 }

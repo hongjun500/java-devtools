@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:
  */
-@SpringBootTest(classes = WebAppMain.class)
 @Log4j2
 public class TestRestReqExceptionAspect {
 

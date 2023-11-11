@@ -1,7 +1,6 @@
 buildscript {
     // 设置仓库
     repositories {
-        mavenLocal()
         maven { url "https://maven.aliyun.com/repository/public" }
         maven { url "https://maven.aliyun.com/repository/central" }
         maven { url "https://maven.aliyun.com/repository/google" }
@@ -9,22 +8,25 @@ buildscript {
         mavenCentral()
     }
 }
-// 插件
-plugins {
-    // id 'java'
-    // id 'java-library'
-}
 
 //全局配置
 allprojects {
-
     // 设置插件
     plugins.apply('java')
     plugins.apply('java-library')
+
     // 设置项目的 group 和 version
     group 'com.hongjun'
     version '1.0-SNAPSHOT'
+
     tasks {
+
+        clean {
+            delete(rootProject.buildDir, subprojects.buildDir) // 删除根目录下的 build 目录和子模块的 build 目录
+            // 删除指定的日志文件夹
+            delete(rootProject.projectDir.absolutePath + "/logs")
+        }
+
         // 设置编译版本
         compileJava {
             options.encoding = "UTF-8"
@@ -33,34 +35,16 @@ allprojects {
             // sourceCompatibility = JavaVersion.VERSION_17
             // targetCompatibility = JavaVersion.VERSION_17
         }
+        javadoc {
+            options.encoding = "UTF-8"
+        }
         compileTestJava {
             options.encoding = "UTF-8"
             // sourceCompatibility = JavaVersion.VERSION_17
             // targetCompatibility = JavaVersion.VERSION_17
         }
-        javadoc {
-            options.encoding = "UTF-8"
-        }
-    }
-
-
-    /*// 在idea中使用gradle进行编译，编码gbk错误
-    tasks.withType(JavaCompile).configureEach {
-        compileJava {
-            options.encoding("UTF-8")
-        }
-        inputs.files(tasks.withType(ProcessResources))
 
     }
-    tasks.withType(Javadoc).configureEach {
-        javadoc {
-            options.encoding = "UTF-8"
-        }
-    }
-    // 设置 Test 编码信息
-    compileTestJava {
-        options.encoding = "UTF-8"
-    }*/
 
     configurations {
         // 排除依赖项中整个spring-boot下面的logging
@@ -75,37 +59,20 @@ allprojects {
 
     }
 
-    test {
-        // 使用 JUnit5 测试框架
-        useJUnitPlatform()
-    }
 }
 
 
 // 子模块的通用设置
 subprojects {
-
-    // 设置仓库
-    repositories {
-        mavenLocal()
-        maven { url "https://maven.aliyun.com/repository/public" }
-        maven { url "https://maven.aliyun.com/repository/central" }
-        maven { url "https://maven.aliyun.com/repository/google" }
-        maven { url "https://maven.aliyun.com/repository/spring" }
-        mavenCentral()
-    }
-
-
-
     // 设置通用的依赖
     dependencies {
-        // lombok的使用需要加上这个注解，否则编译失败
+        // lombok 使用需要加上这个注解，否则编译失败
         annotationProcessor 'org.projectlombok:lombok:1.18.22'
+        implementation 'javax.inject:javax.inject:1'
         implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
         implementation 'com.google.guava:guava:31.1-jre'
         implementation 'com.google.code.gson:gson:2.10'
         implementation 'com.alibaba.fastjson2:fastjson2:2.0.23'
-        implementation 'javax.inject:javax.inject:1'
         implementation 'cn.hutool:hutool-all:5.8.8'
 
 
@@ -123,31 +90,31 @@ subprojects {
         // 支持 JUnit 3或JUnit 4测试代码
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
     }
-
+    test {
+        // 使用 JUnit5 测试框架
+        useJUnitPlatform()
+        systemProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
+    }
     configurations {
-        // annotationProcessor 声明的依赖会被添加到 compileOnly 中效果如下
+        // compileOnly 继承自 annotationProcessor
         // compileOnly 'org.projectlombok:lombok:1.18.22'
+        // annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
         compileOnly {
             extendsFrom annotationProcessor
         }
-        // 同上 annotationProcessor -> testImplementation
+        // 同上 testAnnotationProcessor + testImplementation
         testImplementation {
-            extendsFrom annotationProcessor
+            extendsFrom testAnnotationProcessor
         }
     }
 }
 
 
 project(':common-starter') {
-
-    apply plugin: 'maven-publish'
-    // apply plugin: 'org.springframework.boot'
-
-    // 打包成jar
-    jar {
-        enabled = true
+    tasks {
+        plugins.apply('java-library')
     }
-
     sourceSets {
         // 定义源码所在位置
         main {
@@ -159,15 +126,11 @@ project(':common-starter') {
             }
         }
     }
-
 }
 
 
 project(':common-web') {
 
-    apply plugin: 'java'
-    apply plugin: 'java-library'
-
     sourceSets {
         // 定义源码所在位置
         main {
@@ -181,61 +144,35 @@ project(':common-web') {
     }
 
     dependencies {
-        // 引用common-starter
+        // 引用 common-starter
         implementation project(':common-starter')
-        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
-        // akka依赖做异步消息处理
-        api 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
-        implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-aop:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-websocket:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
     }
 }
 
 project(':elasticsearch-starter'){
-    apply plugin: 'java'
-    apply plugin: 'java-library'
+
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        // 使其向下传递依赖
-        api 'org.springframework.boot:spring-boot-starter-data-elasticsearch:3.0.0'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
         // 自定义配置元数据
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.0'
         implementation 'org.springframework.boot:spring-boot-autoconfigure:3.0.0'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
+
     }
 }
 
 project(':quick-starter') {
-    // 定义springboot版本
-   ext {
-       springBootVersion = '3.0.0'
-   }
-
-    plugins.apply('application')
-    // apply plugin:  'org.springframework.boot'
-
     dependencies {
         implementation project(':common-starter')
         implementation project(':common-web')
         implementation project(':elasticsearch-starter')
-        runtimeOnly 'org.springframework.boot:spring-boot-devtools:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
-        implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
-        testImplementation ('org.springframework.boot:spring-boot-starter-test:3.0.0')
     }
 }
 
-
+project(':mongodb-starter') {
+    dependencies {
+        implementation project(':common-starter')
+    }
+}
 

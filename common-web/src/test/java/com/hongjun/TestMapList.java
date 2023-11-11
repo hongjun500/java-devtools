@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,6 @@ import java.util.Map;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:发生的VS但是
  */
-@SpringBootTest(classes = WebAppMain.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Log4j2
 public class TestMapList {
 	@Test

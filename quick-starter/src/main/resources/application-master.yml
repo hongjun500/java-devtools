@@ -6,3 +6,6 @@ common:
     http-ca-file-path: J:\elasticsearch-8.5.3\config\certs\http_ca.crt
     has-using-ssl: true
     index-name-suffix: master
+logging:
+  level:
+    root: debug
