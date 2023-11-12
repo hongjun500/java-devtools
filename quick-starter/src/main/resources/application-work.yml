@@ -43,9 +43,9 @@ spring:
 
 # mybatis 配置
 mybatis:
-  type-aliases-package: com.example.domain.model
+  type-aliases-package: com.honjun.model
   # 自定义类型处理器存放的位置
-  type-handlers-package: com.example.typehandler
+  type-handlers-package: com.honjun.typehandler
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 

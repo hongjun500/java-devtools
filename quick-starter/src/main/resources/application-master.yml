@@ -1,3 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 100
+
+
 common:
   elasticsearch:
     enabled: true
@@ -6,6 +14,18 @@ common:
     http-ca-file-path: J:\elasticsearch-8.5.3\config\certs\http_ca.crt
     has-using-ssl: true
     index-name-suffix: master
+
+
+
+# mybatis 配置
+mybatis:
+  type-aliases-package: com.honjun.model
+  # 自定义类型处理器存放的位置
+  type-handlers-package: com.honjun.typehandler
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
 logging:
   level:
-    root: debug
+    root: info
