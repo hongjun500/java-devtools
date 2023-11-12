@@ -1,5 +1,25 @@
 version '1.0-SNAPSHOT'
 
+
+tasks.register('delete' + project.name.capitalize() + 'Logs', Delete) {
+// tasks.register("delete${project.name.capitalize()}Logs", Delete) {
+    description = '删除当前子工程下的日志文件'
+    group = 'custom tasks'
+
+    // 日志文件的路径
+    def logsSubDir = project.projectDir.absolutePath + "\\logs"
+
+    doFirst {
+        println "在子工程${project.name.capitalize()}中执行删除日志文件，开始删除路径[${logsSubDir}]下的日志文件"
+    }
+
+    delete logsSubDir
+
+    doLast {
+        println "在子工程${project.name.capitalize()}中执行删除日志文件，删除日志文件完成"
+    }
+}
+
 dependencies {
     // akka依赖做异步消息处理
     api 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'

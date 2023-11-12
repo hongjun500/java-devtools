@@ -7,6 +7,7 @@ buildscript {
         maven { url "https://maven.aliyun.com/repository/spring" }
         mavenCentral()
     }
+
 }
 
 //全局配置
@@ -19,12 +20,19 @@ allprojects {
     group 'com.hongjun'
     version '1.0-SNAPSHOT'
 
+    tasks.register('helloGradle', JavaExec) {
+        description = 'hello gradle'
+        group = 'custom tasks'
+        doLast {
+            println 'hello gradle'
+        }
+    }
+
     tasks {
+        // 定义一个自定义的 clean 任务，用于删除 build 目录和日志文件夹
 
         clean {
             delete(rootProject.buildDir, subprojects.buildDir) // 删除根目录下的 build 目录和子模块的 build 目录
-            // 删除指定的日志文件夹
-            delete(rootProject.projectDir.absolutePath + "/logs")
         }
 
         // 设置编译版本
@@ -93,6 +101,9 @@ subprojects {
     test {
         // 使用 JUnit5 测试框架
         useJUnitPlatform()
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
         systemProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
     }
     configurations {
@@ -110,6 +121,34 @@ subprojects {
     }
 }
 
+// 任务配置
+tasks.register('delAllLogs', Delete) {
+
+    description = '删除日志文件'
+    group = 'custom tasks'
+
+    // 定义日志文件的路径
+    def logsRootDir = rootProject.projectDir.absolutePath + "\\logs"
+    doFirst {
+        println '开始删除路径{' + logsRootDir + '}下的日志文件'
+
+        // 在每个子项目的日志目录中执行删除
+        rootProject.subprojects { subproject ->
+            def  logsSubDir = subproject.projectDir.absolutePath + "\\logs"
+            println "开始删除路径[" + (logsSubDir as String) + "]下的日志文件"
+
+            // 添加文件过滤器，仅删除*.log文件
+            subproject.fileTree(logsSubDir).include('*.log').files.each { file ->
+                println "删除文件: $file"
+                file.delete()
+            }
+        }
+    }
+
+    doLast {
+        println '删除日志文件完成'
+    }
+}
 
 project(':common-starter') {
     tasks {
@@ -130,7 +169,6 @@ project(':common-starter') {
 
 
 project(':common-web') {
-
     sourceSets {
         // 定义源码所在位置
         main {
@@ -149,7 +187,7 @@ project(':common-web') {
     }
 }
 
-project(':elasticsearch-starter'){
+project(':elasticsearch-starter') {
 
     dependencies {
         // 自定义配置元数据
