@@ -1,9 +1,5 @@
 package com.hongjun.error;
 
-import lombok.Data;
-
-import java.io.Serial;
-
 /**
  * @author hongjun500
  * @date 2020/12/24 22:52
@@ -12,18 +8,18 @@ import java.io.Serial;
  * Description: 包装器业务异常类实现
  */
 public class BusinessException extends Exception implements CommonError {
-    @Serial
-    private static final long serialVersionUID = 2291478189958656424L;
+
     /**
-     * 强关联一个CommonError(实际上是一个由EmBusinessError枚举实现的类)
+     * 强关联一个 CommonError(实际上是一个由 EmBusinessError 枚举实现的类)
      */
-    private CommonError commonError;
+    private final CommonError commonError;
 
     /**
      * 直接接收EmBusinessError的传参用于构造业务异常
-     * @param commonError 自定义的err
+     *
+     * @param commonError 通用错误
      */
-    public BusinessException(CommonError commonError){
+    public BusinessException(CommonError commonError) {
         // 此处的调用是由于自身继承了Exception,会有一些初始化机制
         super();
         this.commonError = commonError;
@@ -31,10 +27,11 @@ public class BusinessException extends Exception implements CommonError {
 
     /**
      * 接受自定义的errMsg的方式构造业务异常
-     * @param commonError
-     * @param errMsg
+     *
+     * @param commonError 通用错误
+     * @param errMsg      错误信息
      */
-    public BusinessException(CommonError commonError, String errMsg){
+    public BusinessException(CommonError commonError, String errMsg) {
         // 此处的调用是由于自身继承了Exception,会有一些初始化机制
         super();
         this.commonError = commonError;
@@ -48,9 +45,10 @@ public class BusinessException extends Exception implements CommonError {
 
     /**
      * 断言业务异常
-     * @param flag
-     * @param commonError
-     * @throws BusinessException
+     *
+     * @param flag        业务判断条件
+     * @param commonError 通用错误
+     * @throws BusinessException 业务异常
      */
     public static void assertBusinessException(boolean flag, CommonError commonError) throws BusinessException {
         if (flag) {
@@ -64,10 +62,11 @@ public class BusinessException extends Exception implements CommonError {
 
     /**
      * 断言业务异常并且可以接收自定义错误
-     * @param flag
-     * @param commonError
-     * @param errMsg
-     * @throws BusinessException
+     *
+     * @param flag        业务判断条件
+     * @param commonError 通用错误
+     * @param errMsg      错误信息
+     * @throws BusinessException 业务异常
      */
     public static void assertBusinessException(boolean flag, CommonError commonError, String errMsg) throws BusinessException {
         if (flag) {

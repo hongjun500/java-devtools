@@ -10,15 +10,20 @@ package com.hongjun.error;
 public interface CommonError {
     /**
      * 返回错误码
-     * @return
+     * @return EnumBusinessError.getErrCode()
      */
     int getErrCode();
 
     /**
      * 返回错误信息
-     * @return
+     * @return EnumBusinessError.getErrMsg()
      */
     String getErrMsg();
 
+    /**
+     * 自定义错误信息
+     * @param errMsg 错误信息
+     * @return CommonError
+     */
     CommonError setErrMsg(String errMsg);
 }

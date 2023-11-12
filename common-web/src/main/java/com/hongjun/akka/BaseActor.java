@@ -1,9 +1,6 @@
 package com.hongjun.akka;
 
 import akka.actor.AbstractActor;
-import akka.actor.UntypedAbstractActor;
-import akka.event.Logging;
-import akka.event.LoggingAdapter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -13,7 +10,7 @@ import org.springframework.context.annotation.Scope;
  * @date 2023/2/7 17:37
  * @tool ThinkPadX1隐士
  * Created with 2022.2.2.IntelliJ IDEA
- * Description: Actor的基类，每次注入时都会创建一个新的实例
+ * Description: Actor 基类，每次注入时都会创建一个新的实例
  */
 @Log4j2
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
