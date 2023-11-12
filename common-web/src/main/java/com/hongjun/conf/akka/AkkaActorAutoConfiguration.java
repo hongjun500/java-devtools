@@ -23,7 +23,7 @@ import static com.hongjun.akka.SpringExtension.SpringExtProvider;
  * @date 2023/2/13 15:56
  * @tool ThinkPadX1隐士
  * Created with 2022.2.2.IntelliJ IDEA
- * Description: 自定义akka-actor配置
+ * Description: 自定义 akka-actor 配置
  */
 @Log4j2
 @Configuration
@@ -39,10 +39,9 @@ public class AkkaActorAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	// 单例
-	@Singleton
+	@Singleton // 单例，保证 actorSystem 的唯一性
 	public ActorSystem actorSystem() {
-		log.info("---初始化创建ActorSystem, name=[{}]", akkaActorProperties.getActorSystemName());
+		log.info("---Initial creation ActorSystem, name=[{}]", akkaActorProperties.getActorSystemName());
 		ActorSystem actorSystem = ActorSystem.create(Optional.ofNullable(akkaActorProperties.getActorSystemName()).orElse("actorSystem"));
 		SpringExtProvider.get(actorSystem).initialize(applicationContext);
 		return actorSystem;
