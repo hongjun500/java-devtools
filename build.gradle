@@ -132,7 +132,7 @@ subprojects {
 }
 
 // 任务配置
-tasks.register('delAllLogs', Delete) {
+/*tasks.register('delAllLogs', Delete) {
 
     description = '删除日志文件'
     group = 'custom tasks'
@@ -141,7 +141,7 @@ tasks.register('delAllLogs', Delete) {
     def logsRootDir = rootProject.projectDir.absolutePath + "\\logs"
     doFirst {
         println '开始删除路径{' + logsRootDir + '}下的日志文件'
-
+        delete logsRootDir
         // 在每个子项目的日志目录中执行删除
         rootProject.subprojects { subproject ->
             def  logsSubDir = subproject.projectDir.absolutePath + "\\logs"
@@ -153,12 +153,41 @@ tasks.register('delAllLogs', Delete) {
                 file.delete()
             }
         }
+
+    }
+
+    doLast {
+        println '删除日志文件完成'
+    }
+}*/
+
+tasks.register('delAllLogs', Delete) {
+    description = '删除日志文件'
+    group = 'custom tasks'
+
+    // 定义日志文件的路径
+    def logsRootDir = rootProject.projectDir.absolutePath + "/logs"
+
+    doFirst {
+        println "开始删除路径[$logsRootDir]下的日志文件"
+        delete logsRootDir
+
+        // 在每个子项目的日志目录中执行删除
+        rootProject.subprojects { subproject ->
+            def logsSubDir = subproject.projectDir.absolutePath + "/logs"
+            println "开始删除路径[$logsSubDir]下的日志文件"
+
+            // 或者使用更简洁的语法
+             subproject.delete(fileTree(logsSubDir as String).include('*.log'))
+        }
     }
 
     doLast {
         println '删除日志文件完成'
     }
 }
+
+
 
 project(':common-base') {
     tasks {
