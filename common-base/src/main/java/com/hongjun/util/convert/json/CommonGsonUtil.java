@@ -112,30 +112,4 @@ public class CommonGsonUtil {
         JsonElement jsonElement = gson.toJsonTree(array);
         return jsonElement.getAsJsonArray();
     }
-
-    public static void main(String[] args) {
-    // 将json字符串转换成对象
-    // Person person = JsonUtils.fromJson(jsonString, Person.class);
-
-    // 将对象转换成json字符串
-    // String jsonString = JsonUtils.toJson(person);
-
-    // 将json字符串转换成json对象
-    // JsonObject jsonObject = JsonUtils.toJsonObject(jsonString);
-
-    // 将json字符串转换成json数组
-    // JsonArray jsonArray = JsonUtils.toJsonArray(jsonString);
-
-    // 将json对象转换成对象
-    // Person person = JsonUtils.fromJsonObject(jsonObject, Person.class);
-
-    // 将json数组转换成对象数组
-//     Person[] persons = fromJsonArray(jsonArray, Person[].class);
-
-    // 将对象转换成json对象
-    // JsonObject jsonObject = JsonUtils.toJsonObject(person);
-
-    // 将对象数组转换成json数组
-    // JsonArray jsonArray = JsonUtils.toJsonArray(persons);
-    }
 }

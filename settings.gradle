@@ -1,5 +1,5 @@
 rootProject.name = 'java-devtools-hongjun500'
-include 'common-starter'
+include 'common-base'
 include 'common-web'
 include 'quick-starter'
 include 'elasticsearch-starter'

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
  */
 
 
-public class StartTest {
+public class CommonBaseTest {
 	@Test
 	void test() {
 		System.out.println("Hello World!");
