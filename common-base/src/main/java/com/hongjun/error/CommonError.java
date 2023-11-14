@@ -23,7 +23,7 @@ public interface CommonError {
     /**
      * 自定义错误信息
      * @param errMsg 错误信息
-     * @return CommonError
+     * @return EnumBusinessError
      */
     CommonError setErrMsg(String errMsg);
 }

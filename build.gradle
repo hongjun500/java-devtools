@@ -75,7 +75,7 @@ subprojects {
     // 设置通用的依赖
     dependencies {
         // lombok 使用需要加上这个注解，否则编译失败
-        /*annotationProcessor 'org.projectlombok:lombok:1.18.22'
+        annotationProcessor 'org.projectlombok:lombok:1.18.22'
         implementation 'javax.inject:javax.inject:1'
         implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
         implementation 'com.google.guava:guava:31.1-jre'
@@ -85,7 +85,6 @@ subprojects {
 
         // 测试时的使用
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
-        */
 
 
 
@@ -94,13 +93,13 @@ subprojects {
         testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
             because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
         }
-        // 仅支持 JUnit 5
+        // 仅支持 JUnit5
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
         testImplementation("org.junit.jupiter:junit-jupiter-engine")
-        // 支持 JUnit 3或JUnit 4测试代码
+        // 支持 JUnit3 或 JUnit4 测试代码
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
 
-        // Log4j 2 依赖
+        // Log4j2 依赖
         testImplementation 'org.apache.logging.log4j:log4j-api:2.14.1'
         testImplementation 'org.apache.logging.log4j:log4j-core:2.14.1'
         testImplementation 'org.apache.logging.log4j:log4j-jul:2.14.1'
@@ -114,8 +113,9 @@ subprojects {
         systemProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
     }
     configurations {
-        // compileOnly 继承自 annotationProcessor
+        // compileOnly 继承自 annotationProcessor 等价于 ->
         // compileOnly 'org.projectlombok:lombok:1.18.22'
+        // +
         // annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
         compileOnly {
