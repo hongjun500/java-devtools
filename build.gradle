@@ -75,7 +75,7 @@ subprojects {
     // 设置通用的依赖
     dependencies {
         // lombok 使用需要加上这个注解，否则编译失败
-        /*annotationProcessor 'org.projectlombok:lombok:1.18.22'
+        annotationProcessor 'org.projectlombok:lombok:1.18.22'
         implementation 'javax.inject:javax.inject:1'
         implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
         implementation 'com.google.guava:guava:31.1-jre'
@@ -85,7 +85,6 @@ subprojects {
 
         // 测试时的使用
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
-        */
 
 
 
@@ -101,9 +100,10 @@ subprojects {
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
 
         // Log4j 2 依赖
-        testImplementation 'org.apache.logging.log4j:log4j-api:2.14.1'
-        testImplementation 'org.apache.logging.log4j:log4j-core:2.14.1'
-        testImplementation 'org.apache.logging.log4j:log4j-jul:2.14.1'
+        implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.19.0'
+        implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+        implementation 'org.apache.logging.log4j:log4j-jul:2.19.0'
+
     }
     test {
         // 使用 JUnit5 测试框架
@@ -221,6 +221,8 @@ project(':common-web') {
     }
 
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.0'
         // 引用 common-base
         implementation project(':common-base')
     }
