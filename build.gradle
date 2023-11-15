@@ -93,13 +93,13 @@ subprojects {
         testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
             because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
         }
-        // 仅支持 JUnit 5
+        // 仅支持 JUnit5
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
         testImplementation("org.junit.jupiter:junit-jupiter-engine")
-        // 支持 JUnit 3或JUnit 4测试代码
+        // 支持 JUnit3 或 JUnit4 测试代码
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
 
-        // Log4j 2 依赖
+        // Log4j2 依赖
         implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.19.0'
         implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
         implementation 'org.apache.logging.log4j:log4j-jul:2.19.0'
@@ -114,8 +114,9 @@ subprojects {
         systemProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
     }
     configurations {
-        // compileOnly 继承自 annotationProcessor
+        // compileOnly 继承自 annotationProcessor 等价于 ->
         // compileOnly 'org.projectlombok:lombok:1.18.22'
+        // +
         // annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
         compileOnly {

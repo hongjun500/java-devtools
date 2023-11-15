@@ -15,15 +15,18 @@ import java.io.InputStream;
 
 
 public class CommonBaseTest {
+
 	@Test
 	void test() {
 		System.out.println("Hello World!");
+		System.out.println("神魔恋捏!");
 		try {
 			System.out.println("Hello World!");
 			File file = new File("/home/hongjun500/Downloads/");
 			InputStream inputStream = new FileInputStream(file);
 		}catch (IOException e) {
 			e.printStackTrace();
+
 		}
 	}
 }
