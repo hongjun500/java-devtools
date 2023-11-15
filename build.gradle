@@ -100,9 +100,10 @@ subprojects {
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
 
         // Log4j2 依赖
-        testImplementation 'org.apache.logging.log4j:log4j-api:2.14.1'
-        testImplementation 'org.apache.logging.log4j:log4j-core:2.14.1'
-        testImplementation 'org.apache.logging.log4j:log4j-jul:2.14.1'
+        implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.19.0'
+        implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+        implementation 'org.apache.logging.log4j:log4j-jul:2.19.0'
+
     }
     test {
         // 使用 JUnit5 测试框架
@@ -221,6 +222,8 @@ project(':common-web') {
     }
 
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.0'
         // 引用 common-base
         implementation project(':common-base')
     }

@@ -17,17 +17,16 @@ import java.io.InputStream;
 public class CommonBaseTest {
 
 	@Test
-	void test()  {
+	void test() {
+		System.out.println("Hello World!");
 		System.out.println("神魔恋捏!");
 		try {
-			File file = new File("J:\\elasticsearch-8.5.3\\config\\certs\\http_ca.crt");
-			System.out.println(file.exists());
-
-			InputStream in = new FileInputStream(file);
-			System.out.println(in.read());
-		}catch (IOException e){
+			System.out.println("Hello World!");
+			File file = new File("/home/hongjun500/Downloads/");
+			InputStream inputStream = new FileInputStream(file);
+		}catch (IOException e) {
 			e.printStackTrace();
-			// throw new RuntimeException();
+
 		}
 	}
 }
