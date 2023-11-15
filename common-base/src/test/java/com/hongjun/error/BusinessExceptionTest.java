@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 class BusinessExceptionTest {
 
     @Test
+    // @Disabled
     void assertBusinessException() throws BusinessException {
         log.info("test-assertBusinessException------------------");
         log.info("hello world");
@@ -16,6 +17,8 @@ class BusinessExceptionTest {
     }
 
     @Test
-    void testAssertBusinessException() {
+    // @Disabled
+    void testAssertBusinessException() throws BusinessException {
+        BusinessException.assertBusinessException(true, EnumBusinessError.UNKNOWN_ERROR, "custom error message");
     }
 }

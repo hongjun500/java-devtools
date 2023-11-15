@@ -21,7 +21,7 @@ public class BusinessException extends Exception implements CommonError {
      */
     public BusinessException(CommonError commonError) {
         // 此处的调用是由于自身继承了Exception,会有一些初始化机制
-        super();
+        super(commonError.getErrMsg());
         this.commonError = commonError;
     }
 
@@ -33,14 +33,18 @@ public class BusinessException extends Exception implements CommonError {
      */
     public BusinessException(CommonError commonError, String errMsg) {
         // 此处的调用是由于自身继承了Exception,会有一些初始化机制
-        super();
+        super(errMsg);
         this.commonError = commonError;
         // 二次改写errMsg
         this.commonError.setErrMsg(errMsg);
     }
 
-    public static void assertBusinessException(CommonError commonError) throws BusinessException {
+    private static void assertBusinessException(CommonError commonError) throws BusinessException {
         throw new BusinessException(commonError);
+    }
+
+    private static void assertBusinessException(CommonError commonError, String errMsg) throws BusinessException {
+        throw new BusinessException(commonError, errMsg);
     }
 
     /**
@@ -54,10 +58,6 @@ public class BusinessException extends Exception implements CommonError {
         if (flag) {
             assertBusinessException(commonError);
         }
-    }
-
-    public static void assertBusinessException(CommonError commonError, String errMsg) throws BusinessException {
-        throw new BusinessException(commonError, errMsg);
     }
 
     /**

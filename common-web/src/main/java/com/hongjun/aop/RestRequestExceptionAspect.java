@@ -1,6 +1,5 @@
 package com.hongjun.aop;
 
-import com.hongjun.enums.EnumBusinessError;
 import com.hongjun.error.BusinessException;
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,15 +48,16 @@ public class RestRequestExceptionAspect {
 		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpServletRequest request = servletRequestAttributes.getRequest();
 		Object[] reqArgs = pjp.getArgs();
-		log.debug("请求的地址：{},\n请求的参数{}", request.getRequestURI(), Arrays.toString(reqArgs));
+		log.debug("请求的地址:{},\n请求的参数{}", request.getRequestURI(), Arrays.toString(reqArgs));
 		try {
 			Object proceed = pjp.proceed(reqArgs);
-			log.debug("响应结果：{}", CommonFastJsonUtil.toJson(proceed));
+			log.debug("响应结果:{}", CommonFastJsonUtil.toJson(proceed));
 			return proceed;
 		} catch (BusinessException businessException) {
 			String errMsg = businessException.getErrMsg();
+
 			log.error("业务异常{}\t exception:{}", parseMethodInfo(pjp), errMsg);
-			BusinessException.assertBusinessException(EnumBusinessError.UNKNOWN_ERROR, "业务异常");
+			BusinessException.assertBusinessException(true, businessException);
 		}
 		return null;
 	}

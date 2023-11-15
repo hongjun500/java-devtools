@@ -67,7 +67,7 @@ public class CustomInterceptor implements HandlerInterceptor {
 			}
 			if (request instanceof CustomHttpServletRequestWrapper customHttpServletRequestWrapper) {
 				String body = customHttpServletRequestWrapper.getBody();
-				// 这里断言是post请求并且body里面必须要有参数
+				// 这里断言是 post 请求并且 body 里面必须要有参数
 				BusinessException.assertBusinessException(StrUtil.isBlank(body), EnumBusinessError.PARAMETER_REQUEST_ERROR);
 				// 这里断言请求体中的对象必须是多个属性，不能出现整个请求体都是一个属性值
 				// if (JSONUtil.isTypeJSON(body)) {
