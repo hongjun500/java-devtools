@@ -5,20 +5,15 @@ import cn.hutool.http.HttpRequest;
 import com.google.common.collect.Lists;
 import com.hongjun.actor.DemosActor;
 import com.hongjun.actor.User;
-import com.hongjun.akka.ActorRefBean;
+import com.hongjun.web.akka.ActorRefBean;
 import com.hongjun.response.CommonReturnType;
-import com.hongjun.websocket.CustomTextWebSocketHandler;
-import jakarta.annotation.Resource;
+import com.hongjun.web.websocket.CustomTextWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 /**
  * @author hongjun500

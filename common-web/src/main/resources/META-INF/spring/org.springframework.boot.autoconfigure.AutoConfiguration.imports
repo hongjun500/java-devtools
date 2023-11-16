@@ -1,2 +1,4 @@
-# Auto Configure
-com.hongjun.conf.akka.AkkaActorAutoConfiguration
+# AkkaActor Auto Configure with akka actor 实现异步消息处理
+com.hongjun.web.autoconfigure.akka.AkkaActorAutoConfiguration
+# WebSocket Auto Configure with spring websocket 实现实时消息处理
+com.hongjun.web.autoconfigure.websocket.WebSocketAutoConfiguration

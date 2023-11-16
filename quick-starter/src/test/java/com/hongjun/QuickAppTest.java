@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -17,8 +19,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Description:
  */
 @Log4j2
-@SpringBootTest(classes = QuickStarterApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(classes = QuickStarterApplication.class)
 public class QuickAppTest {
+
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
+
+    @Test
+    void testApplicationContextRunner(){
+        assert contextRunner != null;
+        contextRunner.run(context -> {
+            log.info("测试");
+            for (String beanDefinitionName : context.getBeanDefinitionNames()) {
+                log.info(beanDefinitionName);
+            }
+        });
+    }
 
     @Test
     void testListMethod() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
