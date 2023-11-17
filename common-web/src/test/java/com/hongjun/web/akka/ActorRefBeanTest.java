@@ -11,6 +11,7 @@ class ActorRefBeanTest {
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withPropertyValues("akka.actor.enabled=true")
+			.withPropertyValues("akka.actor.actorSystemName=common-web-actor-system")
 			.withConfiguration(AutoConfigurations.of(AkkaActorAutoConfiguration.class))
 			.withBean(MyActor.class);
 

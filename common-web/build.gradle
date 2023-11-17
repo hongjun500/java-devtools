@@ -7,19 +7,22 @@ version '1.0-SNAPSHOT'
 
 
 dependencies {
-    // akka 依赖做异步消息处理
-    api 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
-    // redisson 做分布式锁
-    api 'org.redisson:redisson-spring-boot-starter:3.21.0'
-    api 'org.springframework.boot:spring-boot-starter-data-redis'
-
     // 自定义 starter
     annotationProcessor "org.springframework.boot:spring-boot-autoconfigure-processor"
 
-    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    // akka 依赖做异步消息处理
+    api 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
+    // redisson 做分布式锁
+    api 'org.redisson:redisson-spring-boot-starter:3.23.0'
+    api 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // aop aspectj
     implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+
+    // web、websocket 相关(这里包含了 spring-boot-starter-web，所以不需要再引入)
     compileOnly 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }

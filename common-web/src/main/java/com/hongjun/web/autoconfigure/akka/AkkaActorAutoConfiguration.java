@@ -5,6 +5,8 @@ import com.hongjun.web.akka.ActorRefBean;
 import com.hongjun.web.akka.SpringExtension;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import jakarta.annotation.Resource;
+import jakarta.annotation.Resources;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -32,11 +34,14 @@ import java.util.Optional;
 @ConditionalOnProperty(prefix = "akka.actor",name = "enabled", havingValue = "true")
 public class AkkaActorAutoConfiguration {
 
-	@Autowired
-	private AkkaActorProperties akkaActorProperties;
+	private final AkkaActorProperties akkaActorProperties;
 
-	@Autowired
-	private ApplicationContext applicationContext;
+	private final ApplicationContext applicationContext;
+
+	public AkkaActorAutoConfiguration(AkkaActorProperties akkaActorProperties, ApplicationContext applicationContext) {
+		this.akkaActorProperties = akkaActorProperties;
+		this.applicationContext = applicationContext;
+	}
 
 	@Bean
 	@ConditionalOnMissingBean
