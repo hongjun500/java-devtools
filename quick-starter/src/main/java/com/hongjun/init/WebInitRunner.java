@@ -1,4 +1,4 @@
-package com.hongjun.web.init;
+package com.hongjun.init;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.ApplicationArguments;

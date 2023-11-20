@@ -28,7 +28,7 @@ import java.util.List;
 @Component
 public class CustomTextWebSocketHandler extends TextWebSocketHandler {
 
-    private List<WebSocketSession> webSocketSessionList = new ArrayList<>();
+    private final List<WebSocketSession> webSocketSessionList = new ArrayList<>();
 
     @Override
     public void afterConnectionEstablished(@NonNull WebSocketSession webSocketSession) throws Exception {
@@ -38,14 +38,14 @@ public class CustomTextWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(@NonNull WebSocketSession session, @NonNull CloseStatus status) throws Exception {
-        log.info("websocket连接关闭");
+        log.info("websocket 连接关闭");
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession webSocketSession, TextMessage message) throws Exception {
         // 接收的消息
         String messagePayload = message.getPayload();
-        log.info("接收到websocket的消息{}", messagePayload);
+        log.info("接收到 websocket 的消息{}", messagePayload);
         webSocketSession.sendMessage(new TextMessage(messagePayload));
     }
 }

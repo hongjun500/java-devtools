@@ -23,7 +23,7 @@ import java.util.Map;
  * @date 2022/12/30 17:19
  * @tool ThinkPadX1隐士
  * Created with 2022.2.2.IntelliJ IDEA
- * Description: restController类的增强处理
+ * Description: restController 类的增强处理
  */
 @Log4j2
 @RestControllerAdvice(annotations = RestController.class)
@@ -72,8 +72,8 @@ public class BaseController implements ResponseBodyAdvice<Object> {
 			responseData.put("errCode", EnumBusinessError.UNKNOWN_ERROR.getErrCode());
 			responseData.put("errMsg", EnumBusinessError.UNKNOWN_ERROR.getErrMsg());
 		}
-		log.debug(e);
-		log.warn("------错误信息----------{}----------",responseData.get("errMsg"));
+		log.info(e.getStackTrace());
+		log.info("------错误信息----------{}----------",responseData.get("errMsg"));
 		return CommonReturnType.create(responseData,"fail");
 	}
 

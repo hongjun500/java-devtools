@@ -17,11 +17,11 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // aop aspectj
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    api 'org.springframework.boot:spring-boot-starter-aop'
 
 
     // web、websocket 相关(这里包含了 spring-boot-starter-web，所以不需要再引入)
-    compileOnly 'org.springframework.boot:spring-boot-starter-websocket'
+    api 'org.springframework.boot:spring-boot-starter-websocket'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 

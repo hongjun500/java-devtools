@@ -2,7 +2,6 @@ package com.hongjun.web.aop;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.stereotype.Component;
 
 /**
  * @author hongjun500
@@ -12,24 +11,26 @@ import org.springframework.stereotype.Component;
  * Description:共享命名切入点
  */
 @Aspect
-@Component
 public class CommonPointcuts {
 
 	/**
-	 * 带有PostMapping注释的方法切入点
+	 * 带有 @RequestMapping 注释的类
 	 */
-	@Pointcut(value = "@annotation(org.springframework.web.bind.annotation.RequestMapping)")
-	public void inWebLayer() {}
+	@Pointcut(value = "@within(org.springframework.web.bind.annotation.RequestMapping)")
+	public void requestMapping() {
+	}
 
 	/**
-	 * 带有PostMapping注释的方法
+	 * 带有 @RestController 注释的类
+	 */
+	@Pointcut(value = "@within(org.springframework.web.bind.annotation.RestController)")
+	public void restController() {
+	}
+
+	/**
+	 * 带有 @PostMapping 注释的方法
 	 */
 	@Pointcut(value = "@annotation(org.springframework.web.bind.annotation.PostMapping)")
-	public void postMapping(){}
-
-	/**
-	 * 带有PostMapping注释的方法
-	 */
-	@Pointcut(value = "@annotation(org.springframework.web.bind.annotation.GetMapping)")
-	public void getMapping(){}
+	public void postMapping() {
+	}
 }

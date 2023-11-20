@@ -3,8 +3,8 @@ package com.hongjun.web.autoconfigure.websocket;
 
 
 import com.hongjun.web.websocket.CustomTextWebSocketHandler;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -25,15 +25,14 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 @Log4j2
 @Configuration
 @EnableWebSocket
+@RequiredArgsConstructor
 @ConditionalOnProperty(prefix = "common.websocket", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(value = WebSocketProperties.class)
 public class WebSocketAutoConfiguration implements WebSocketConfigurer {
 
-    @Autowired
-    private WebSocketProperties configWebSocketProperties;
+    private final WebSocketProperties configWebSocketProperties;
 
-    @Autowired
-    private CustomTextWebSocketHandler customTextWebSocketHandler;
+    private final CustomTextWebSocketHandler customTextWebSocketHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
@@ -42,13 +41,6 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
                 // 允许跨域请求
                 setAllowedOrigins("*");;
     }
-
-
-    
-   /* @Bean
-    public WebSocketHandler customTextWebSocketHandler() {
-        return new CustomTextWebSocketHandler();
-    }*/
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {

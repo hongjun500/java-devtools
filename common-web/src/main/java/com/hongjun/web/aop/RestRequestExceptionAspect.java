@@ -3,6 +3,7 @@ package com.hongjun.web.aop;
 import com.hongjun.error.BusinessException;
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -22,28 +23,20 @@ import java.util.Arrays;
  * @date 2023/2/1 15:05
  * @tool ThinkPadX1隐士
  * Created with 2022.2.2.IntelliJ IDEA
- * Description: rest请求异常时的参数和响应
+ * Description: rest 请求异常时的参数和响应
  */
-@Aspect
-@Component
-@Order(value = 2)
+
 @Log4j2
+@Aspect
+@Order(value = 2)
+@Component
+@RequiredArgsConstructor
 public class RestRequestExceptionAspect {
-
-	@Autowired
-	private CommonPointcuts commonPointcuts;
-
-	/**
-	 * 切入点：RestController
-	 */
-	@Pointcut(value = "@annotation(org.springframework.web.bind.annotation.RestController)")
-	public void annotationPointCut() {
-	}
 
 	/**
 	 * 环绕通知
 	 */
-	@Around(value = "com.hongjun.web.aop.CommonPointcuts.postMapping() || com.hongjun.web.aop.CommonPointcuts.getMapping()")
+	@Around(value = "com.hongjun.web.aop.CommonPointcuts.restController()")
 	public Object around(ProceedingJoinPoint pjp) throws Throwable {
 		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpServletRequest request = servletRequestAttributes.getRequest();
@@ -55,7 +48,6 @@ public class RestRequestExceptionAspect {
 			return proceed;
 		} catch (BusinessException businessException) {
 			String errMsg = businessException.getErrMsg();
-
 			log.error("业务异常{}\t exception:{}", parseMethodInfo(pjp), errMsg);
 			BusinessException.assertBusinessException(true, businessException);
 		}
@@ -72,9 +64,8 @@ public class RestRequestExceptionAspect {
 				builder.append(",").append(params[i]).append(":").append(CommonFastJsonUtil.toJson(args[i]));
 			}
 		} catch (Throwable ex) {
-			//ignore
+			// ignore
 		}
-
 		return builder.toString();
 	}
 }

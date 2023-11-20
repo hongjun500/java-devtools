@@ -7,6 +7,9 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import jakarta.annotation.Resource;
 import jakarta.annotation.Resources;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -30,18 +33,14 @@ import java.util.Optional;
  */
 @Log4j2
 @AutoConfiguration
+@RequiredArgsConstructor
 @EnableConfigurationProperties({AkkaActorProperties.class})
-@ConditionalOnProperty(prefix = "akka.actor",name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "akka.actor", name = "enabled", havingValue = "true")
 public class AkkaActorAutoConfiguration {
 
 	private final AkkaActorProperties akkaActorProperties;
 
 	private final ApplicationContext applicationContext;
-
-	public AkkaActorAutoConfiguration(AkkaActorProperties akkaActorProperties, ApplicationContext applicationContext) {
-		this.akkaActorProperties = akkaActorProperties;
-		this.applicationContext = applicationContext;
-	}
 
 	@Bean
 	@ConditionalOnMissingBean
@@ -60,7 +59,7 @@ public class AkkaActorAutoConfiguration {
 
 	@Bean
 	@DependsOn("actorSystem")
-	public ActorRefBean actorRefBean(ActorSystem actorSystem){
+	public ActorRefBean actorRefBean(ActorSystem actorSystem) {
 		return new ActorRefBean(actorSystem);
 	}
 }
