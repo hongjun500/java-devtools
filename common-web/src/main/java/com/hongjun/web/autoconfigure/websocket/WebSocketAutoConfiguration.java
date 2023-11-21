@@ -1,7 +1,6 @@
 package com.hongjun.web.autoconfigure.websocket;
 
 
-
 import com.hongjun.web.websocket.CustomTextWebSocketHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,25 +29,26 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 @EnableConfigurationProperties(value = WebSocketProperties.class)
 public class WebSocketAutoConfiguration implements WebSocketConfigurer {
 
-    private final WebSocketProperties configWebSocketProperties;
+	private final WebSocketProperties configWebSocketProperties;
 
-    private final CustomTextWebSocketHandler customTextWebSocketHandler;
+	private final CustomTextWebSocketHandler customTextWebSocketHandler;
 
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(customTextWebSocketHandler,
-                configWebSocketProperties.getPath()).
-                // 允许跨域请求
-                setAllowedOrigins("*");;
-    }
+	@Override
+	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+		registry.addHandler(customTextWebSocketHandler,
+						configWebSocketProperties.getPath()).
+				// 允许跨域请求
+						setAllowedOrigins("*");
+		;
+	}
 
-    @EventListener
-    public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        log.info("WebSocket server started!");
-    }
+	@EventListener
+	public void handleWebSocketConnectListener(SessionConnectedEvent event) {
+		log.info("WebSocket server started!");
+	}
 
-    @EventListener
-    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-        log.info("WebSocket server stopped!");
-    }
+	@EventListener
+	public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
+		log.info("WebSocket server stopped!");
+	}
 }
