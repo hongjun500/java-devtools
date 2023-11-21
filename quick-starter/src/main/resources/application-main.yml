@@ -3,12 +3,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
-    password: 100
+    password: hongjun500
 
 
 common:
   elasticsearch:
-    enabled: true
+    enabled: false
     auth-username: elastic
     auth-password: hongjun500
     http-ca-file-path: J:\elasticsearch-8.5.3\config\certs\http_ca.crt

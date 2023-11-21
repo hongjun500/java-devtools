@@ -7,7 +7,6 @@ package com.hongjun.common.websocket;/**
  */
 
 import com.hongjun.QuickStarterApplication;
-import com.hongjun.web.websocket.CustomTextWebSocketHandler;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
