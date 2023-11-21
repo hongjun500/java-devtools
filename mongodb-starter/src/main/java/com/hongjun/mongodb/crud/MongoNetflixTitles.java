@@ -3,8 +3,10 @@ package com.hongjun.mongodb.crud;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.csv.CsvUtil;
 import com.hongjun.mongodb.connection.MongoConn;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.InsertManyResult;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.bson.Document;
 import org.springframework.core.io.ClassPathResource;
@@ -27,6 +29,7 @@ import java.util.Map;
  */
 
 @Log4j2
+@RequiredArgsConstructor
 public class MongoNetflixTitles {
 
 	public static final String DB = "kaggle";
@@ -35,14 +38,14 @@ public class MongoNetflixTitles {
 
 
 
-	public boolean importDocumentFromCsv() throws IOException {
+
+	public boolean importDocumentFromCsv(MongoConn mongoConn) throws IOException {
 		File file = new ClassPathResource("netflix_titles.csv").getFile();
 		Reader reader = new InputStreamReader(FileUtil.getInputStream(file), StandardCharsets.UTF_8);
 		List<Map<String, String>> maps = CsvUtil.getReader().readMapList(reader);
 		if (maps.isEmpty()) {
 			return false;
 		}
-		MongoConn mongoConn = new MongoConn();
 		List<Document> documents = new ArrayList<>();
 		maps.forEach(map -> {
 			Document document = new Document();
@@ -52,6 +55,13 @@ public class MongoNetflixTitles {
 		MongoCollection<Document> collection = mongoConn.getDatabase(DB).getCollection(COLLECTION);
 		InsertManyResult result = collection.insertMany(documents);
 		return !result.getInsertedIds().isEmpty();
+	}
+
+	public List<Document> pageDocument(Integer pageNum, Integer pageSize, MongoConn mongoConn) {
+		MongoCollection<Document> collection = mongoConn.getDatabase(DB).getCollection(COLLECTION);
+		FindIterable<Document> documents = collection.find();
+		documents.skip((pageNum - 1) * pageSize).limit(pageSize);
+		return documents.into(new ArrayList<>());
 	}
 
 }

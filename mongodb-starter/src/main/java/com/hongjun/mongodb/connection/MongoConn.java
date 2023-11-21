@@ -13,7 +13,7 @@ import org.bson.conversions.Bson;
 
 @Slf4j
 public class MongoConn {
-    public static final String URI = "mongodb://admin:admin@localhost:27018";
+    public static final String URI = "mongodb://mongodb:mongodb@localhost:27017/?authSource=admin";
 
     private final MongoClient mongoClient;
 
