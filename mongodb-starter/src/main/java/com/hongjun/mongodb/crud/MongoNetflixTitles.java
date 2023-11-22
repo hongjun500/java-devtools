@@ -2,11 +2,10 @@ package com.hongjun.mongodb.crud;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.csv.CsvUtil;
-import com.hongjun.mongodb.connection.MongoConn;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertManyResult;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.bson.Document;
 import org.springframework.core.io.ClassPathResource;
@@ -20,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.mongodb.client.model.Filters.*;
+
 /**
  * @author hongjun500
  * @date 2023/11/7 15:30
@@ -29,7 +30,6 @@ import java.util.Map;
  */
 
 @Log4j2
-@RequiredArgsConstructor
 public class MongoNetflixTitles {
 
 	public static final String DB = "kaggle";
@@ -39,7 +39,7 @@ public class MongoNetflixTitles {
 
 
 
-	public boolean importDocumentFromCsv(MongoConn mongoConn) throws IOException {
+	public boolean importDocumentFromCsv(MongoDatabase db) throws IOException {
 		File file = new ClassPathResource("netflix_titles.csv").getFile();
 		Reader reader = new InputStreamReader(FileUtil.getInputStream(file), StandardCharsets.UTF_8);
 		List<Map<String, String>> maps = CsvUtil.getReader().readMapList(reader);
@@ -52,16 +52,62 @@ public class MongoNetflixTitles {
 			document.putAll(map);
 			documents.add(document);
 		});
-		MongoCollection<Document> collection = mongoConn.getDatabase(DB).getCollection(COLLECTION);
+		MongoCollection<Document> collection = db.getCollection(COLLECTION);
 		InsertManyResult result = collection.insertMany(documents);
 		return !result.getInsertedIds().isEmpty();
 	}
 
-	public List<Document> pageDocument(Integer pageNum, Integer pageSize, MongoConn mongoConn) {
-		MongoCollection<Document> collection = mongoConn.getDatabase(DB).getCollection(COLLECTION);
+	public List<Document> listAll(MongoDatabase db) {
+		MongoCollection<Document> collection = db.getCollection(COLLECTION);
 		FindIterable<Document> documents = collection.find();
+		return documents.into(new ArrayList<>());
+	}
+
+	public List<Document> listPage(Integer pageNum, Integer pageSize, MongoDatabase db) {
+		MongoCollection<Document> collection = db.getCollection(COLLECTION);
+		FindIterable<Document> documents = collection.find();
+		// 自从 MongoDB 3.2 版本开始，使用 skip() 方法，允许使用游标方式进行分页。
 		documents.skip((pageNum - 1) * pageSize).limit(pageSize);
 		return documents.into(new ArrayList<>());
 	}
 
+	/**
+	 * 根据类型和年份查询文档
+	 * @param type Movie/TV Show
+	 * @param releaseYear 上映年份
+	 * @param db mongo 连接
+	 * @return
+	 */
+	public List<Document> listTypeAndInReleaseYear(String type, List<String> releaseYear, MongoDatabase db) {
+		MongoCollection<Document> collection = db.getCollection(COLLECTION);
+		FindIterable<Document> findIterable  = collection.find(and(eq("type", type), in("release_year", releaseYear)));
+		return findIterable.into(new ArrayList<>());
+	}
+
+	/**
+	 * 查询 从 2019 年以后的所有电影
+	 * @param type Movie/TV Show
+	 * @param releaseYear 上映年份
+	 * @param db mongo 连接
+	 * @return
+	 */
+	public List<Document> listMovieGte2019(String type, String releaseYear, MongoDatabase db) {
+		MongoCollection<Document> collection = db.getCollection(COLLECTION);
+		FindIterable<Document> findIterable = collection.find(and(eq("type", type), gte("release_year", releaseYear)));
+		return findIterable.into(new ArrayList<>());
+	}
+
+	/**
+	 * 查询关于日本的电视剧
+	 * @param type Movie/TV Show
+	 * @param listedIn International TV Shows, TV Dramas, TV Thrillers
+	 * @param country Japan
+	 * @param db mongo 连接
+	 * @return
+	 */
+	public List<Document> listTvShowWithJapan(String type, String listedIn, String country, MongoDatabase db) {
+		MongoCollection<Document> collection = db.getCollection(COLLECTION);
+		FindIterable<Document> findIterable = collection.find(and(eq("type", type), or(regex("country", country), regex("listed_in", listedIn))));
+		return findIterable.into(new ArrayList<>());
+	}
 }
