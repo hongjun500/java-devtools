@@ -2,6 +2,8 @@ package com.hongjun.response;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author hongjun500
  * @date 2022/12/30 17:38
@@ -10,7 +12,7 @@ import lombok.Data;
  * Description: 通用的返回类型
  */
 @Data
-public class CommonReturnType<T> {
+public class CommonReturnType<T> implements Serializable {
 	/**
 	 * 对应返回处理结果(成功与否)
 	 * success
@@ -18,11 +20,9 @@ public class CommonReturnType<T> {
 	 */
 	private String status;
 	/**
-	 * 若status=success,则对应data内返回前端需要的json数据
-	 * 若status=fail,则对应data内使用通用的错误码格式
-	 */
-	/**
 	 * 返回的数据
+	 * 若 status=success,则对应 data 内返回前端需要的 json 数据
+	 * 若 status=fail,则对应 data 内使用通用的错误码格式
 	 */
 	private T data;
 

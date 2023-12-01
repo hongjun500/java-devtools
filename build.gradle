@@ -87,14 +87,12 @@ subprojects {
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
 
-
         testImplementation(platform('org.junit:junit-bom:5.10.0'))
         // 支持旧版本的 IDEA 允许测试
         testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
             because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
         }
         // 仅支持 JUnit5
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
         testImplementation("org.junit.jupiter:junit-jupiter-engine")
         // 支持 JUnit3 或 JUnit4 测试代码
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
@@ -179,7 +177,14 @@ tasks.register('delAllLogs', Delete) {
             println "开始删除路径[$logsSubDir]下的日志文件"
 
             // 或者使用更简洁的语法
-             subproject.delete(fileTree(logsSubDir as String).include('*.log'))
+            // subproject.delete(fileTree(logsSubDir as String).include('**/*.log'))
+            subproject.delete {
+                fileTree(logsSubDir as String).include('**/*.log', '**/*html').each { File file ->
+                    println "删除文件: $file"
+                    file.delete()
+                }
+            }
+
         }
     }
 
@@ -187,7 +192,6 @@ tasks.register('delAllLogs', Delete) {
         println '删除日志文件完成'
     }
 }
-
 
 
 project(':common-base') {
@@ -222,8 +226,6 @@ project(':common-web') {
     }
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.0.0'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.0'
         // 引用 common-base
         implementation project(':common-base')
     }
