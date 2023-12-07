@@ -2,8 +2,8 @@ package com.hongjun.common;
 
 import com.hongjun.QuickStarterApplication;
 import com.hongjun.common.es.index.Book;
-import com.hongjun.es.document.Movie;
-import com.hongjun.es.service.MovieIndexService;
+import com.hongjun.quickstart.es.document.Movie;
+import com.hongjun.quickstart.es.service.MovieIndexService;
 import com.hongjun.index.base.BaseIndexService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;

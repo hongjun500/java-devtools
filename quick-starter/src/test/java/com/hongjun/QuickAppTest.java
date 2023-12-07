@@ -26,8 +26,7 @@ public class QuickAppTest {
 
     @Test
     void testApplicationContextRunner(){
-        assert contextRunner != null;
-        contextRunner.run(context -> {
+	    contextRunner.run(context -> {
             log.info("测试");
             for (String beanDefinitionName : context.getBeanDefinitionNames()) {
                 log.info(beanDefinitionName);

@@ -34,7 +34,7 @@ import java.util.Optional;
 @Log4j2
 @AutoConfiguration
 @RequiredArgsConstructor
-@EnableConfigurationProperties({AkkaActorProperties.class})
+@EnableConfigurationProperties(AkkaActorProperties.class)
 @ConditionalOnProperty(prefix = "akka.actor", name = "enabled", havingValue = "true")
 public class AkkaActorAutoConfiguration {
 

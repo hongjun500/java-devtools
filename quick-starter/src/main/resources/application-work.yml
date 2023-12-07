@@ -40,6 +40,12 @@ spring:
           password: 123
           database: 14
 
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: kaggle
+      username: admin
+      password: admin
 
 # mybatis 配置
 mybatis:
