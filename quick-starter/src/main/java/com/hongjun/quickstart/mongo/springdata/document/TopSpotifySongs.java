@@ -17,7 +17,6 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @Document(value = "top_spotify_songs")
 public class TopSpotifySongs {
 
-    @Field(value = "spotify_id")
     @MongoId(targetType = FieldType.OBJECT_ID)
     private String spotifyId;
 

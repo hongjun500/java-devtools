@@ -25,7 +25,7 @@ import java.util.List;
 @SpringBootTest(classes = QuickStarterApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class MovieIndexServiceTest{
 
-    final String csvPath = "tmdb_5000_movies.csv";
+    final String csvPath = "mongodb/csv/tmdb_5000_movies.csv";
 
     @Autowired
     private MovieIndexService movieIndexService;

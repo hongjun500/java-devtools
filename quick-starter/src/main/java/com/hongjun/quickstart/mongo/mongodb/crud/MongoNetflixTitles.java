@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.mongodb.client.model.Filters.*;
-
 /**
  * @author hongjun500
  * @date 2023/11/7 15:30
@@ -41,7 +39,7 @@ public class MongoNetflixTitles {
 
 
 	public boolean importDocumentFromCsv(MongoDatabase db) throws IOException {
-		File file = new ClassPathResource("netflix_titles.csv").getFile();
+		File file = new ClassPathResource("mongodb/csv/netflix_titles.csv").getFile();
 		Reader reader = new InputStreamReader(FileUtil.getInputStream(file), StandardCharsets.UTF_8);
 		List<Map<String, String>> maps = CsvUtil.getReader().readMapList(reader);
 		if (maps.isEmpty()) {

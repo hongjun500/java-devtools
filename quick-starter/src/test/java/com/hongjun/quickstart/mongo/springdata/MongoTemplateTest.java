@@ -1,5 +1,6 @@
 package com.hongjun.quickstart.mongo.springdata;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -21,5 +22,7 @@ class MongoTemplateTest {
 	@Test
 	void test() {
 		assert mongoTemplate != null;
+		// 是否成功连接到 MongoDB
+		Assertions.assertNotNull(mongoTemplate.getDb());
 	}
 }

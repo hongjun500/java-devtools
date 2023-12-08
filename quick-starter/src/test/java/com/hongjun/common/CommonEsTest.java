@@ -32,7 +32,7 @@ public class CommonEsTest {
 
     @Test
     void testPutData() throws IOException {
-        List<Movie> movieList = movieIndexService.convertCSVtoList("tmdb_5000_movies.csv");
+        List<Movie> movieList = movieIndexService.convertCSVtoList("mongodb/csv/tmdb_5000_movies.csv");
         baseIndexService.refreshDataToEs(movieList, Movie.class);
 
     }
