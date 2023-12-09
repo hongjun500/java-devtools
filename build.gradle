@@ -20,7 +20,8 @@ allprojects {
     group 'com.hongjun'
     version '1.0-SNAPSHOT'
 
-    tasks.register('helloGradle', JavaExec) {
+
+    tasks.register('helloGradle') {
         description = 'hello gradle'
         group = 'custom tasks'
         doLast {
@@ -30,7 +31,6 @@ allprojects {
 
     tasks {
         // 定义一个自定义的 clean 任务，用于删除 build 目录和日志文件夹
-
         clean {
             delete(rootProject.buildDir, subprojects.buildDir) // 删除根目录下的 build 目录和子模块的 build 目录
         }
@@ -38,8 +38,7 @@ allprojects {
         // 设置编译版本
         compileJava {
             options.encoding = "UTF-8"
-            // 解决 springboot 自定义元数据无法生成 spring-autoconfiguration-metadata.json 文件
-            inputs.files(tasks.withType(ProcessResources))
+
             // sourceCompatibility = JavaVersion.VERSION_17
             // targetCompatibility = JavaVersion.VERSION_17
         }
@@ -51,22 +50,18 @@ allprojects {
             // sourceCompatibility = JavaVersion.VERSION_17
             // targetCompatibility = JavaVersion.VERSION_17
         }
-
     }
 
     configurations {
-        // 排除依赖项中整个spring-boot下面的logging
+        // 排除依赖项中整个 spring-boot 下面的 logging
         configureEach {
             exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
-
         // 排除所有指定依赖项下的某个依赖
         // implementation (**) {
         //     exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         // }
-
     }
-
 }
 
 
