@@ -3,12 +3,12 @@ spring:
     active: main
 
 # 自定义通用配置
-akka:
-  actor:
-    enabled: true
-    actor-system-name: common-web-actor-system
+
 common:
   websocket:
     enabled: false
-
+  akka:
+    actor:
+      enabled: true
+      actor-system-name: common-web-actor-system
 

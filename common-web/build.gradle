@@ -1,3 +1,5 @@
+import org.springframework.util.StopWatch
+
 plugins {
     id 'org.springframework.boot' version '3.0.0'
 
@@ -9,6 +11,7 @@ version '1.0-SNAPSHOT'
 dependencies {
     // 自定义 starter
     annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    implementation 'org.springframework.boot:spring-boot-starter'
 
     // akka 依赖做异步消息处理
     api 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
@@ -34,21 +37,33 @@ tasks {
     }
 }
 
-tasks.register('delete' + project.name.capitalize() + 'Logs', Delete) {
+tasks.register('delete' + project.name.capitalize() + 'LogFiles', Delete) {
 // tasks.register("delete${project.name.capitalize()}Logs", Delete) {
-    description = '删除当前子工程下的日志文件'
+    description = '删除当前工程下的日志文件'
     group = 'custom tasks'
 
     // 日志文件的路径
-    def logsSubDir = project.projectDir.absolutePath + "\\logs"
+    String logsSubDir = project.projectDir.absolutePath + "\\logs"
 
     doFirst {
-        println "在子工程${project.name.capitalize()}中执行删除日志文件，开始删除路径[${logsSubDir}]下的日志文件"
+        println "在子工程${project.name.capitalize()}中执行删除路径[${logsSubDir}]下的日志文件"
     }
 
-    delete logsSubDir
-
     doLast {
-        println "在子工程${project.name.capitalize()}中执行删除日志文件，删除日志文件完成"
+        // 如果日志文件夹不存在，则不执行删除
+        if (!file(logsSubDir).exists()) {
+            println "日志文件夹[${logsSubDir}]不存在，不执行删除"
+            return
+        }
+        // 记录删除日志文件的耗时
+        StopWatch stopWatch = new StopWatch()
+        stopWatch.start()
+        // 删除日志文件
+        fileTree(logsSubDir).include('**/*.log', '**/*html').each { File file ->
+            println '删除文件: ' + file
+            file.delete()
+        }
+        stopWatch.stop()
+        println "删除日志文件耗时: ${stopWatch.getTotalTimeMillis()}ms"
     }
 }

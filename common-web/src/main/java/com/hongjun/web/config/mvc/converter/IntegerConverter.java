@@ -1,4 +1,4 @@
-package com.hongjun.web.conf.mvc.converter;
+package com.hongjun.web.config.mvc.converter;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;

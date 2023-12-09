@@ -10,8 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ActorRefBeanTest {
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-			.withPropertyValues("akka.actor.enabled=true")
-			.withPropertyValues("akka.actor.actorSystemName=common-web-actor-system")
+			.withPropertyValues("common.akka.actor.enabled=true")
+			.withPropertyValues("common.akka.actor.actorSystemName=common-web-actor-system")
 			.withConfiguration(AutoConfigurations.of(AkkaActorAutoConfiguration.class))
 			.withBean(MyActor.class);
 
@@ -23,7 +23,7 @@ class ActorRefBeanTest {
 			assertThat(context).hasSingleBean(ActorRefBean.class);
 			assertThat(context).getBean("actorRefBean").isSameAs(context.getBean(ActorRefBean.class));
 			ActorRefBean actorRefBean = context.getBean(ActorRefBean.class);
-			actorRefBean.tell(MyActor.class, "hello");
+			actorRefBean.tell(MyActor.class, "hello, akka!");
 		});
 	}
 

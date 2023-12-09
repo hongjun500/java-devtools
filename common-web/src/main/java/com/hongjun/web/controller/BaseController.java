@@ -50,7 +50,6 @@ public class BaseController implements ResponseBodyAdvice<Object> {
 			if (body instanceof String) {
 				return CommonFastJsonUtil.toJson(CommonReturnType.create(body));
 			}
-
 		}
 		return body;
 	}
@@ -73,8 +72,7 @@ public class BaseController implements ResponseBodyAdvice<Object> {
 			responseData.put("errMsg", EnumBusinessError.UNKNOWN_ERROR.getErrMsg());
 		}
 		log.info(e.getStackTrace());
-		log.info("------错误信息----------{}----------",responseData.get("errMsg"));
+		log.info("------错误信息----------{}----------", responseData.get("errMsg"));
 		return CommonReturnType.create(responseData,"fail");
 	}
-
 }

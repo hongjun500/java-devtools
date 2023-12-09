@@ -35,14 +35,4 @@ public class SpringActorProducer implements IndirectActorProducer {
 		}
 		return actorClass.asSubclass(Actor.class);
 	}
-
-	/*@Override
-	public Actor produce() {
-		return (Actor) applicationContext.getBean(actorBeanName);
-	}
-
-	@Override
-	public Class<? extends Actor> actorClass() {
-		return (Class<? extends Actor>) applicationContext.getType(actorBeanName);
-	}*/
 }
