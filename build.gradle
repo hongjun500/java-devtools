@@ -212,7 +212,7 @@ project(':common-base') {
 }
 
 
-project(':common-web') {
+project(':common-web-spring-boot-starter') {
     sourceSets {
         // 定义源码所在位置
         main {
@@ -247,7 +247,7 @@ project(':elasticsearch-starter') {
 project(':quick-starter') {
     dependencies {
         implementation project(':common-base')
-        implementation project(':common-web')
+        implementation project(':common-web-spring-boot-starter')
         implementation project(':elasticsearch-starter')
     }
 }

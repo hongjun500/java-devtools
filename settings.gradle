@@ -1,22 +1,28 @@
 pluginManagement {
     repositories {
-        maven { url "https://maven.aliyun.com/repository/public" }
-        maven { url "https://maven.aliyun.com/repository/central" }
-        maven { url "https://maven.aliyun.com/repository/google" }
-        maven { url "https://maven.aliyun.com/repository/spring" }
-        maven { url "https://repo.spring.io/snapshot" }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        maven { url 'https://repo.spring.io/snapshot' }
         mavenCentral()
     }
 
 }
 
-rootProject.name = "java-devtools-hongjun500"
+rootProject.name = 'java-devtools-hongjun500'
 
-include "common-base"
-include "common-web"
-include "quick-starter"
-include "elasticsearch-starter"
-include "mybatis-dynamicsql-generator"
-include "jpa-generator"
-include "mongodb-starter"
+include 'common-base'
+
+include 'common-web-spring-boot-starter'
+// 指定 common-web-spring-boot-starter 模块的路径和构建文件名
+project(':common-web-spring-boot-starter').projectDir = file('common-web')
+project(':common-web-spring-boot-starter').buildFileName = 'build.gradle'
+
+// 一般情况下，子模块的路径和构建文件名与子模块的名称相同，所以这里可以省略
+include 'quick-starter'
+include 'elasticsearch-starter'
+include 'mybatis-dynamicsql-generator'
+include 'jpa-generator'
+include 'mongodb-starter'
 
