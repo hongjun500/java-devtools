@@ -1,4 +1,4 @@
-rootProject.name = 'java-devtools-hongjun500'
+rootProject.name = 'java-devtools'
 include 'common-base'
 include 'common-web'
 include 'quick-starter'
