@@ -1,7 +1,7 @@
 package com.hongjun.web.akka;
 
 import akka.actor.AbstractActor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Scope;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description: Actor 基类，每次注入时都会创建一个新的实例
  */
-@Log4j2
+@Slf4j
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class BaseActor<T> extends AbstractActor {
 // public abstract class BaseActor<T> extends UntypedAbstractActor {

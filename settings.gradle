@@ -7,7 +7,6 @@ pluginManagement {
         maven { url "https://repo.spring.io/snapshot" }
         mavenCentral()
     }
-
 }
 
 rootProject.name = 'java-devtools-hongjun500'
@@ -24,5 +23,5 @@ include 'quick-starter'
 include 'elasticsearch-starter'
 include 'mybatis-dynamicsql-generator'
 include 'jpa-generator'
-include 'mongodb-starter'
+include 'mongodb-quickstart'
 

@@ -8,8 +8,6 @@
     <properties>
         <property name="log_deploy_path">logs/deploy</property>
         <property name="log_test_path">logs/test</property>
-        <property name="log4j2.skipJansi">${spring:log4j2.skipJansi}</property>
-
     </properties>
     <!--先定义所有的appender-->
     <appenders>

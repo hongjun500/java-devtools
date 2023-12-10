@@ -1,14 +1,16 @@
 package com.hongjun;
 
 import com.google.common.collect.Lists;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -18,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:
  */
-@Log4j2
+@Slf4j
 @SpringBootTest(classes = QuickStarterApplication.class)
 public class QuickAppTest {
 
@@ -54,11 +56,11 @@ public class QuickAppTest {
         });*/
         log.info("-----------------------------fori--------------");
         for (int i = 0; i < integerArrayList2.size(); i++) {
-            log.info(integerArrayList2.get(i));
+            log.info("{}",integerArrayList2.get(i));
         }
         log.info("-----------------------------for--------------");
         for (Object integer : integerArrayList2) {
-            log.info(integer);
+            log.info("{}", integer);
 
         }
     }
@@ -73,7 +75,7 @@ public class QuickAppTest {
         int[] ints = twoSum(array, target);
 
         boolean unique = isUnique("s");
-        log.info(ints);
+        log.info("{}", unique);
     }
     public int[] twoSum(int[] nums, int target) {
         HashMap<Integer, Integer> map = new HashMap<>();

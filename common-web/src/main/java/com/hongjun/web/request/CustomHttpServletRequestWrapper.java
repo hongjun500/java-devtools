@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 
@@ -17,7 +17,7 @@ import java.io.*;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description: 自定义处理请求信息
  */
-@Log4j2
+@Slf4j
 @Getter
 @Setter
 public class CustomHttpServletRequestWrapper extends HttpServletRequestWrapper {

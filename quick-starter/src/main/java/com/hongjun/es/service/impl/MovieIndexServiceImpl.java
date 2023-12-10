@@ -8,20 +8,23 @@ import com.google.common.collect.Lists;
 import com.hongjun.es.document.*;
 import com.hongjun.es.service.MovieIndexService;
 import com.hongjun.index.base.BaseIndexService;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-@Log4j2
+@Slf4j
 @Service
 public class MovieIndexServiceImpl implements MovieIndexService {
 

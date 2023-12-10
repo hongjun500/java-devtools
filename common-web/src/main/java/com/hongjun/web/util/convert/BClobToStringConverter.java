@@ -1,6 +1,6 @@
 package com.hongjun.web.util.convert;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Converter;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.sql.SQLException;
  * Description: Blob, Clob 转 String
  */
 
-@Log4j2
+@Slf4j
 public class BClobToStringConverter implements Converter {
 
     /**

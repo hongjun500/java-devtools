@@ -4,7 +4,7 @@ import cn.hutool.http.ContentType;
 import com.hongjun.web.request.CustomHttpServletRequestWrapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -16,7 +16,7 @@ import java.util.Objects;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description: 自定义的过滤器
  */
-@Log4j2
+@Slf4j
 public class CustomFilter implements Filter {
 
 	@Override

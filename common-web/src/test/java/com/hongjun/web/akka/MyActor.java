@@ -1,7 +1,6 @@
 package com.hongjun.web.akka;
 
-import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 
@@ -13,7 +12,7 @@ import org.springframework.context.annotation.Scope;
  * Description:
  */
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@Log4j2
+@Slf4j
 public class MyActor extends BaseActor<String> {
 
 

@@ -4,12 +4,11 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSONArray;
 import com.google.common.collect.Lists;
 import com.hongjun.JpaGeneratorApp;
 import com.hongjun.model.*;
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,9 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@Log4j2
+@Slf4j
 @SpringBootTest(classes = JpaGeneratorApp.class)
 class MovieServiceTest {
 

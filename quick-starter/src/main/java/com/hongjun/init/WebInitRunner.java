@@ -1,6 +1,6 @@
 package com.hongjun.init;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -12,9 +12,12 @@ import org.springframework.stereotype.Component;
  * Created with 2019.3.2.IntelliJ IDEA
  * Description:
  */
-@Log4j2
+@Slf4j
 @Component
 public class WebInitRunner implements ApplicationRunner {
+
+
+
     @Override
     public void run(ApplicationArguments args) {
         log.info("一个启动应用时的初始化操作");

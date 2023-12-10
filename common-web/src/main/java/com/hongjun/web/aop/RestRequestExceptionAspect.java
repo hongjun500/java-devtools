@@ -4,7 +4,7 @@ import com.hongjun.error.BusinessException;
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -24,7 +24,7 @@ import java.util.Arrays;
  * Description: rest 请求异常时的参数和响应
  */
 
-@Log4j2
+@Slf4j
 @Aspect
 @Order(value = 2)
 @Component

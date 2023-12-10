@@ -6,7 +6,7 @@ import com.hongjun.mongodb.connection.MongoConn;
 import com.hongjun.response.CommonPage;
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import com.mongodb.client.MongoDatabase;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
 import org.bson.Document;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Log4j2
+@Slf4j
 class MongoNetflixTitlesTest {
 	private final MongoNetflixTitles mongoNetflixTitles = new MongoNetflixTitles();
 	private final MongoConn mongoConn = new MongoConn();

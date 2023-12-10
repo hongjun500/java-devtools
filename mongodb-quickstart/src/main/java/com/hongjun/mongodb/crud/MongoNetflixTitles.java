@@ -6,7 +6,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertManyResult;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.core.io.ClassPathResource;
 
@@ -29,7 +29,7 @@ import static com.mongodb.client.model.Filters.*;
  * Description: MongoDB example for kaggle with netflix_titles
  */
 
-@Log4j2
+@Slf4j
 public class MongoNetflixTitles {
 
 	public static final String DB = "kaggle";

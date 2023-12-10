@@ -1,7 +1,7 @@
 package com.hongjun.conf;
 
 import co.elastic.clients.transport.TransportUtils;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,7 +15,7 @@ import javax.net.ssl.SSLContext;
 import java.io.File;
 import java.io.IOException;
 
-@Log4j2
+@Slf4j
 @Configuration
 @ConditionalOnProperty(prefix = "common.elasticsearch", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(value = AutoConfigEsClientProperties.class)

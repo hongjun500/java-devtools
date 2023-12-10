@@ -6,7 +6,7 @@ import com.hongjun.web.akka.SpringExtension;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -25,7 +25,7 @@ import java.util.Optional;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description: 自定义 akka-actor 配置
  */
-@Log4j2
+@Slf4j
 @AutoConfiguration
 @RequiredArgsConstructor
 @EnableConfigurationProperties({AkkaActorProperties.class})

@@ -12,7 +12,7 @@ dependencies {
     // 自定义 starter
     annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
     implementation 'org.springframework.boot:spring-boot-starter'
-
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     // akka 依赖做异步消息处理
     api 'com.typesafe.akka:akka-actor-typed_2.13:2.7.0'
     // redisson 做分布式锁
