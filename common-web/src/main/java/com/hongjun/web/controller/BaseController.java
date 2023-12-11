@@ -4,7 +4,7 @@ import com.hongjun.enums.EnumBusinessError;
 import com.hongjun.error.BusinessException;
 import com.hongjun.response.CommonReturnType;
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import java.util.Map;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description: restController 类的增强处理
  */
-@Log4j2
+@Slf4j
 @RestControllerAdvice(annotations = RestController.class)
 public class BaseController implements ResponseBodyAdvice<Object> {
 
@@ -50,7 +50,6 @@ public class BaseController implements ResponseBodyAdvice<Object> {
 			if (body instanceof String) {
 				return CommonFastJsonUtil.toJson(CommonReturnType.create(body));
 			}
-
 		}
 		return body;
 	}
@@ -72,9 +71,8 @@ public class BaseController implements ResponseBodyAdvice<Object> {
 			responseData.put("errCode", EnumBusinessError.UNKNOWN_ERROR.getErrCode());
 			responseData.put("errMsg", EnumBusinessError.UNKNOWN_ERROR.getErrMsg());
 		}
-		log.info(e.getStackTrace());
-		log.info("------错误信息----------{}----------",responseData.get("errMsg"));
+		log.info(e.getMessage());
+		log.info("------错误信息----------{}----------", responseData.get("errMsg"));
 		return CommonReturnType.create(responseData,"fail");
 	}
-
 }

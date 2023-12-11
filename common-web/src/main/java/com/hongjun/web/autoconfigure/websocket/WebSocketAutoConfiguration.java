@@ -3,7 +3,7 @@ package com.hongjun.web.autoconfigure.websocket;
 
 import com.hongjun.web.websocket.CustomTextWebSocketHandler;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:
  */
-@Log4j2
+@Slf4j
 @Configuration
 @EnableWebSocket
 @RequiredArgsConstructor

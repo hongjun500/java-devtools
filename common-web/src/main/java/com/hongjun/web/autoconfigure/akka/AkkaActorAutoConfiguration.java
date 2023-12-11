@@ -5,20 +5,14 @@ import com.hongjun.web.akka.ActorRefBean;
 import com.hongjun.web.akka.SpringExtension;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import jakarta.annotation.Resource;
-import jakarta.annotation.Resources;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import javax.inject.Singleton;
@@ -31,11 +25,11 @@ import java.util.Optional;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description: 自定义 akka-actor 配置
  */
-@Log4j2
+@Slf4j
 @AutoConfiguration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(AkkaActorProperties.class)
-@ConditionalOnProperty(prefix = "akka.actor", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "common.akka.actor", name = "enabled", havingValue = "true")
 public class AkkaActorAutoConfiguration {
 
 	private final AkkaActorProperties akkaActorProperties;

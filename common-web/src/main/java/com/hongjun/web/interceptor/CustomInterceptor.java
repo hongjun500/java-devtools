@@ -7,12 +7,12 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.hongjun.enums.EnumBusinessError;
 import com.hongjun.error.BusinessException;
-import com.hongjun.web.request.CustomHttpServletRequestWrapper;
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import com.hongjun.web.constant.CustomConstants;
+import com.hongjun.web.request.CustomHttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.method.HandlerMethod;
@@ -30,7 +30,7 @@ import java.util.List;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description: 自定义的拦截器
  */
-@Log4j2
+@Slf4j
 public class CustomInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws BusinessException {

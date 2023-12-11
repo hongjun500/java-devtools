@@ -1,7 +1,7 @@
 package com.hongjun.index.base;
 
 import cn.hutool.core.collection.CollUtil;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.DocumentOperations;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Log4j2
+@Slf4j
 @Service
 public class BaseIndexServiceImpl implements BaseIndexService {
 

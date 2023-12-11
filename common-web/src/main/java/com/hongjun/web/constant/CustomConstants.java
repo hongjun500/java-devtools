@@ -13,26 +13,24 @@ import lombok.Data;
 public class CustomConstants {
 
 	/**
-	 * 请求的header中携带的userId
+	 * 请求 header 中携带的 userId
 	 */
 	public static final String HEAD_USER_ID = "userId";
 	/**
-	 * 请求的header中携带的userName
+	 * 请求 header 中携带的 userName
 	 */
 	public static final String HEAD_USER_NAME = "userName";
 
 
 	/**
-	 * 请求头中的需要处理的参数集
-	 * 如果请求头中有这些参数那么可以直接放到请求体中
-	 * 继承某一个含有以下参数的DTO,在post请求时可以从body里面直接拿到对应需要的参数
+	 * 请求 header 中的需要处理的参数集
+	 * 如果请求 header 有这些参数那么可以直接放到请求体中
+	 * 继承某一个含有以下参数的 DTO,在 POST 请求时可以从 body 里面直接拿到对应需要的参数
 	 */
 	public static final String[] HEAD_PARAMS = new String[]{HEAD_USER_ID, HEAD_USER_NAME};
 
 	/**
-	 * 携带的token
+	 * 请求 header 中携带的 token
 	 */
 	public static final String HEAD_TOKEN = "token";
-
-
 }

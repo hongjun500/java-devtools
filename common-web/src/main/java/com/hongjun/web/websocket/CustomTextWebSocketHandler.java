@@ -1,6 +1,6 @@
 package com.hongjun.web.websocket;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -18,7 +18,7 @@ import java.util.List;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:
  */
-@Log4j2
+@Slf4j
 @Component
 public class CustomTextWebSocketHandler extends TextWebSocketHandler {
 

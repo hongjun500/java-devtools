@@ -20,7 +20,8 @@ allprojects {
     group 'com.hongjun'
     version '1.0-SNAPSHOT'
 
-    tasks.register('helloGradle', JavaExec) {
+
+    tasks.register('helloGradle') {
         description = 'hello gradle'
         group = 'custom tasks'
         doLast {
@@ -30,7 +31,6 @@ allprojects {
 
     tasks {
         // 定义一个自定义的 clean 任务，用于删除 build 目录和日志文件夹
-
         clean {
             delete(rootProject.buildDir, subprojects.buildDir) // 删除根目录下的 build 目录和子模块的 build 目录
         }
@@ -38,8 +38,7 @@ allprojects {
         // 设置编译版本
         compileJava {
             options.encoding = "UTF-8"
-            // 解决 springboot 自定义元数据无法生成 spring-autoconfiguration-metadata.json 文件
-            inputs.files(tasks.withType(ProcessResources))
+
             // sourceCompatibility = JavaVersion.VERSION_17
             // targetCompatibility = JavaVersion.VERSION_17
         }
@@ -51,22 +50,18 @@ allprojects {
             // sourceCompatibility = JavaVersion.VERSION_17
             // targetCompatibility = JavaVersion.VERSION_17
         }
-
     }
 
     configurations {
-        // 排除依赖项中整个spring-boot下面的logging
+        // 排除依赖项中整个 spring-boot 下面的 logging
         configureEach {
             exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         }
-
         // 排除所有指定依赖项下的某个依赖
         // implementation (**) {
         //     exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         // }
-
     }
-
 }
 
 
@@ -98,11 +93,6 @@ subprojects {
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
         testImplementation("org.junit.vintage:junit-vintage-engine")
 
-        // Log4j2 依赖
-        implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.19.0'
-        implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
-        implementation 'org.apache.logging.log4j:log4j-jul:2.19.0'
-
     }
     test {
         // 使用 JUnit5 测试框架
@@ -110,7 +100,7 @@ subprojects {
         testLogging {
             events "passed", "skipped", "failed"
         }
-        systemProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
+        // systemProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager")
     }
     configurations {
         // compileOnly 继承自 annotationProcessor 等价于 ->
@@ -132,60 +122,45 @@ subprojects {
 }
 
 // 任务配置
-/*tasks.register('delAllLogs', Delete) {
+tasks.register('delAllLogDirs', Delete) {
 
-    description = '删除日志文件'
+    description = '删除全部日志文件夹'
     group = 'custom tasks'
-
-    // 定义日志文件的路径
-    def logsRootDir = rootProject.projectDir.absolutePath + "\\logs"
+    // 定义根项目日志文件的路径
+    String logsRootDir = rootProject.projectDir.absolutePath + "\\logs"
     doFirst {
-        println '开始删除路径{' + logsRootDir + '}下的日志文件'
+        println '开始删除根项目[' + rootProject.name + ']的日志文件夹'
         delete logsRootDir
-        // 在每个子项目的日志目录中执行删除
-        rootProject.subprojects { subproject ->
-            def  logsSubDir = subproject.projectDir.absolutePath + "\\logs"
-            println "开始删除路径[" + (logsSubDir as String) + "]下的日志文件"
 
-            // 添加文件过滤器，仅删除*.log文件
-            subproject.fileTree(logsSubDir).include('*.log').files.each { file ->
-                println "删除文件: $file"
-                file.delete()
-            }
+        // 在每个子项目的目录中执行删除
+        rootProject.getSubprojects().forEach {sub ->
+            String logsSubDir = sub.projectDir.absolutePath + "\\logs"
+            println '开始删除子项目[' + sub.name + ']的日志文件夹'
+            delete logsSubDir
         }
-
     }
-
     doLast {
-        println '删除日志文件完成'
+        println '删除完成'
     }
-}*/
+}
 
-tasks.register('delAllLogs', Delete) {
+tasks.register('delAllLogFiles', Delete) {
     description = '删除日志文件'
     group = 'custom tasks'
 
-    // 定义日志文件的路径
-    def logsRootDir = rootProject.projectDir.absolutePath + "/logs"
-
     doFirst {
-        println "开始删除路径[$logsRootDir]下的日志文件"
-        delete logsRootDir
-
-        // 在每个子项目的日志目录中执行删除
-        rootProject.subprojects { subproject ->
-            def logsSubDir = subproject.projectDir.absolutePath + "/logs"
-            println "开始删除路径[$logsSubDir]下的日志文件"
-
-            // 或者使用更简洁的语法
-            // subproject.delete(fileTree(logsSubDir as String).include('**/*.log'))
-            subproject.delete {
-                fileTree(logsSubDir as String).include('**/*.log', '**/*html').each { File file ->
-                    println "删除文件: $file"
+        // 在每个子项目的目录中执行删除
+        rootProject.getSubprojects().forEach {sub ->
+            String logsSubDir = sub.projectDir.absolutePath + "\\logs"
+            println '开始删除子项目[' + sub.name + ']的日志'
+            // 更简洁的语法
+            // sub.delete(fileTree(logsSubDir).include('**/*.log','**/*html'))
+            sub.delete {
+                fileTree(logsSubDir).include('**/*.log','**/*html').each {File file ->
+                    println '删除文件: ' + file
                     file.delete()
                 }
             }
-
         }
     }
 
@@ -213,7 +188,7 @@ project(':common-base') {
 }
 
 
-project(':common-web') {
+project(':common-web-spring-boot-starter') {
     sourceSets {
         // 定义源码所在位置
         main {
@@ -248,12 +223,12 @@ project(':elasticsearch-starter') {
 project(':quick-starter') {
     dependencies {
         implementation project(':common-base')
-        implementation project(':common-web')
+        implementation project(':common-web-spring-boot-starter')
         implementation project(':elasticsearch-starter')
     }
 }
 
-project(':mongodb-starter') {
+project(':mongodb-quickstart') {
     dependencies {
         implementation project(':common-base')
     }

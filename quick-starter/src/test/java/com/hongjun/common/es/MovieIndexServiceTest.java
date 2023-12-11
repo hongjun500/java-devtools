@@ -6,7 +6,7 @@ import com.hongjun.quickstart.es.PageMovieRepository;
 import com.hongjun.quickstart.es.document.Movie;
 import com.hongjun.quickstart.es.service.MovieIndexService;
 import com.hongjun.index.base.BaseIndexService;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-@Log4j2
+@Slf4j
 @SpringBootTest(classes = QuickStarterApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class MovieIndexServiceTest{
 

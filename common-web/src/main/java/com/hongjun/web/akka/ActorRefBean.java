@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -21,7 +21,7 @@ import static com.hongjun.web.akka.SpringExtension.SpringExtProvider;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:
  */
-@Log4j2
+@Slf4j
 public class ActorRefBean {
 	private static ActorSystem actorSystem;
 	private static final Map<String, ActorRef> actorRefMap = new ConcurrentHashMap<>();

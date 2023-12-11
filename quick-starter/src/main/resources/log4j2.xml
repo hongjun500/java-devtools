@@ -8,6 +8,8 @@
     <properties>
         <property name="log_deploy_path">logs/deploy</property>
         <property name="log_test_path">logs/test</property>
+        <property name="log4j2.skipJansi">${spring:log4j2.skipJansi}</property>
+
     </properties>
     <!--先定义所有的appender-->
     <appenders>
@@ -16,7 +18,8 @@
             <!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) -->
             <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
             <!--输出日志的格式-->
-            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n"/>
+            <!--<PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n"/>-->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%6p} %style{%5pid}{bright,magenta} --- [%15.15t] %style{%-40.40logger{39}}{bright,cyan}: %m%n"/>
         </Console>
         <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
         <File name="test_log" fileName="${log_test_path}/testlog.html" append="false">

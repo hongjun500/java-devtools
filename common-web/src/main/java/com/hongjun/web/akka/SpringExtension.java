@@ -28,7 +28,7 @@ public class SpringExtension extends AbstractExtensionId<SpringExtension.SpringE
 
 		/**
 		 * Used to initialize the Spring application context for the extension.
-		 * @param applicationContext
+		 * @param applicationContext spring application context
 		 */
 		public void initialize(ApplicationContext applicationContext) {
 			this.applicationContext = applicationContext;

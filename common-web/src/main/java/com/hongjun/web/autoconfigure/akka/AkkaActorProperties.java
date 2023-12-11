@@ -8,10 +8,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2023/4/3 13:42
  * @tool ThinkPadX1隐士
  * Created with 2022.2.2.IntelliJ IDEA
- * Description: akka.actor的配置类
+ * Description: common.akka.actor的配置类
  */
 @Data
-@ConfigurationProperties(prefix = "akka.actor")
+@ConfigurationProperties(prefix = "common.akka.actor")
 public class AkkaActorProperties {
 	/**
 	 * 默认开启
