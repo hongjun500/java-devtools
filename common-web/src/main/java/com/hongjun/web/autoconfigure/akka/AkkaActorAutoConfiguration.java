@@ -28,7 +28,7 @@ import java.util.Optional;
 @Slf4j
 @AutoConfiguration
 @RequiredArgsConstructor
-@EnableConfigurationProperties({AkkaActorProperties.class})
+@EnableConfigurationProperties(AkkaActorProperties.class)
 @ConditionalOnProperty(prefix = "common.akka.actor", name = "enabled", havingValue = "true")
 public class AkkaActorAutoConfiguration {
 

@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @author hongjun500
@@ -113,7 +114,7 @@ public class CommonPage<T> implements Serializable {
 		}
 		List<T> filteredData = data.stream()
 				.filter(predicate)
-				.toList();
+				.collect(Collectors.toList());
 		return CommonPage.paginate(filteredData, pageNum, pageSize);
 	}
 }

@@ -91,6 +91,7 @@ subprojects {
         testImplementation("org.junit.jupiter:junit-jupiter-engine")
         // 支持 JUnit3 或 JUnit4 测试代码
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+        testImplementation("org.junit.vintage:junit-vintage-engine")
 
     }
     test {

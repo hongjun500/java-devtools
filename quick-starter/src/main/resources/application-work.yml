@@ -28,18 +28,25 @@ spring:
   data:
     redis:
       host: 127.0.0.1
-      password: #123
+#      password: #123
       port: 6379
       database: 15
 
     # redisson 单机配置项
-    redisson:
-      config:
-        singleServerConfig:
-          address: "redis://127.0.0.1:6379"
-          password: 123
-          database: 14
+      redisson:
+        config:
+          singleServerConfig:
+            address: "redis://127.0.0.1:6379"
+  #          password: 123
+            database: 14
 
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: kaggle
+      username: mongodb
+      password: mongodb
+      authentication-database: admin
 
 # mybatis 配置
 mybatis:

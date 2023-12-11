@@ -1,6 +1,5 @@
 package com.hongjun.index.service;
 
-import com.hongjun.EsAppMain;
 import com.hongjun.index.Book;
 import com.hongjun.index.base.BaseIndexService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @Slf4j
-@SpringBootTest(classes = EsAppMain.class)
 class BaseIndexServiceTest {
 
     @Autowired

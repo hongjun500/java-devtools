@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: main
+    active: work
 
 # 自定义通用配置
 
