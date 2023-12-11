@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import com.hongjun.springdata.document.TopSpotifySongs;
 import com.mongodb.client.result.DeleteResult;
+import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -30,19 +31,13 @@ public class TopSpotifySongServiceImpl implements TopSpotifySongService {
     }
 
     @Override
-    public void importData(List<Map<String, String>> maps) {
+    public void importData(List<Map<String, String>> maps, Class clazz) {
         if (maps.isEmpty()) {
             return;
         }
-        List<TopSpotifySongs> list = Lists.newArrayListWithExpectedSize(maps.size());
-        maps.forEach(map -> {
-            TopSpotifySongs topSpotifySongs = new TopSpotifySongs();
-            map.forEach((key, value) -> {
-
-
-            });
-        });
-        mongoTemplate.insert(maps, "top_spotify_songs");
+        // 改用批量
+        // mongoTemplate.bulkOps(BulkOperations.BulkMode.ORDERED, TopSpotifySongs.class).insert(maps).execute();
+        mongoTemplate.insert(maps, TopSpotifySongs.class);
     }
 
     @Override

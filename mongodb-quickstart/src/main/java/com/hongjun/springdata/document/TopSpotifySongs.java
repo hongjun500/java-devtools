@@ -1,6 +1,7 @@
 package com.hongjun.springdata.document;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -18,9 +19,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public class TopSpotifySongs {
 
     @Field(value = "spotify_id")
-    @MongoId(targetType = FieldType.STRING)
     private String spotifyId;
-
 
     @Field(value = "name")
     private String name;

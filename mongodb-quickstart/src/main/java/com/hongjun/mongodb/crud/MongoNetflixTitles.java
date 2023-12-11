@@ -40,7 +40,7 @@ public class MongoNetflixTitles {
 
 
 	public boolean importDocumentFromCsv(MongoDatabase db) throws IOException {
-		File file = new ClassPathResource("netflix_titles.csv").getFile();
+		File file = new ClassPathResource("mongo/csv/netflix_titles.csv").getFile();
 		Reader reader = new InputStreamReader(FileUtil.getInputStream(file), StandardCharsets.UTF_8);
 		List<Map<String, String>> maps = CsvUtil.getReader().readMapList(reader);
 		if (maps.isEmpty()) {

@@ -2,6 +2,8 @@ package com.hongjun.springdata;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
  * @author hongjun500
@@ -11,7 +13,8 @@ import org.springframework.context.annotation.ComponentScan;
  * Description: MongoDBAutoConfiguration
  */
 
-@EnableAutoConfiguration
 @ComponentScan(basePackages = "com.hongjun.springdata")
+@EnableAutoConfiguration
+@EnableMongoRepositories(basePackages = "com.hongjun.*.repositories")
 public class MongoDBConfiguration {
 }
