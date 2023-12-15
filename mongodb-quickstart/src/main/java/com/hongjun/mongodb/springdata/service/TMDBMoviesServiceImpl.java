@@ -3,16 +3,14 @@ package com.hongjun.mongodb.springdata.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import com.hongjun.mongodb.springdata.document.TMDBMovies;
 import com.hongjun.response.CommonPage;
-import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import com.mongodb.bulk.BulkWriteResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Example;
+import org.bson.types.Decimal128;
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -125,7 +123,7 @@ public class TMDBMoviesServiceImpl implements TMDBMoviesService {
     public List<TMDBMovies> listByVoteAverageLte(BigDecimal voteAverageLte) {
         Query query = new Query();
         // todo 查询有误 BigDecimal
-        query.addCriteria(Criteria.where("vote_average").lte(voteAverageLte));
+        query.addCriteria(Criteria.where("vote_average").lte(Decimal128.parse(voteAverageLte.toString())));
         return mongoTemplate.find(query, TMDBMovies.class);
     }
 

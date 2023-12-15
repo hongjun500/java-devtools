@@ -115,7 +115,7 @@ class TMDBMoviesServiceImplTest {
     @Test
     void listByVoteAverageLte() {
         List<TMDBMovies> tmdbMovies = tmdbMoviesService.listByVoteAverageLte(new BigDecimal(6));
-        assertEquals(1831, tmdbMovies.size());
+        assertEquals(2047, tmdbMovies.size());
     }
 
     @Test
