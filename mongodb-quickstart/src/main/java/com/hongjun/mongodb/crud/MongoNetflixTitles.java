@@ -50,6 +50,7 @@ public class MongoNetflixTitles {
 		maps.forEach(map -> {
 			Document document = new Document();
 			document.putAll(map);
+			document.put("_id", map.get("show_id"));
 			documents.add(document);
 		});
 		MongoCollection<Document> collection = db.getCollection(COLLECTION);
