@@ -79,20 +79,23 @@ public class CommonPage<T> implements Serializable {
 	 */
 	public static <T> CommonPage<T> paginate(List<T> data, Integer pageNum, Integer pageSize) {
 		if (data == null || data.isEmpty()) {
-			return CommonPage.create(new ArrayList<>(),1, pageSize, 1, 0L);
+			return CommonPage.create(new ArrayList<>(),0, pageSize, 1, 0L);
 		}
 
 		long total = data.size();
 		pageSize = pageSize < 1 ? 1 : pageSize;
 		int totalPage = (int) Math.ceil((double) total / pageSize);
 
-		if (pageNum < 1) {
-			pageNum = 1;
+		if (pageNum < 0) {
+			pageNum = 0;
 		} else if (pageNum > totalPage) {
 			pageNum = totalPage;
 		}
 
-		int offset = (pageNum - 1) * pageSize;
+		// int offset = (pageNum - 1) * pageSize;
+		// 从数据下标 0 开始
+		int offset = pageNum  * pageSize;
+
 		int endIndex = Math.min(offset + pageSize, data.size());
 
 		List<T> pageData = data.subList(offset, endIndex);
