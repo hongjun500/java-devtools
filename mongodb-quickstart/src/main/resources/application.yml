@@ -8,4 +8,4 @@ spring:
       authentication-database: admin
 logging:
   level:
-    root: debug
+    root: info

@@ -12,8 +12,4 @@ dependencies {
     testRuntimeOnly 'org.springframework.boot:spring-boot-starter-test'
 }
 
-test {
-    // 使用 mockito 作为测试框架
-}
-
 

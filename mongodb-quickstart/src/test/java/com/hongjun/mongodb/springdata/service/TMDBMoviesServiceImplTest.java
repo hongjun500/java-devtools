@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListene
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.IndexInfo;
 import org.springframework.test.context.TestExecutionListeners;
 
 import java.io.IOException;
@@ -114,12 +115,55 @@ class TMDBMoviesServiceImplTest {
 
     @Test
     void listByVoteAverageLte() {
-        List<TMDBMovies> tmdbMovies = tmdbMoviesService.listByVoteAverageLte(new BigDecimal(6));
+        List<TMDBMovies> tmdbMovies = tmdbMoviesService.listByVoteAverageLte(6);
         assertEquals(2047, tmdbMovies.size());
+    }
+
+    @Test
+    void listByRuntimeGteAndVoteAverageLte() {
+        List<TMDBMovies> tmdbMovies = tmdbMoviesService.listByRuntimeGteAndVoteAverageLte(120, 6);
+        assertEquals(196, tmdbMovies.size());
+        tmdbMovies.forEach(obj -> {
+            assertTrue(obj.getRuntime() >= 120);
+            assertTrue(obj.getVoteAverage().compareTo(new BigDecimal(6)) <= 0);
+        });
+    }
+
+    @Test
+    void listDistinctByField() {
+        List<String> distinctByField = tmdbMoviesService.listDistinctByField("original_language");
+        assertEquals(37, distinctByField.size());
+    }
+
+    @Test
+    void listTextMatchAndOrderYearAsc() {
+        List<TMDBMovies> cnMovies = tmdbMoviesService.listTextMatchAndOrderYearAsc("cn");
+        assertEquals(12, cnMovies.size());
+        List<TMDBMovies> zhMovies = tmdbMoviesService.listTextMatchAndOrderYearAsc("zh");
+        assertEquals(27, zhMovies.size());
     }
 
     @Test
     void delCollection() {
         assertTrue(tmdbMoviesService.delCollection());
+    }
+
+    @Test
+    void createTextIndex() {
+        tmdbMoviesService.createTextIndex("original_language");
+    }
+
+    @Test
+    void dropTextIndex() {
+        assertTrue(tmdbMoviesService.dropTextIndex("title","keywords.name","original_language"));
+    }
+
+    @Test
+    void dropAllIndex() {
+        tmdbMoviesService.dropAllIndex();
+        List<IndexInfo> indexInfos = mongoTemplate.indexOps(TMDBMovies.class).getIndexInfo();
+        // 默认有一个 _id_ 索引
+        indexInfos.removeIf(obj -> obj.getName().equals("_id_"));
+        assertEquals(0, indexInfos.size());
     }
 }

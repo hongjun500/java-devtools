@@ -2,6 +2,7 @@ package com.hongjun.mongodb.springdata.document;
 
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import lombok.Data;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;

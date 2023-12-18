@@ -11,10 +11,16 @@ import com.mongodb.bulk.BulkWriteResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.Decimal128;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.IndexInfo;
+import org.springframework.data.mongodb.core.index.TextIndexDefinition;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -120,17 +126,29 @@ public class TMDBMoviesServiceImpl implements TMDBMoviesService {
     }
 
     @Override
-    public List<TMDBMovies> listByVoteAverageLte(BigDecimal voteAverageLte) {
+    public List<TMDBMovies> listByVoteAverageLte(Object voteAverageLte) {
         Query query = new Query();
-        // todo 查询有误 BigDecimal
         query.addCriteria(Criteria.where("vote_average").lte(Decimal128.parse(voteAverageLte.toString())));
         return mongoTemplate.find(query, TMDBMovies.class);
     }
 
     @Override
-    public List<TMDBMovies> listByRuntimeGteAndVoteAverageLte(Integer runtimeGte, BigDecimal voteAverageLte) {
+    public List<TMDBMovies> listByRuntimeGteAndVoteAverageLte(Integer runtimeGte, Object voteAverageLte) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("runtime").gte(runtimeGte).and("vote_average").lte(voteAverageLte));
+        query.addCriteria(Criteria.where("runtime").gte(runtimeGte).and("vote_average").lte(Decimal128.parse(voteAverageLte.toString())));
+        return mongoTemplate.find(query, TMDBMovies.class);
+    }
+
+    @Override
+    public List<String> listDistinctByField(String field) {
+        return mongoTemplate.query(TMDBMovies.class).distinct(field).as(String.class).all();
+    }
+
+    @Override
+    public List<TMDBMovies> listTextMatchAndOrderYearAsc(String text) {
+        Query query = TextQuery.queryText(new TextCriteria().matchingAny(text));
+        // 排序
+        query.with(Sort.by(Sort.DEFAULT_DIRECTION, "release_year"));
         return mongoTemplate.find(query, TMDBMovies.class);
     }
 
@@ -138,5 +156,27 @@ public class TMDBMoviesServiceImpl implements TMDBMoviesService {
     public boolean delCollection() {
         mongoTemplate.dropCollection(TMDBMovies.class);
         return true;
+    }
+
+    @Override
+    public void createTextIndex(String... fields) {
+        String ensureIndex = mongoTemplate.indexOps(TMDBMovies.class).ensureIndex(TextIndexDefinition.builder().onFields(fields).build());
+        log.info("ensureIndex: {}", ensureIndex);
+    }
+
+    @Override
+    public boolean dropTextIndex(String... fields) {
+        List<IndexInfo> indexInfos = mongoTemplate.indexOps(TMDBMovies.class).getIndexInfo();
+        indexInfos.forEach(obj -> {
+            if (obj.isIndexForFields(List.of(fields))) {
+                mongoTemplate.indexOps(TMDBMovies.class).dropIndex(obj.getName());
+            }
+        });
+        return false;
+    }
+
+    @Override
+    public void dropAllIndex() {
+        mongoTemplate.indexOps(TMDBMovies.class).dropAllIndexes();
     }
 }

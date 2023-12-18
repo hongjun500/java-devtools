@@ -60,17 +60,32 @@ public interface TMDBMoviesService {
 
     /**
      * 小于等于查询
+     * 由于文档中 vote_averageLte 字段类型为 Decimal128，所以这里的参数类型需要转换成 Decimal128
      * @param voteAverageLte 评分
      * @return
      */
-    List<TMDBMovies> listByVoteAverageLte(BigDecimal voteAverageLte);
+    List<TMDBMovies> listByVoteAverageLte(Object voteAverageLte);
 
     /**
      * 多个字段联合比较查询
      * @return
      */
-    List<TMDBMovies> listByRuntimeGteAndVoteAverageLte(Integer runtimeGte, BigDecimal voteAverageLte);
+    List<TMDBMovies> listByRuntimeGteAndVoteAverageLte(Integer runtimeGte, Object voteAverageLte);
 
+    /**
+     * 获取单个字段不同的值
+     * @param field
+     * @return
+     */
+    List<String> listDistinctByField(String field);
+
+    /**
+     * 文本匹配查询并且按年份升序排序
+     * 需要创建文本索引
+     * @param text
+     * @return
+     */
+    List<TMDBMovies> listTextMatchAndOrderYearAsc(String text);
 
     /**
      * 删除当前集合
@@ -81,4 +96,20 @@ public interface TMDBMoviesService {
         mongoConn.getDatabase("kaggle").getCollection("tmdb_movies").drop();
         return true;
     }
+
+    /**
+     * 创建文本索引
+     */
+    void createTextIndex(String... fields);
+
+    /**
+     * 删除指定字段的索引
+     * @param fields 字段
+     */
+    boolean dropTextIndex(String... fields);
+
+    /**
+     * 删除所有索引
+     */
+    void dropAllIndex();
 }
