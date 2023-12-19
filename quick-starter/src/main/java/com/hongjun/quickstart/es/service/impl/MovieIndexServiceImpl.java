@@ -5,6 +5,7 @@ import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.google.common.collect.Lists;
+import com.hongjun.quickstart.es.document.*;
 import com.hongjun.quickstart.es.service.MovieIndexService;
 import com.hongjun.index.base.BaseIndexService;
 import lombok.extern.slf4j.Slf4j;

@@ -72,6 +72,17 @@ public class CommonFastJsonUtil {
     }
 
     /**
+     * 将json数组转换成对象数组
+     * @param jsonArrayStr jsonArrayStr
+     * @param clazz     对象类型
+     * @param <T>       对象泛型
+     * @return 对象数组
+     */
+    public static <T> T[] fromJsonArray(String jsonArrayStr, Class<T[]> clazz) {
+        return JSON.parseObject(jsonArrayStr, clazz);
+    }
+
+    /**
      * 将json对象转换成json字符串
      *
      * @param jsonObject json对象

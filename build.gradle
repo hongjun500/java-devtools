@@ -82,7 +82,7 @@ subprojects {
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
 
-        testImplementation(platform('org.junit:junit-bom:5.10.0'))
+        testImplementation(platform('org.junit:junit-bom:5.9.1'))
         // 支持旧版本的 IDEA 允许测试
         testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
             because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
