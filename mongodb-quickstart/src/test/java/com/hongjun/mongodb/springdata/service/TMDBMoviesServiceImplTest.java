@@ -137,6 +137,8 @@ class TMDBMoviesServiceImplTest {
 
     @Test
     void listTextMatchAndOrderYearAsc() {
+        List<TMDBMovies> tmdbMovies = tmdbMoviesService.listTextMatchAndOrderYearAsc("黄金");
+        assertEquals(1, tmdbMovies.size());
         List<TMDBMovies> cnMovies = tmdbMoviesService.listTextMatchAndOrderYearAsc("cn");
         assertEquals(12, cnMovies.size());
         List<TMDBMovies> zhMovies = tmdbMoviesService.listTextMatchAndOrderYearAsc("zh");
