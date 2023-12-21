@@ -106,14 +106,15 @@ public class TMDBMoviesServiceImpl implements TMDBMoviesService {
 
     @Override
     public List<TMDBMovies> listByTitleOrKeywords(String title, String keywords) {
-        if (StrUtil.isBlank(title) && StrUtil.isBlank(keywords)) {
-            return new ArrayList<>();
-        }
         Query query = new Query();
         Criteria criteria = new Criteria();
         // 使用正则表达式模糊查询
-        criteria.orOperator(Criteria.where("title").regex(title),
-                Criteria.where("keywords.name").regex(keywords));
+        if (StrUtil.isNotBlank(title)) {
+            criteria.orOperator(Criteria.where("title").regex(title));
+        }
+        if (StrUtil.isNotBlank(keywords)) {
+            criteria.orOperator(Criteria.where("keywords.name").regex(keywords));
+        }
         query.addCriteria(criteria);
         return mongoTemplate.find(query, TMDBMovies.class);
     }
