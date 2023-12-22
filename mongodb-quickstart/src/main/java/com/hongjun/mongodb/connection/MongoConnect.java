@@ -12,12 +12,12 @@ import org.bson.conversions.Bson;
 
 
 @Slf4j
-public class MongoConn {
+public class MongoConnect {
     public static final String URI = "mongodb://mongodb:mongodb@localhost:27017/?authSource=admin";
 
     private final MongoClient mongoClient;
 
-    public MongoConn() {
+    public MongoConnect() {
         ConnectionString connectionString = new ConnectionString(URI);
         this.mongoClient = MongoClients.create(connectionString);
     }

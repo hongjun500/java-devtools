@@ -1,7 +1,7 @@
 package com.hongjun.mongodb.crud;
 
 import com.google.common.collect.Lists;
-import com.hongjun.mongodb.connection.MongoConn;
+import com.hongjun.mongodb.connection.MongoConnect;
 import com.hongjun.response.CommonPage;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
@@ -17,7 +17,7 @@ class MongoTMDBMoviesTest {
 
     private final MongoTMDBMovies mongoTMDBMovies = new MongoTMDBMovies();
 
-    private final MongoConn mongoConn = new MongoConn();
+    private final MongoConnect mongoConn = new MongoConnect();
 
     @Test
     void importDocumentFromCsv() {
