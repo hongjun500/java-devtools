@@ -3,6 +3,7 @@ package com.hongjun.util.convert.json;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.TypeReference;
 
 public class CommonFastJsonUtil {
     /**
@@ -14,6 +15,18 @@ public class CommonFastJsonUtil {
      * @return 对象实例
      */
     public static <T> T fromJson(String jsonString, Class<T> clazz) {
+        return JSON.parseObject(jsonString, clazz);
+    }
+
+    /**
+     * 将json字符串转换成对象
+     *
+     * @param jsonString json字符串
+     * @param clazz      对象类型
+     * @param <T>        对象泛型
+     * @return 对象实例
+     */
+    public static <T> T fromJson(String jsonString, TypeReference<T> clazz) {
         return JSON.parseObject(jsonString, clazz);
     }
 
