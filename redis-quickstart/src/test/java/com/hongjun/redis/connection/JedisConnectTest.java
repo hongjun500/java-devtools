@@ -1,15 +1,10 @@
 package com.hongjun.redis.connection;
 
-import com.hongjun.redis.connection.crud.JedisCrud;
+import com.hongjun.redis.connection.crud.JedisOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPooled;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 class JedisConnectTest {
@@ -19,7 +14,7 @@ class JedisConnectTest {
     private final JedisPooled jedisPooled = jedisConnect.getJedisPooled();
     private final Jedis jedis = jedisConnect.getJedis();
 
-    private final JedisCrud jedisCrud = new JedisCrud();
+    private final JedisOperation jedisCrud = new JedisOperation();
 
     @Test
     void testJedisConnect() {
