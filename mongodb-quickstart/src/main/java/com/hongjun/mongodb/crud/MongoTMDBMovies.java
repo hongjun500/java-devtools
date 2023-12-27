@@ -41,8 +41,6 @@ public class MongoTMDBMovies {
 
     public static final MongoCollection<Document> collection = mongoConn.getDatabase(DB_NAME).getCollection(COLLECTION_NAME);
 
-    public static final MongoCollection<Document> collection = mongoConn.getDatabase(DB_NAME).getCollection(COLLECTION_NAME);
-
 
     public boolean importDocumentFromCsv() throws IOException {
         List<Map<String, String>> maps = FileResourcesUtil.readCSV("mongo/csv/tmdb_5000_movies.csv");

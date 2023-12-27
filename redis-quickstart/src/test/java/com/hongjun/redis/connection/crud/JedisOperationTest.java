@@ -131,8 +131,8 @@ class JedisOperationTest {
         List<Map<String, String>> sortMaps = maps.stream().filter(obj -> obj.get("original_language").equals("zh")).sorted(Comparator.comparing(v -> v.get("vote_average"))).toList();
         sortMaps.forEach(obj -> {
             String id = obj.get("id");
-            List<JSONObject> genres = CommonFastJsonUtil.fromJsonArray(obj.get("genres"), JSONObject.class);
-            List<JSONObject> keywords = CommonFastJsonUtil.fromJsonArray(obj.get("keywords"), JSONObject.class);
+            List<JSONObject> genres = CommonFastJsonUtil.fromJson(JSONObject.class, obj.get("genres"));
+            List<JSONObject> keywords = CommonFastJsonUtil.fromJson(JSONObject.class, obj.get("keywords"));
             if (!CollectionUtils.isEmpty(genres)) {
                 jedisOperation.sadd(REDIS_KEY_SET + ":" + id + genre, genres.stream().map(o -> o.getString("name")).toArray(String[]::new));
             }

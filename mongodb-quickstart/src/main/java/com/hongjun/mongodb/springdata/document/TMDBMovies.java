@@ -107,16 +107,14 @@ public class TMDBMovies {
     }
 
     public List<Keyword> convertKeywords(String keywords) {
-        // todo Java8
-        return List.of(CommonFastJsonUtil.fromJsonArray(keywords, Keyword[].class));
+        return CommonFastJsonUtil.fromJson(Keyword.class, keywords);
     }
 
     public List<Genre> convertGenres(String genres) {
-        // todo Java8
-        return List.of(CommonFastJsonUtil.fromJsonArray(genres, Genre[].class));
+        return CommonFastJsonUtil.fromJson(Genre.class, genres);
     }
 
-    public static <T> List<T> convertToList(String json, Class<T[]> targetType) {
-        return List.of(CommonFastJsonUtil.fromJsonArray(json, targetType));
+    public static <T> List<T> convertToList(String json, Class<T> targetType) {
+        return CommonFastJsonUtil.fromJson(targetType, json);
     }
 }

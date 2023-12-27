@@ -16,7 +16,6 @@ import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.IndexInfo;
 import org.springframework.data.mongodb.core.index.TextIndexDefinition;
-import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,15 +60,15 @@ public class TMDBMoviesServiceImpl implements TMDBMoviesService {
         maps.forEach(objMap -> {
             TMDBMovies tmdbMovies = BeanUtil.mapToBean(objMap, TMDBMovies.class, true, CopyOptions.create().setIgnoreError(true));
             // log.debug("tmdbMovies: {}", CommonFastJsonUtil.toJson(tmdbMovies));
-            tmdbMovies.setGenres(convertToList(objMap.get("genres"), TMDBMovies.Genre[].class));
+            tmdbMovies.setGenres(convertToList(objMap.get("genres"), TMDBMovies.Genre.class));
             tmdbMovies.setReleaseDate(parseLocalDate(objMap, "release_date"));
-            tmdbMovies.setKeywords(convertToList(objMap.get("keywords"), TMDBMovies.Keyword[].class));
-            tmdbMovies.setProductionCompanies(convertToList(objMap.get("production_companies"), TMDBMovies.ProductionCompany[].class));
-            tmdbMovies.setProductionCountries(convertToList(objMap.get("production_countries"), TMDBMovies.ProductionCountry[].class));
+            tmdbMovies.setKeywords(convertToList(objMap.get("keywords"), TMDBMovies.Keyword.class));
+            tmdbMovies.setProductionCompanies(convertToList(objMap.get("production_companies"), TMDBMovies.ProductionCompany.class));
+            tmdbMovies.setProductionCountries(convertToList(objMap.get("production_countries"), TMDBMovies.ProductionCountry.class));
             tmdbMovies.setRevenue(Long.parseLong(objMap.get("revenue")));
             // tmdbMovies.setRuntime(BigDecimal.valueOf());
             tmdbMovies.setRuntime(Integer.parseInt("".equals(objMap.get("runtime")) ? "0" : objMap.get("runtime")));
-            tmdbMovies.setSpokenLanguages(convertToList(objMap.get("spoken_languages"), TMDBMovies.SpokenLanguage[].class));
+            tmdbMovies.setSpokenLanguages(convertToList(objMap.get("spoken_languages"), TMDBMovies.SpokenLanguage.class));
             tmdbMovies.setVoteAverage(BigDecimal.valueOf(Double.parseDouble(objMap.get("vote_average"))));
             tmdbMovies.setVoteCount(Integer.parseInt(objMap.get("vote_count")));
             list.add(tmdbMovies);
