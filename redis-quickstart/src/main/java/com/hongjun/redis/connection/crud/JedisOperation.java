@@ -3,9 +3,11 @@ package com.hongjun.redis.connection.crud;
 import com.google.common.collect.Maps;
 import com.hongjun.redis.connection.JedisConnect;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.params.ScanParams;
 import redis.clients.jedis.resps.ScanResult;
+import redis.clients.jedis.resps.Tuple;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.Set;
  */
 
 public class JedisOperation {
-    
+
     private final JedisConnect jedisConnect = new JedisConnect();
     private final JedisPooled jedisPooled = jedisConnect.getJedisPooled();
     // ---------------------------------- String ----------------------------------
@@ -51,6 +53,7 @@ public class JedisOperation {
 
     /**
      * 设置多个 key:value
+     *
      * @param keysvalues
      */
     public void mset(String... keysvalues) {
@@ -74,6 +77,7 @@ public class JedisOperation {
      * INCR 命令将字符串值解析为整数，将其递增一，最终将得到的值设置为新值。还有类似的命令，如 INCRBY、DECR 和 DECRBY。在内部，它们都是同一个命令，只是以稍微不同的方式执行。
      * 所谓 INCR 具有原子性是指，即使有多个客户端同时对相同的键执行 INCR 命令，它们也不会进入竞态条件。例如，永远不会发生这样的情况：客户端 1 读取值为 "10"，客户端 2 同时读取值也为 "10"，两者都将值递增到 11，然后将新值设置为 11。最终的值将始终为 12，而读-递增-设置的操作是在其他所有客户端未执行命令的情况下完成的。
      * 简而言之，INCR 命令的原子性确保了在多个并发客户端的情况下，递增操作是以不可分割的方式执行的。这意味着不会发生并发冲突，保障了数据的一致性。
+     *
      * @param key
      */
     public long incr(String key) {
@@ -88,6 +92,7 @@ public class JedisOperation {
 
     /**
      * 将一个或多个值插入到列表头部
+     *
      * @param key
      * @param values
      */
@@ -97,6 +102,7 @@ public class JedisOperation {
 
     /**
      * 将一个或多个值插入到列表尾部
+     *
      * @param key
      * @param values
      */
@@ -106,6 +112,7 @@ public class JedisOperation {
 
     /**
      * 移除并返回列表的头元素
+     *
      * @param key koc
      * @return
      */
@@ -115,6 +122,7 @@ public class JedisOperation {
 
     /**
      * 移除并返回列表的尾元素
+     *
      * @param key
      * @return
      */
@@ -124,6 +132,7 @@ public class JedisOperation {
 
     /**
      * 返回列表的长度
+     *
      * @param key
      * @return
      */
@@ -150,6 +159,7 @@ public class JedisOperation {
 
     /**
      * 将一个或多个成员元素加入到集合中，已经存在于集合的成员元素将被忽略。
+     *
      * @param key
      * @param members
      * @return
@@ -220,6 +230,7 @@ public class JedisOperation {
 
     /**
      * 设置哈希表 key 中的字段 field 的值为 value 。
+     *
      * @param key
      * @param field
      * @param value
@@ -231,6 +242,7 @@ public class JedisOperation {
 
     /**
      * 返回哈希表 key 中给定域 field 的值。
+     *
      * @param key
      * @param field
      * @return
@@ -241,6 +253,7 @@ public class JedisOperation {
 
     /**
      * 返回哈希表 key 中一个或多个给定域的值。
+     *
      * @param key
      * @return
      */
@@ -250,6 +263,7 @@ public class JedisOperation {
 
     /**
      * 返回哈希表 key 中，所有的域和值。
+     *
      * @param key
      * @return
      */
@@ -259,6 +273,7 @@ public class JedisOperation {
 
     /**
      * 返回哈希表 key 中的所有域。
+     *
      * @param key
      * @return
      */
@@ -268,6 +283,7 @@ public class JedisOperation {
 
     /**
      * 返回哈希表 key 中所有域的值。
+     *
      * @param key
      * @return
      */
@@ -277,10 +293,11 @@ public class JedisOperation {
 
     /**
      * 返回哈希表 key 中，所有的域和值。
+     *
      * @param key
      * @param cursor 游标
-     * @count 一次返回的数量
      * @return
+     * @count 一次返回的数量
      */
     public Map<String, String> hscan(String key, String cursor, Integer count) {
         ScanParams scanParams = new ScanParams();
@@ -292,12 +309,13 @@ public class JedisOperation {
             List<Map.Entry<String, String>> result = hscan.getResult();
             map.putAll(result.stream().collect(HashMap::new, (m, v) -> m.put(v.getKey(), v.getValue()), HashMap::putAll));
             i = Integer.parseInt(hscan.getCursor());
-        }while (i > 0);
+        } while (i > 0);
         return map;
     }
 
     /**
      * 返回哈希表 key 中域的数量。
+     *
      * @param key
      * @return
      */
@@ -307,6 +325,7 @@ public class JedisOperation {
 
     /**
      * 删除哈希表 key 中的一个或多个指定域，不存在的域将被忽略。
+     *
      * @param key
      * @param fields
      * @return
@@ -316,4 +335,157 @@ public class JedisOperation {
     }
 
     // ---------------------------------- Sorted Sets ----------------------------------
+
+    /**
+     * 将一个 member 元素及其 score 值加入到有序集 key 当中。
+     *
+     * @param key
+     * @param score  分数
+     * @param member 成员
+     */
+    public long zadd(String key, double score, String member) {
+        return jedisPooled.zadd(key, score, member);
+    }
+
+    /**
+     * 将多个 member 元素及其 score 值加入到有序集 key 当中。
+     *
+     * @param key
+     * @param scoreMembers member:score
+     * @return 被成功添加的新成员的数量，不包括那些被更新的、已经存在的成员。
+     */
+    public long zadd(String key, Map<String, Double> scoreMembers) {
+        return jedisPooled.zadd(key, scoreMembers);
+    }
+
+    /**
+     * 从低到高返回有序集 key 中，指定区间内的成员。
+     *
+     * @param key
+     * @param start 开始位置
+     * @param end   结束位置
+     */
+    public List<String> zrange(String key, long start, long end) {
+        return jedisPooled.zrange(key, start, end);
+    }
+
+    /**
+     * 根据字典区间返回有序集 key 中的所有的成员。
+     * 前提是具有相同分数的成员
+     *
+     * @param key
+     * @param min
+     * @param max
+     * @return
+     */
+    public List<String> zrangeByLex(String key, String min, String max) {
+        return jedisPooled.zrangeByLex(key, min, max);
+    }
+
+    /**
+     * 返回有序集 key 中，指定区间内的成员分数
+     *
+     * @param key
+     * @param start 开始位置
+     * @param end   结束位置
+     */
+    public List<Double> zrangeByScore(String key, long start, long end) {
+        List<Tuple> tuples = jedisPooled.zrangeWithScores(key, start, end);
+        return tuples.stream().map(Tuple::getScore).toList();
+    }
+
+    /**
+     * 从高到低返回有序集 key 中，指定区间内的成员。
+     *
+     * @param key
+     * @param start 开始位置
+     * @param end   结束位置
+     */
+    public List<String> zrevrange(String key, long start, long end) {
+        return jedisPooled.zrevrange(key, start, end);
+    }
+
+    /**
+     * 从高到低返回有序集 key 中，指定区间内的成员分数
+     *
+     * @param key
+     * @param start 开始位置
+     * @param end   结束位置
+     */
+    public List<Double> zrevrangeByScore(String key, long start, long end) {
+        List<Tuple> tuples = jedisPooled.zrevrangeWithScores(key, start, end);
+        return tuples.stream().map(Tuple::getScore).toList();
+    }
+
+    /**
+     * 从低到高返回有序集 key 中，指定 score 区间内的成员。
+     *
+     * @param key
+     * @param min 最小值
+     * @param max 最大值
+     */
+    public List<String> zrangeByScore(String key, double min, double max) {
+        return jedisPooled.zrangeByScore(key, min, max);
+    }
+
+    /**
+     * 从高到低返回有序集 key 中，指定 score 区间内的成员。
+     *
+     * @param key
+     * @param max 最大值
+     * @param min 最小值
+     */
+    public List<String> zrevrangeByScore(String key, double max, double min) {
+        return jedisPooled.zrevrangeByScore(key, max, min);
+    }
+
+    /**
+     * 删除有序集 key 中的一个或多个成员，不存在的成员将被忽略。
+     */
+    public long zrem(String key, String... members) {
+        return jedisPooled.zrem(key, members);
+    }
+
+    /**
+     * 根据分数范围删除
+     *
+     * @param key
+     * @param min 最小值
+     * @param max 最大值
+     * @return 删除的数量
+     */
+    public long zremrangeByScore(String key, double min, double max) {
+        return jedisPooled.zremrangeByScore(key, min, max);
+    }
+
+    /**
+     * 返回有序集 key 中，成员 member 的排名(指索引)，其中有序集成员按 score 值从小到大排列。
+     *
+     * @param key
+     * @param member 成员
+     */
+    public Long zrank(String key, String member) {
+        return jedisPooled.zrank(key, member);
+    }
+
+    /**
+     * 返回有序集 key 中，成员 member 的排名(指索引)，其中有序集成员按 score 值从大到小排列。
+     *
+     * @param key
+     * @param member 成员
+     * @return
+     */
+    public Long zrevrank(String key, String member) {
+        return jedisPooled.zrevrank(key, member);
+    }
+
+    /**
+     * 递增有序集 key 中成员 member 的 score 值。
+     * @param key
+     * @param score
+     * @param member
+     */
+    public double zincrBy(String key, double score, String member) {
+        return jedisPooled.zincrby(key, score, member);
+    }
 }

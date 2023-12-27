@@ -2,6 +2,7 @@ package com.hongjun.redis.connection.crud;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.TypeReference;
+import com.google.common.collect.Maps;
 import com.hongjun.redis.connection.JedisConnect;
 import com.hongjun.redis.springdata.util.FileResourcesUtil;
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
@@ -193,4 +194,71 @@ class JedisOperationTest {
         assertEquals(20, jedisOperation.hlen(REDIS_KEY_HASH + ":79"));
 
     }
+
+    @Test
+    void zset() {
+        final String originalTitle = ":original_title";
+        final String title = ":title";
+        List<Map<String, String>> sortMaps = maps.stream().filter(obj -> obj.get("original_language").equals("zh")).sorted(Comparator.comparing(v -> v.get("vote_average"))).toList();
+        sortMaps.forEach(obj -> {
+            // jedisOperation.zadd(REDIS_KEY_ZSET, Double.valueOf(obj.get("vote_average")), CommonFastJsonUtil.toJson(obj));
+            jedisOperation.zadd(REDIS_KEY_ZSET + title, Double.parseDouble(obj.get("vote_average")), obj.get("title"));
+        });
+        Map<String, Double> map = Maps.newHashMap();
+        sortMaps.forEach(obj -> {
+            map.put(obj.get("original_title"), Double.valueOf(obj.get("vote_average")));
+        });
+        jedisOperation.zadd(REDIS_KEY_ZSET + originalTitle, map);
+        List<String> zrange = jedisOperation.zrange(REDIS_KEY_ZSET + originalTitle, 0, -1);
+        zrange.forEach(obj -> log.info("zrange: {}", obj));
+
+
+
+
+        List<String> zrevrange = jedisOperation.zrevrange(REDIS_KEY_ZSET + originalTitle, 0, -1);
+        zrevrange.forEach(obj -> log.info("zrevrange: {}", obj));
+
+        List<Double> zrangeByScore = jedisOperation.zrangeByScore(REDIS_KEY_ZSET + originalTitle, 0, 3);
+        zrangeByScore.forEach(obj -> log.info("zrangeByScore: {}", obj));
+
+        List<Double> zrevrangeByScore = jedisOperation.zrevrangeByScore(REDIS_KEY_ZSET + originalTitle, 0, 6);
+        zrevrangeByScore.forEach(obj -> log.info("zrevrangeByScore: {}", obj));
+
+        List<String> zrangeByScore1 = jedisOperation.zrangeByScore(REDIS_KEY_ZSET + originalTitle, 3D, 4D);
+        zrangeByScore1.forEach(obj -> log.info("zrangeByScore1: {}", obj));
+        assertLinesMatch(List.of("兔侠传奇"), zrangeByScore1);
+        List<String> zrevrangeByScore1 = jedisOperation.zrevrangeByScore(REDIS_KEY_ZSET + originalTitle, 8D, 7.5D);
+        zrevrangeByScore1.forEach(obj -> log.info("zrevrangeByScore1: {}", obj));
+        assertLinesMatch(List.of("南京!南京!"), zrevrangeByScore1);
+
+        long zrem = jedisOperation.zrem(REDIS_KEY_ZSET + originalTitle, "兔侠传奇");
+        assertEquals(1, zrem);
+
+        long zremrangeByRank = jedisOperation.zremrangeByScore(REDIS_KEY_ZSET + originalTitle, 4.0D, 4.9D);
+        assertEquals(2, zremrangeByRank);
+
+        Long zrank = jedisOperation.zrank(REDIS_KEY_ZSET + originalTitle, "一代宗師");
+        assertEquals(5, zrank);
+
+        Long zrevrank = jedisOperation.zrevrank(REDIS_KEY_ZSET + originalTitle, "英雄");
+        assertEquals(2, zrevrank);
+
+        List<String> zrangeByLex = jedisOperation.zrangeByLex(REDIS_KEY_ZSET + title, "[H", "[T");
+        zrangeByLex.forEach(obj -> log.info("zrangeByLex: {}", obj));
+
+        Map<String, Double> racer_scores = Maps.newHashMap();
+        racer_scores.put("Norem", 0D);
+        racer_scores.put("Sam-Bodden", 0D);
+        racer_scores.put("Royce", 1D);
+        racer_scores.put("Castilla", 0D);
+        racer_scores.put("Prickett", 0D);
+        racer_scores.put("Ford", 0D);
+        jedisOperation.zadd(REDIS_KEY_ZSET + ":racer_scores", racer_scores);
+        List<String> zrangeByLex1 = jedisOperation.zrangeByLex(REDIS_KEY_ZSET + ":racer_scores", "[C", "[N");
+        zrangeByLex1.forEach(obj -> log.info("zrangeByLex1: {}", obj));
+
+        double zincrBy = jedisOperation.zincrBy(REDIS_KEY_ZSET + ":racer_scores", 1.0D, "Norem");
+        assertEquals(1.0D, zincrBy);
+    }
+
 }
