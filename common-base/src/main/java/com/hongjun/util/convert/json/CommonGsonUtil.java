@@ -35,8 +35,9 @@ public class CommonGsonUtil {
      *
      * @param jsonString json字符串
      * @return json对象
+     * @deprecated Use {@link #fromJson(String, Class)} instead
      */
-    @Deprecated // Use fromJson instead
+    @Deprecated
     public static JsonObject fromJson(String jsonString) {
         return gson.fromJson(jsonString, JsonObject.class);
     }
@@ -46,6 +47,7 @@ public class CommonGsonUtil {
      *
      * @param jsonString json字符串
      * @return json数组
+     * @deprecated Use {@link #fromJson(String, Class)} instead
      */
     @Deprecated // Use fromJson instead
     public static JsonArray toJsonArray(String jsonString) {
