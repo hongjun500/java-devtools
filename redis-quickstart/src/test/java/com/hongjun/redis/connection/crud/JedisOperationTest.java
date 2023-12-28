@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.params.ScanParams;
+import redis.clients.jedis.resps.GeoRadiusResponse;
 import redis.clients.jedis.resps.ScanResult;
 
 import java.io.IOException;
@@ -26,11 +27,14 @@ class JedisOperationTest {
     private final JedisPooled jedisPooled = jedisConnect.getJedisPooled();
     private final JedisOperation jedisOperation = new JedisOperation();
     private final List<Map<String, String>> maps = FileResourcesUtil.readCSV("csv/tmdb_5000_movies.csv");
+    private final List<Map<String, String>> caseMaps = FileResourcesUtil.readCSV("csv/Case.csv");
+
     private final String REDIS_KEY_LIST = "tmdb_5000_movies:List";
 
     private final String REDIS_KEY_HASH = "tmdb_5000_movies:Hash";
     private final String REDIS_KEY_SET = "tmdb_5000_movies:Set";
     private final String REDIS_KEY_ZSET = "tmdb_5000_movies:ZSet";
+    private final String REDIS_KEY_GEO = "tmdb_5000_movies:Geo";
 
 
     JedisOperationTest() throws IOException {
@@ -261,4 +265,23 @@ class JedisOperationTest {
         assertEquals(1.0D, zincrBy);
     }
 
+    @Test
+    void geo() {
+        assertNotNull(caseMaps);
+        caseMaps.forEach(obj -> {
+            String id = obj.getOrDefault("case_id", new Random().toString());
+            String longitude = obj.get("longitude");
+            String latitude = obj.get("latitude");
+            if ("-".equals(longitude) || "-".equals(latitude)) {
+                return;
+            }
+            // return back
+            jedisOperation.geoadd(REDIS_KEY_GEO, Double.parseDouble(longitude), Double.parseDouble(latitude), ":" + id);
+        });
+        List<GeoRadiusResponse> geosearch = jedisOperation.geosearch(REDIS_KEY_GEO, 126.992652, 37.538621);
+        geosearch.forEach(obj -> log.info("geosearch: {}", obj.getMemberByString()));
+
+        double geodist = jedisOperation.geodist(REDIS_KEY_GEO, ":1000016", ":1000023");
+        log.info("geodist: {}", geodist);
+    }
 }

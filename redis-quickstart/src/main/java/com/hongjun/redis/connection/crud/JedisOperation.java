@@ -2,10 +2,12 @@ package com.hongjun.redis.connection.crud;
 
 import com.google.common.collect.Maps;
 import com.hongjun.redis.connection.JedisConnect;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import redis.clients.jedis.Jedis;
+import redis.clients.jedis.GeoCoordinate;
 import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.args.GeoUnit;
+import redis.clients.jedis.params.GeoSearchParam;
 import redis.clients.jedis.params.ScanParams;
+import redis.clients.jedis.resps.GeoRadiusResponse;
 import redis.clients.jedis.resps.ScanResult;
 import redis.clients.jedis.resps.Tuple;
 
@@ -487,5 +489,43 @@ public class JedisOperation {
      */
     public double zincrBy(String key, double score, String member) {
         return jedisPooled.zincrby(key, score, member);
+    }
+
+    // ---------------------------------- Streams ----------------------------------
+    // todo 待定
+
+    // ---------------------------------- Geo --------------------------------------
+
+    /**
+     * 将指定的地理空间位置（纬度、经度、名称）添加到指定的key中。
+     * @param key
+     * @param longitude 经度
+     * @param latitude 纬度
+     * @param member 成员
+     */
+    // Yongsan-gu
+    public long geoadd(String key, double longitude, double latitude, String member) {
+        return jedisPooled.geoadd(key, longitude, latitude, member);
+    }
+
+    /**
+     * 返回具有给定成员的位置元素的列表。
+     * @param longitude 经度
+     * @param latitude 纬度
+     * @param member 成员
+     */
+    public List<GeoRadiusResponse> geosearch(String key, double longitude, double latitude) {
+        return jedisPooled.geosearch(key, new GeoCoordinate(longitude, latitude), 5, GeoUnit.KM);
+    }
+
+    /**
+     * 返回两个给定位置之间的距离。
+     * @param key
+     * @param member1
+     * @param member2
+     * @return
+     */
+    public double geodist(String key, String member1, String member2) {
+        return jedisPooled.geodist(key, member1, member2);
     }
 }
