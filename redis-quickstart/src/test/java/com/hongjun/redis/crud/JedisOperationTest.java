@@ -1,4 +1,4 @@
-package com.hongjun.redis.connection.crud;
+package com.hongjun.redis.crud;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.TypeReference;
@@ -12,9 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.JedisPooled;
-import redis.clients.jedis.params.ScanParams;
 import redis.clients.jedis.resps.GeoRadiusResponse;
-import redis.clients.jedis.resps.ScanResult;
 
 import java.io.IOException;
 import java.util.*;

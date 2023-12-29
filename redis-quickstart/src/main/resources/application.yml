@@ -4,3 +4,7 @@ spring:
       host: localhost
       database: 1
       port: 6379
+
+logging:
+  level:
+    root: info

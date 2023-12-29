@@ -1,6 +1,6 @@
 package com.hongjun.redis.connection;
 
-import com.hongjun.redis.connection.crud.JedisOperation;
+import com.hongjun.redis.crud.JedisOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import redis.clients.jedis.Jedis;

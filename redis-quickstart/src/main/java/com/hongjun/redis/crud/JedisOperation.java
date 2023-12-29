@@ -1,11 +1,10 @@
-package com.hongjun.redis.connection.crud;
+package com.hongjun.redis.crud;
 
 import com.google.common.collect.Maps;
 import com.hongjun.redis.connection.JedisConnect;
 import redis.clients.jedis.GeoCoordinate;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.args.GeoUnit;
-import redis.clients.jedis.params.GeoSearchParam;
 import redis.clients.jedis.params.ScanParams;
 import redis.clients.jedis.resps.GeoRadiusResponse;
 import redis.clients.jedis.resps.ScanResult;
@@ -512,7 +511,6 @@ public class JedisOperation {
      * 返回具有给定成员的位置元素的列表。
      * @param longitude 经度
      * @param latitude 纬度
-     * @param member 成员
      */
     public List<GeoRadiusResponse> geosearch(String key, double longitude, double latitude) {
         return jedisPooled.geosearch(key, new GeoCoordinate(longitude, latitude), 5, GeoUnit.KM);
