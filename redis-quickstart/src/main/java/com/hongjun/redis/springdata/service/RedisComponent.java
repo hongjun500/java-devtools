@@ -205,8 +205,48 @@ public class RedisComponent {
         return redisTemplate.opsForList().index(key, index);
     }
 
-    // todo  redisTemplate.opsForList().indexOf(key, value);
-    //         redisTemplate.opsForList().size(key);
-    //         redisTemplate.opsForList().range(key, 0, -1);
-    //         redisTemplate.opsForList().remove(key, 0, value);
+    /**
+     * 获取列表指定范围的值
+     *
+     * @param key   key
+     * @param start 开始位置
+     * @param end   结束位置
+     * @return List<Object>
+     */
+    public List<Object> range(String key, long start, long end) {
+        return redisTemplate.opsForList().range(key, start, end);
+    }
+
+    /**
+     * 删除列表中值为 value 的元素
+     *
+     * @param key   key
+     * @param count 删除数量
+     * @param value 值
+     * @return Long 删除数量
+     */
+    public Long remove(String key, long count, Object value) {
+        return redisTemplate.opsForList().remove(key, count, value);
+    }
+
+    /**
+     * 获取列表长度
+     *
+     * @param key key
+     * @return Long 列表长度
+     */
+    public Long size(String key) {
+        return redisTemplate.opsForList().size(key);
+    }
+
+
+    /**
+     * 返回列表中第一个匹配元素的索引
+     *
+     * @param key   key
+     * @param value 值
+     */
+    public Long indexOf(String key, Object value) {
+        return redisTemplate.opsForList().indexOf(key, value);
+    }
 }
