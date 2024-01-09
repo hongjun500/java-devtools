@@ -2,7 +2,7 @@ package com.hongjun.mongodb.crud;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.google.common.collect.Maps;
-import com.hongjun.mongodb.connection.MongoConn;
+import com.hongjun.mongodb.connection.MongoConnect;
 import com.hongjun.response.CommonPage;
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import com.mongodb.client.MongoDatabase;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Slf4j
 class MongoNetflixTitlesTest {
 	private final MongoNetflixTitles mongoNetflixTitles = new MongoNetflixTitles();
-	private final MongoConn mongoConn = new MongoConn();
+	private final MongoConnect mongoConn = new MongoConnect();
 	private final MongoDatabase db = mongoConn.getDatabase("kaggle");
 
 	@Test

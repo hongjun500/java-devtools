@@ -1,6 +1,6 @@
 package com.hongjun.mongodb.crud;
 
-import com.hongjun.mongodb.connection.MongoConn;
+import com.hongjun.mongodb.connection.MongoConnect;
 import com.mongodb.client.MongoCollection;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 class IndexTest {
-    private final MongoConn mongoConn = new MongoConn();
+    private final MongoConnect mongoConn = new MongoConnect();
     private MongoCollection<Document> mongoCollection;
 
     @BeforeEach

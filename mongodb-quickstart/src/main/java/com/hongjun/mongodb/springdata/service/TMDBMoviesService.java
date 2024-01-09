@@ -1,10 +1,9 @@
 package com.hongjun.mongodb.springdata.service;
 
-import com.hongjun.mongodb.connection.MongoConn;
+import com.hongjun.mongodb.connection.MongoConnect;
 import com.hongjun.mongodb.springdata.document.TMDBMovies;
 import com.hongjun.response.CommonPage;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +91,7 @@ public interface TMDBMoviesService {
      * @return
      */
     default boolean delCollection() {
-        MongoConn mongoConn = new MongoConn();
+        MongoConnect mongoConn = new MongoConnect();
         mongoConn.getDatabase("kaggle").getCollection("tmdb_movies").drop();
         return true;
     }

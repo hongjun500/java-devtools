@@ -1,0 +1,14 @@
+spring:
+  data:
+    redis:
+      # 基于 Netty 的连接实例，可以在多个线程间并发访问，且线程安全，满足高并发场景
+      client-type: lettuce
+      # 不是线程安全的，在多线程环境下需要使用连接池。Jedis 的 API 主要提供了同步的使用方式
+      # client-type: jedis
+      host: localhost
+      database: 1
+      port: 6379
+
+logging:
+  level:
+    root: info

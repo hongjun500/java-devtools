@@ -4,7 +4,7 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
-import com.hongjun.mongodb.connection.MongoConn;
+import com.hongjun.mongodb.connection.MongoConnect;
 import com.hongjun.mongodb.util.FileResourcesUtil;
 import com.hongjun.response.CommonPage;
 import com.mongodb.client.MongoCollection;
@@ -37,7 +37,7 @@ public class MongoTMDBMovies {
 
     public static final String COLLECTION_NAME = "tmdb_movies";
 
-    public static final MongoConn mongoConn = new MongoConn();
+    public static final MongoConnect mongoConn = new MongoConnect();
 
     public static final MongoCollection<Document> collection = mongoConn.getDatabase(DB_NAME).getCollection(COLLECTION_NAME);
 

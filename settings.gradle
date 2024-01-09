@@ -24,4 +24,5 @@ include 'elasticsearch-starter'
 include 'mybatis-dynamicsql-generator'
 include 'jpa-generator'
 include 'mongodb-quickstart'
+include 'redis-quickstart'
 
