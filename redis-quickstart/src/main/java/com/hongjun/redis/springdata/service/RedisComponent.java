@@ -1,12 +1,15 @@
 package com.hongjun.redis.springdata.service;
 
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.K;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.time.Duration;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,11 +23,11 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class RedisComponent {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Serializable> redisTemplate;
 
     // ----------------------------------String ----------------------------------
 
-    public void set(String key, Object value) {
+    public void set(String key, Serializable value) {
         redisTemplate.opsForValue().set(key, value);
     }
 
@@ -32,7 +35,7 @@ public class RedisComponent {
         redisTemplate.expire(key, timeout);
     }
 
-    public void set(String key, Object value, long timeout, TimeUnit unit) {
+    public void set(String key, Serializable value, long timeout, TimeUnit unit) {
         redisTemplate.opsForValue().set(key, value, timeout, unit);
     }
 
@@ -45,10 +48,19 @@ public class RedisComponent {
      *
      * @param key     key
      * @param timeout 过期时间 使用 {@link Duration}
-     * @return Object
+     * @return Serializable
      */
-    public Object getAndExpire(String key, Duration timeout) {
+    public Serializable getAndExpire(String key, Duration timeout) {
         return redisTemplate.opsForValue().getAndExpire(key, timeout);
+    }
+
+    /**
+     * 删除 key
+     *
+     * @param key key
+     */
+    public void delete(String key) {
+        redisTemplate.delete(key);
     }
 
     public Long getExpire(String key) {
@@ -60,7 +72,7 @@ public class RedisComponent {
     }
 
     // ----------------------------------Hash ----------------------------------
-    public void setHash(String key, Object hashKey, Object value) {
+    public void setHash(String key, Object hashKey, Serializable value) {
         redisTemplate.opsForHash().put(key, hashKey, value);
     }
 
@@ -87,9 +99,9 @@ public class RedisComponent {
      *
      * @param key      key
      * @param hashKeys hash 中的多个 key
-     * @return List<Object>
+     * @return List
      */
-    public List<Object> getHash(String key, Collection<Object> hashKeys) {
+    public List<Object> getHash(String key, List<Object> hashKeys) {
         return redisTemplate.opsForHash().multiGet(key, hashKeys);
     }
 
@@ -125,7 +137,7 @@ public class RedisComponent {
      * @param value 元素
      * @return Long 列表长度
      */
-    public Long leftPush(String key, Object value) {
+    public Long leftPush(String key, Serializable value) {
         return redisTemplate.opsForList().leftPush(key, value);
     }
 
@@ -136,7 +148,7 @@ public class RedisComponent {
      * @param values 多个元素
      * @return Long 列表长度
      */
-    public Long leftPushAll(String key, Object... values) {
+    public Long leftPushAll(String key, Serializable... values) {
         return redisTemplate.opsForList().leftPushAll(key, values);
     }
 
@@ -146,8 +158,18 @@ public class RedisComponent {
      * @param key    key
      * @param values 多个元素组成的集合
      */
-    public Long leftPushAll(String key, Collection<Object> values) {
+    public Long leftPushAll(String key, Collection<Serializable> values) {
         return redisTemplate.opsForList().leftPushAll(key, values);
+    }
+
+    /**
+     * 移除并返回列表头部元素
+     *
+     * @param key key
+     * @return Serializable
+     */
+    public Serializable leftPop(String key) {
+        return redisTemplate.opsForList().leftPop(key);
     }
 
     /**
@@ -157,7 +179,7 @@ public class RedisComponent {
      * @param value 元素
      * @return Long 列表长度
      */
-    public Long rightPush(String key, Object value) {
+    public Long rightPush(String key, Serializable value) {
         return redisTemplate.opsForList().rightPush(key, value);
     }
 
@@ -168,7 +190,7 @@ public class RedisComponent {
      * @param values 多个元素
      * @return Long 列表长度
      */
-    public Long rightPushAll(String key, Object... values) {
+    public Long rightPushAll(String key, Serializable... values) {
         return redisTemplate.opsForList().rightPushAll(key, values);
     }
 
@@ -179,7 +201,7 @@ public class RedisComponent {
      * @param values 多个元素组成的集合
      * @return Long 列表长度
      */
-    public Long rightPushAll(String key, Collection<Object> values) {
+    public Long rightPushAll(String key, Collection<Serializable> values) {
         return redisTemplate.opsForList().rightPushAll(key, values);
     }
 
@@ -190,7 +212,7 @@ public class RedisComponent {
      * @param index 位置
      * @param value 值
      */
-    public void set(String key, long index, Object value) {
+    public void set(String key, long index, Serializable value) {
         redisTemplate.opsForList().set(key, index, value);
     }
 
@@ -199,9 +221,9 @@ public class RedisComponent {
      *
      * @param key   key
      * @param index 位置
-     * @return Object
+     * @return Serializable
      */
-    public Object index(String key, long index) {
+    public Serializable index(String key, long index) {
         return redisTemplate.opsForList().index(key, index);
     }
 
@@ -211,9 +233,9 @@ public class RedisComponent {
      * @param key   key
      * @param start 开始位置
      * @param end   结束位置
-     * @return List<Object>
+     * @return List<Serializable>
      */
-    public List<Object> range(String key, long start, long end) {
+    public List<Serializable> range(String key, long start, long end) {
         return redisTemplate.opsForList().range(key, start, end);
     }
 
@@ -225,7 +247,7 @@ public class RedisComponent {
      * @param value 值
      * @return Long 删除数量
      */
-    public Long remove(String key, long count, Object value) {
+    public Long remove(String key, long count, Serializable value) {
         return redisTemplate.opsForList().remove(key, count, value);
     }
 
@@ -246,7 +268,7 @@ public class RedisComponent {
      * @param key   key
      * @param value 值
      */
-    public Long indexOf(String key, Object value) {
+    public Long indexOf(String key, Serializable value) {
         return redisTemplate.opsForList().indexOf(key, value);
     }
 }
