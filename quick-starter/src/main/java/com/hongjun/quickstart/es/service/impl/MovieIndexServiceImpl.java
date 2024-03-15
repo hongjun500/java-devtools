@@ -101,10 +101,12 @@ public class MovieIndexServiceImpl implements MovieIndexService {
 
     @Override
     public <T> void setListToEs(List<T> list) {
-        // 初始化索引和mapping
+        // 初始化索引和 mapping
         boolean indexAndMapping = baseIndexService.initIndexAndMapping(list.getClass());
         if (indexAndMapping) {
-
+            // 分批次插入数据，每次插入 1000 条
+            List<List<T>> partition = Lists.partition(list, 1000);
+            partition.forEach(subList -> baseIndexService.refreshDataToEs(subList, subList.get(0).getClass()));
         }
     }
 }
