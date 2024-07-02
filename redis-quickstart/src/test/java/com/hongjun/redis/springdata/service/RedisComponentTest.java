@@ -94,10 +94,6 @@ class RedisComponentTest {
 
     @Test
     void list() {
-       /* maps.forEach(obj -> {
-            HashMap<Object, Object> map = new HashMap<>(obj);
-            redisComponent.leftPush(REDIS_TEMPLATE_LIST + ":v1", map);
-        });*/
         List<Serializable> list = maps.stream()
                 .map(map -> (Serializable) map)
                 // todo Java 8
@@ -110,6 +106,8 @@ class RedisComponentTest {
         assertEquals(1, removed);
         assertEquals(4802, redisComponent.size(REDIS_TEMPLATE_LIST));
         redisComponent.set(REDIS_TEMPLATE_LIST, 0, first);
+        Long indexOf = redisComponent.indexOf(REDIS_TEMPLATE_LIST, first);
+        assertEquals(0, indexOf);
         Serializable leftedPop = redisComponent.leftPop(REDIS_TEMPLATE_LIST);
         assertEquals(first, leftedPop);
         List<Serializable> range = redisComponent.range(REDIS_TEMPLATE_LIST, 0, 10);
