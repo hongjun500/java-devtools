@@ -21,6 +21,8 @@ public class User {
 
     private String name;
 
+    private String tag;
+
     /**
      * 这里的 DBRef 代表对另一个文档的引用
      * 在通过引用的属性查询当前文档数据时需要通过 [当前示例：role.$id] 来查询

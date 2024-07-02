@@ -3,8 +3,10 @@ package com.hongjun.mongodb.springdata.service;
 import com.hongjun.mongodb.springdata.document.Properties;
 import com.hongjun.mongodb.springdata.document.Role;
 import com.hongjun.mongodb.springdata.document.User;
+import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import com.mongodb.DBRef;
 import com.mongodb.client.result.UpdateResult;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -28,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Created with 2023.2.2.IntelliJ IDEA
  * Description: UserServiceTest
  */
+@Slf4j
 @DataMongoTest
 class UserServiceTest {
 
@@ -70,8 +76,15 @@ class UserServiceTest {
     void saveUser() {
         User user = new User();
         user.setName("hongjun");
+        user.setTag("admin");
         user.setRole(roles.get(0));
         // user.setProperties(properties);
+        mongoTemplate.insert(user);
+
+        user = new User();
+        user.setName("hongjun1");
+        user.setTag("user");
+        user.setRole(roles.get(1));
         mongoTemplate.insert(user);
         List<User> all = mongoTemplate.findAll(User.class);
         assertFalse(all.isEmpty());
@@ -124,6 +137,32 @@ class UserServiceTest {
         List<User> all = mongoTemplate.findAll(User.class);
         assertFalse(all.isEmpty());
     }
+
+    @Test
+    void userGroupAggregation() {
+        AggregationOperation groupBySystemName = Aggregation.group("tag")
+                .push(Aggregation.project("name", "id")).as("aggList");
+
+       /* AggregationOperation groupBySystemName = new AggregationOperation() {
+            @Override
+            public Document toDocument(AggregationOperationContext context) {
+                return new Document("$group", new Document("_id", "$diseaseSystemName")
+                        .append("diseaseInfoList", new Document("$push", context.getMappedObject(
+                                new Document("diseaseType", "$diseaseType")
+                                        .append("diseaseDescription", "$diseaseDescription")
+                                        .append("imgData", "$imgData")
+                        ))));
+            }
+        };*/
+
+        Aggregation aggregation = Aggregation.newAggregation(groupBySystemName);
+
+        AggregationResults<Object> result =
+                mongoTemplate.aggregate(aggregation, User.class, Object.class);
+
+        log.info("result:{}", CommonFastJsonUtil.toJson(result.getMappedResults()));
+    }
+
 
     // @AfterEach()
     void tearDown() {
