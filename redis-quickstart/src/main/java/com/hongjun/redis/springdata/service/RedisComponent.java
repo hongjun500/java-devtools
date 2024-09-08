@@ -271,4 +271,13 @@ public class RedisComponent {
     public Long indexOf(String key, Serializable value) {
         return redisTemplate.opsForList().indexOf(key, value);
     }
+
+    // ----------------------------------Other ----------------------------------
+    /**
+     *
+     * setnx
+     */
+    public void setnx(String key, Serializable value) {
+        redisTemplate.opsForValue().set(key, value);
+    }
 }

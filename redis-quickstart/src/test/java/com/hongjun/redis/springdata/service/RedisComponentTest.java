@@ -1,13 +1,17 @@
 package com.hongjun.redis.springdata.service;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.hongjun.redis.springdata.RedisConfiguration;
 import com.hongjun.redis.springdata.config.RedisSerializerConfig;
 import com.hongjun.redis.springdata.util.FileResourcesUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.redis.DataRedisTest;
 import org.springframework.context.annotation.Import;
@@ -16,9 +20,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.Duration;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -114,6 +119,24 @@ class RedisComponentTest {
         assertEquals(first, leftedPop);
         List<Serializable> range = redisComponent.range(REDIS_TEMPLATE_LIST, 0, 10);
         assertEquals(11, range.size());
+    }
+
+    @Test
+    void testRedissonLock() throws InterruptedException {
+        RedissonClient redissonClient = Redisson.create();
+        RLock lock = redissonClient.getLock("lock");
+        boolean tryLock = lock.tryLock(10, TimeUnit.SECONDS);
+        if (tryLock) {
+            log.info("tryLock: {}", tryLock);
+            try {
+                redisComponent.set("1", "100");
+
+                String s = redisComponent.get("1");
+                log.info("s: {}", s);
+            }finally {
+                lock.unlock();
+            }
+        }
     }
 
     @AfterEach

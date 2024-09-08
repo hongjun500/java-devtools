@@ -26,6 +26,8 @@ allprojects {
         group = 'custom tasks'
         doLast {
             println 'hello gradle'
+            // 这里中文乱码
+            println '你好 gradle'
         }
     }
 

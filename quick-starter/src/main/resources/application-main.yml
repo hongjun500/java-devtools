@@ -4,7 +4,9 @@ spring:
     url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
     password: hongjun500
-
+  data:
+    redis:
+      database: 1
 
 common:
   elasticsearch:
