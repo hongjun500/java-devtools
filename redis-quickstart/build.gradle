@@ -11,6 +11,7 @@ dependencies {
     implementation project(':common-base')
     implementation 'redis.clients:jedis:4.3.1'
     implementation ('org.springframework.boot:spring-boot-starter-data-redis')
+    // redisson 做分布式锁
     implementation ('org.redisson:redisson-spring-boot-starter:3.23.0')
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'

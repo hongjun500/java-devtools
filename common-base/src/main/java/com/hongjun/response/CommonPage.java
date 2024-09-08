@@ -81,15 +81,14 @@ public class CommonPage<T> implements Serializable {
      */
     public static <T> CommonPage<T> paginate(List<T> data, Integer pageNum, Integer pageSize) {
         if (data == null || data.isEmpty()) {
-            return CommonPage.create(new ArrayList<>(), 0, pageSize, 1, 0L);
+            return CommonPage.create(new ArrayList<>(), 1, pageSize, 1, 0L);
         }
-
         long total = data.size();
         pageSize = pageSize < 1 ? 1 : pageSize;
         int totalPage = (int) Math.ceil((double) total / pageSize);
 
         if (pageNum < 0) {
-            pageNum = 0;
+            pageNum = 1;
         } else if (pageNum > totalPage) {
             pageNum = totalPage;
         }
