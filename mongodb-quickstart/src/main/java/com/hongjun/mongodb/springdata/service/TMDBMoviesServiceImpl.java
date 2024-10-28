@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -60,14 +61,23 @@ public class TMDBMoviesServiceImpl implements TMDBMoviesService {
         maps.forEach(objMap -> {
             TMDBMovies tmdbMovies = BeanUtil.mapToBean(objMap, TMDBMovies.class, true, CopyOptions.create().setIgnoreError(true));
             // log.debug("tmdbMovies: {}", CommonFastJsonUtil.toJson(tmdbMovies));
+            tmdbMovies.setId(null);
             tmdbMovies.setGenres(convertToList(objMap.get("genres"), TMDBMovies.Genre.class));
             tmdbMovies.setReleaseDate(parseLocalDate(objMap, "release_date"));
             tmdbMovies.setKeywords(convertToList(objMap.get("keywords"), TMDBMovies.Keyword.class));
             tmdbMovies.setProductionCompanies(convertToList(objMap.get("production_companies"), TMDBMovies.ProductionCompany.class));
             tmdbMovies.setProductionCountries(convertToList(objMap.get("production_countries"), TMDBMovies.ProductionCountry.class));
             tmdbMovies.setRevenue(Long.parseLong(objMap.get("revenue")));
-            // tmdbMovies.setRuntime(BigDecimal.valueOf());
-            tmdbMovies.setRuntime(Integer.parseInt("".equals(objMap.get("runtime")) ? "0" : objMap.get("runtime")));
+            // 额外处理
+            try {
+                String runtime = "".equals(objMap.get("runtime")) ? "0" : objMap.get("runtime");
+                if (runtime.endsWith(".0")) {
+                    runtime = runtime.substring(0, runtime.length() - 2);
+                }
+                tmdbMovies.setRuntime(Integer.parseInt(runtime));
+            } catch (Exception e) {
+                log.error("convertToTMDBMovies error: {}", e.getMessage());
+            }
             tmdbMovies.setSpokenLanguages(convertToList(objMap.get("spoken_languages"), TMDBMovies.SpokenLanguage.class));
             tmdbMovies.setVoteAverage(BigDecimal.valueOf(Double.parseDouble(objMap.get("vote_average"))));
             tmdbMovies.setVoteCount(Integer.parseInt(objMap.get("vote_count")));
@@ -87,6 +97,12 @@ public class TMDBMoviesServiceImpl implements TMDBMoviesService {
                 .insert(list)
                 .execute();
         return executed.wasAcknowledged();
+    }
+
+    @Override
+    public boolean saveAll(List<TMDBMovies> list) {
+        Collection<TMDBMovies> tmdbMovies = mongoTemplate.insertAll(list);
+        return tmdbMovies.size() == list.size();
     }
 
     @Override
@@ -152,8 +168,8 @@ public class TMDBMoviesServiceImpl implements TMDBMoviesService {
     }
 
     @Override
-    public boolean delCollection() {
-        mongoTemplate.dropCollection(TMDBMovies.class);
+    public boolean dropCollection(Class<?> clazz) {
+        mongoTemplate.dropCollection(clazz);
         return true;
     }
 

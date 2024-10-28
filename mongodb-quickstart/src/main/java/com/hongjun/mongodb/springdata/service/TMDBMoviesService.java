@@ -1,6 +1,5 @@
 package com.hongjun.mongodb.springdata.service;
 
-import com.hongjun.mongodb.connection.MongoConnect;
 import com.hongjun.mongodb.springdata.document.TMDBMovies;
 import com.hongjun.response.CommonPage;
 
@@ -31,6 +30,8 @@ public interface TMDBMoviesService {
      * @return
      */
     boolean bulkSaveAll(List<TMDBMovies> list);
+
+    boolean saveAll(List<TMDBMovies> list);
 
     TMDBMovies getById(String id);
 
@@ -86,15 +87,7 @@ public interface TMDBMoviesService {
      */
     List<TMDBMovies> listTextMatchAndOrderYearAsc(String text);
 
-    /**
-     * 删除当前集合
-     * @return
-     */
-    default boolean delCollection() {
-        MongoConnect mongoConn = new MongoConnect();
-        mongoConn.getDatabase("kaggle").getCollection("tmdb_movies").drop();
-        return true;
-    }
+    boolean dropCollection(Class<?> clazz);
 
     /**
      * 创建文本索引

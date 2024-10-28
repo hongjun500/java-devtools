@@ -5,24 +5,16 @@ import com.google.common.cache.CacheBuilder;
 import com.hongjun.mongodb.springdata.document.TMDBMovies;
 import com.hongjun.mongodb.util.FileResourcesUtil;
 import com.hongjun.response.CommonPage;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
-import org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.IndexInfo;
-import org.springframework.test.context.TestExecutionListeners;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +74,7 @@ class TMDBMoviesServiceImplTest {
         List<TMDBMovies> tmdbMovies = tmdbMoviesService.convertToTMDBMovies(maps);
         assertEquals(4803, tmdbMovies.size());
 
-        boolean saved = tmdbMoviesService.bulkSaveAll(tmdbMovies);
+        boolean saved = tmdbMoviesService.saveAll(tmdbMovies);
         assertTrue(saved);
     }
 
@@ -146,8 +138,8 @@ class TMDBMoviesServiceImplTest {
     }
 
     @Test
-    void delCollection() {
-        assertTrue(tmdbMoviesService.delCollection());
+    void dropCollection() {
+        assertTrue(tmdbMoviesService.dropCollection(TMDBMovies.class));
     }
 
     @Test

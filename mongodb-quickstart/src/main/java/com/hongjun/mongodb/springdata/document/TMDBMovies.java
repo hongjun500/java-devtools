@@ -2,7 +2,7 @@ package com.hongjun.mongodb.springdata.document;
 
 import com.hongjun.util.convert.json.CommonFastJsonUtil;
 import lombok.Data;
-import org.springframework.data.mongodb.core.index.Indexed;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -19,9 +19,10 @@ import java.util.List;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Document(collection = "tmdb_movies")
-public class TMDBMovies {
+public class TMDBMovies extends BaseMongoAuditing{
 
     @MongoId(value = FieldType.STRING)
     private String id;
