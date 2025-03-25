@@ -1,12 +1,12 @@
 package com.hongjun.mongodb.springdata.repositories;
 
+import java.util.List;
+
 import com.hongjun.mongodb.springdata.document.NetflixTitles;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
-
-import java.util.List;
 
 /**
  * @author hongjun500
@@ -15,6 +15,7 @@ import java.util.List;
  * Created with 2022.2.2.IntelliJ IDEA
  * Description:
  */
+@Deprecated
 public interface NetflixTitlesRepository extends ListCrudRepository<NetflixTitles, String>, ListPagingAndSortingRepository<NetflixTitles, String> {
 
 	/**

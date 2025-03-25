@@ -1,10 +1,9 @@
 package com.hongjun.mongodb.springdata.document;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 /**
  * @author hongjun500
@@ -17,8 +16,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @Document(value = "netflix_titles")
 public class NetflixTitles {
 
-	// @Id
-	@MongoId(targetType = FieldType.STRING)
+	@Id
 	private String id;
 
 	@Field(value = "show_id")

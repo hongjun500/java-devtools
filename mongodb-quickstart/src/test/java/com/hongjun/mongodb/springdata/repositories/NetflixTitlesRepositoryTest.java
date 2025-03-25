@@ -1,5 +1,11 @@
 package com.hongjun.mongodb.springdata.repositories;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import com.hongjun.mongodb.common.conf.MongoConfig;
 import com.hongjun.mongodb.springdata.document.NetflixTitles;
 import com.hongjun.mongodb.util.FileResourcesUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -7,20 +13,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @DataMongoTest
+@ImportAutoConfiguration(MongoConfig.class)
 // @ContextConfiguration(classes = MongoDBConfiguration.class)
 class NetflixTitlesRepositoryTest {
 
